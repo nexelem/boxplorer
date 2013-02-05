@@ -2,6 +2,7 @@
 <resources>
 
     <string name="app_name">Boxeee</string>
+    <string name="db_name">boxeee.db</string>
     <string name="hello_world">Hello world!</string>
     <string name="menu_settings">Settings</string>
 
