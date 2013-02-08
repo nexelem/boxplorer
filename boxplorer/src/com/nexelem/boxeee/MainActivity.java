@@ -18,6 +18,7 @@ import com.nexelem.boxeee.db.BusinessException;
 import com.nexelem.boxeee.db.DBHelper;
 import com.nexelem.boxeee.model.Box;
 import com.nexelem.boxeee.service.BoxService;
+import com.nexelem.boxplorer.R;
 
 public class MainActivity extends Activity implements OnQueryTextListener {
 
@@ -27,7 +28,7 @@ public class MainActivity extends Activity implements OnQueryTextListener {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
+		this.setContentView(R.layout.activity_main);
 
 		this.helper = new DBHelper(this.getApplicationContext());
 		try {
@@ -38,16 +39,17 @@ public class MainActivity extends Activity implements OnQueryTextListener {
 		}
 
 		// Creating adapter with data
-		ListAdapter adapter = new ListAdapter(this, getData());
+		ListAdapter adapter = new ListAdapter(this, this.getData());
 
 		// Creating expandable list view
-		ExpandableListView list = (ExpandableListView) findViewById(R.id.listView);
+		ExpandableListView list = (ExpandableListView) this
+				.findViewById(R.id.listView);
 		list.setAdapter(adapter);
 		list.setOnChildClickListener(adapter);
 		list.requestFocus();
 
 		// Customizing action bar
-		ActionBar bar = getActionBar();
+		ActionBar bar = this.getActionBar();
 		bar.setDisplayHomeAsUpEnabled(false);
 		bar.setDisplayShowTitleEnabled(false);
 		bar.setDisplayShowHomeEnabled(false);
@@ -55,7 +57,7 @@ public class MainActivity extends Activity implements OnQueryTextListener {
 		bar.setCustomView(R.layout.actionbar);
 
 		// Customizing search view
-		SearchView searcher = (SearchView) findViewById(R.id.searcher);
+		SearchView searcher = (SearchView) this.findViewById(R.id.searcher);
 		searcher.setOnQueryTextListener(this);
 		searcher.setIconified(false);
 	}
@@ -85,7 +87,7 @@ public class MainActivity extends Activity implements OnQueryTextListener {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		super.onCreateOptionsMenu(menu);
-		MenuInflater inflater = getMenuInflater();
+		MenuInflater inflater = this.getMenuInflater();
 		inflater.inflate(R.menu.search_bar, menu);
 		return true;
 	}

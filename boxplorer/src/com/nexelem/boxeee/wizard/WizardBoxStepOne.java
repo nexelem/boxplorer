@@ -8,7 +8,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 
-import com.nexelem.boxeee.R;
+import com.nexelem.boxplorer.R;
 
 public class WizardBoxStepOne extends Fragment {
 	

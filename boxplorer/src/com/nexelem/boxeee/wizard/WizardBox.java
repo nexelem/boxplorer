@@ -10,7 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.nexelem.boxeee.R;
+import com.nexelem.boxplorer.R;
 
 public class WizardBox extends DialogFragment {
 

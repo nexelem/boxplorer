@@ -23,6 +23,7 @@ import com.nexelem.boxeee.animation.ToggleAnimation;
 import com.nexelem.boxeee.model.Box;
 import com.nexelem.boxeee.model.Item;
 import com.nexelem.boxeee.model.ItemState;
+import com.nexelem.boxplorer.R;
 
 public class ListAdapter extends BaseExpandableListAdapter implements
 OnChildClickListener {
