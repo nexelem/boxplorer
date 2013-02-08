@@ -27,6 +27,11 @@ public class Item {
 		this.state = ItemState.NEW;
 	}
 
+	public Item(String name, Box box) {
+		this(name);
+		this.box = box;
+	}
+
 	public UUID getId() {
 		return id;
 	}

@@ -7,6 +7,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.nexelem.boxeee.dao.BoxDao;
+import com.nexelem.boxeee.dao.ItemDao;
 import com.nexelem.boxeee.db.BusinessException;
 import com.nexelem.boxeee.db.DBHelper;
 import com.nexelem.boxeee.model.Box;
@@ -23,12 +24,14 @@ public class BoxService {
 	Logger log = Logger.getLogger(BoxService.class.getName());
 
 	private BoxDao dao = null;
+	private ItemDao itemDao = null;
 
 	public BoxService(DBHelper helper) throws BusinessException {
 		try {
 			this.dao = new BoxDao(helper);
+			this.itemDao = new ItemDao(helper);
 		} catch (SQLException e) {
-			log.log(Level.SEVERE, "Unable to create DAO object", e);
+			this.log.log(Level.SEVERE, "Unable to create DAO object", e);
 			throw new BusinessException(e, "Unable to create DAO object");
 		}
 	}
@@ -73,6 +76,7 @@ public class BoxService {
 
 	public void delete(UUID id) throws BusinessException {
 		try {
+			this.itemDao.deleteByBoxId(id);
 			this.dao.delete(id);
 		} catch (SQLException e) {
 			this.log.log(Level.WARNING, "Unable to delete BOX %s", id);

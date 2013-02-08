@@ -5,10 +5,8 @@ import java.util.List;
 import java.util.UUID;
 
 import com.j256.ormlite.dao.Dao;
-import com.j256.ormlite.stmt.QueryBuilder;
 import com.nexelem.boxeee.db.DBHelper;
 import com.nexelem.boxeee.model.Box;
-import com.nexelem.boxeee.model.Item;
 
 /**
  * Klasa DAO odpowiedzialna za obsluge tabeli Box w bazie danych
@@ -19,11 +17,9 @@ import com.nexelem.boxeee.model.Item;
  */
 public class BoxDao {
 
-	private Dao<Item, UUID> itemHelper;
 	private Dao<Box, UUID> helper;
 
 	public BoxDao(DBHelper helper) throws SQLException {
-		this.itemHelper = helper.getDao(Item.class);
 		this.helper = helper.getDao(Box.class);
 	}
 
@@ -52,11 +48,4 @@ public class BoxDao {
 		return this.helper.queryForId(id);
 	}
 
-	public List<Box> getByLikelyItemName(String name) throws SQLException {
-		QueryBuilder<Box, UUID> query = this.helper.queryBuilder();
-		QueryBuilder<Item, UUID> itemBuilder = this.itemHelper.queryBuilder();
-		itemBuilder.where().like("name", name);
-		query.join(itemBuilder);
-		return query.query();
-	}
 }

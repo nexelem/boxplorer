@@ -1,6 +1,7 @@
 package com.nexelem.boxeee.service;
 
 import java.sql.SQLException;
+import java.util.List;
 import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -9,6 +10,7 @@ import com.nexelem.boxeee.dao.BoxDao;
 import com.nexelem.boxeee.dao.ItemDao;
 import com.nexelem.boxeee.db.BusinessException;
 import com.nexelem.boxeee.db.DBHelper;
+import com.nexelem.boxeee.model.Box;
 import com.nexelem.boxeee.model.Item;
 
 public class ItemService {
@@ -17,21 +19,19 @@ public class ItemService {
 
 	private ItemDao dao = null;
 
-	private BoxDao bDao = null;
-
 	public ItemService(DBHelper helper) throws BusinessException {
 		try {
 			this.dao = new ItemDao(helper);
-			this.bDao = new BoxDao(helper);
+			new BoxDao(helper);
 		} catch (SQLException e) {
-			log.log(Level.SEVERE, "Unable to create DAO object", e);
+			this.log.log(Level.SEVERE, "Unable to create DAO object", e);
 			throw new BusinessException(e, "Unable to create DAO object");
 		}
 	}
 
 	public void create(Item item) throws BusinessException {
 		try {
-			dao.create(item);
+			this.dao.create(item);
 		} catch (SQLException e) {
 			this.log.log(Level.WARNING, "Unable to save Item in Box", e);
 			throw new BusinessException(e, "Unable to save Item in Box");
@@ -63,6 +63,26 @@ public class ItemService {
 			this.log.log(Level.WARNING, "Unable to delete Item object", e);
 			throw new BusinessException(e, "Unable to delete Item object $s",
 					id);
+		}
+	}
+
+	public List<Item> list() throws BusinessException {
+		try {
+			return this.dao.list();
+		} catch (SQLException e) {
+			this.log.log(Level.WARNING, "Unable to list Items", e);
+			throw new BusinessException(e, "Unable to list Items");
+		}
+	}
+
+	public List<Box> getByLikelyItemName(List<Box> boxes, String name)
+			throws BusinessException {
+		try {
+			return this.dao.getByLikelyItemName(boxes, name);
+		} catch (SQLException e) {
+			this.log.log(Level.WARNING, "Unable to find Items", e);
+			throw new BusinessException(e, "Unable to find Items with name $s",
+					name);
 		}
 	}
 

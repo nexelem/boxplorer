@@ -4,15 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.app.ActionBar;
+import android.app.Activity;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.ExpandableListView;
-import android.widget.ImageView;
 import android.widget.SearchView;
 import android.widget.SearchView.OnQueryTextListener;
 import android.widget.Toast;
@@ -21,15 +18,11 @@ import com.nexelem.boxeee.db.BusinessException;
 import com.nexelem.boxeee.db.DBHelper;
 import com.nexelem.boxeee.model.Box;
 import com.nexelem.boxeee.service.BoxService;
-import com.nexelem.boxeee.service.ItemService;
-import com.nexelem.boxeee.wizard.WizardBox;
 
-public class MainActivity extends FragmentActivity implements OnQueryTextListener {
+public class MainActivity extends Activity implements OnQueryTextListener {
 
 	private DBHelper helper = null;
 	private BoxService boxService = null;
-	private ItemService itemService = null;
-	private WizardBox wizard;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +32,6 @@ public class MainActivity extends FragmentActivity implements OnQueryTextListene
 		this.helper = new DBHelper(this.getApplicationContext());
 		try {
 			this.boxService = new BoxService(this.helper);
-			this.itemService = new ItemService(this.helper);
 		} catch (BusinessException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -66,17 +58,6 @@ public class MainActivity extends FragmentActivity implements OnQueryTextListene
 		SearchView searcher = (SearchView) findViewById(R.id.searcher);
 		searcher.setOnQueryTextListener(this);
 		searcher.setIconified(false);
-		
-		// Creating add box wizard dialog
-		ImageView addBox = (ImageView) findViewById(R.id.add_box);
-		addBox.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				new WizardBox().show(getSupportFragmentManager(), "dialog");
-			}
-		});
-		
 	}
 
 	/**
@@ -128,26 +109,6 @@ public class MainActivity extends FragmentActivity implements OnQueryTextListene
 		}
 
 		return boxes;
-
-		/**
-		 * List<Box> boxes = new ArrayList<Box>(); Box box1 = new Box("Gry",
-		 * "Pokój gościnny"); box1.getItems().add(new Item("GTA 3"));
-		 * box1.getItems().add(new Item("FEZ!")); box1.getItems().add(new
-		 * Item("Red Dead Redemption"));
-		 * 
-		 * Box box2 = new Box("Narzędzia", "Przedpokój");
-		 * box2.getItems().add(new Item("Śrubokręt")); box2.getItems().add(new
-		 * Item("Młotek")); box2.getItems().add(new Item("Piła"));
-		 * box2.getItems().add(new Item("Latarka"));
-		 * 
-		 * Box box3 = new Box("Muzyka", "Gabinet"); box3.getItems().add(new
-		 * Item("Lana del Ray")); box3.getItems().add(new Item("String"));
-		 * box3.getItems().add(new Item("James Blunt"));
-		 * 
-		 * boxes.add(box1); boxes.add(box2); boxes.add(box3);
-		 * 
-		 * return boxes;
-		 **/
 	}
 
 	@Override
