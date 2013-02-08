@@ -4,12 +4,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.app.ActionBar;
-import android.app.Activity;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.ExpandableListView;
+import android.widget.ImageView;
 import android.widget.SearchView;
 import android.widget.SearchView.OnQueryTextListener;
 import android.widget.Toast;
@@ -19,12 +22,14 @@ import com.nexelem.boxeee.db.DBHelper;
 import com.nexelem.boxeee.model.Box;
 import com.nexelem.boxeee.service.BoxService;
 import com.nexelem.boxeee.service.ItemService;
+import com.nexelem.boxeee.wizard.WizardBox;
 
-public class MainActivity extends Activity implements OnQueryTextListener {
+public class MainActivity extends FragmentActivity implements OnQueryTextListener {
 
 	private DBHelper helper = null;
 	private BoxService boxService = null;
 	private ItemService itemService = null;
+	private WizardBox wizard;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +66,17 @@ public class MainActivity extends Activity implements OnQueryTextListener {
 		SearchView searcher = (SearchView) findViewById(R.id.searcher);
 		searcher.setOnQueryTextListener(this);
 		searcher.setIconified(false);
+		
+		// Creating add box wizard dialog
+		ImageView addBox = (ImageView) findViewById(R.id.add_box);
+		addBox.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				new WizardBox().show(getSupportFragmentManager(), "dialog");
+			}
+		});
+		
 	}
 
 	/**

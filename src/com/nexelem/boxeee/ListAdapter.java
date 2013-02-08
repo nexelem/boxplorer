@@ -25,7 +25,7 @@ import com.nexelem.boxeee.model.Item;
 import com.nexelem.boxeee.model.ItemState;
 
 public class ListAdapter extends BaseExpandableListAdapter implements
-		OnChildClickListener {
+OnChildClickListener {
 
 	private List<Box> boxes;
 	private Context context;
@@ -146,8 +146,7 @@ public class ListAdapter extends BaseExpandableListAdapter implements
 		holder.add.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				boxes.get(groupPosition).getItemsList().get(childPosition)
-						.setState(ItemState.REMOVE);
+				boxes.get(groupPosition).getItemsList().get(childPosition).setState(ItemState.REMOVE);
 				ListAdapter.this.notifyDataSetChanged();
 			}
 		});
@@ -155,14 +154,14 @@ public class ListAdapter extends BaseExpandableListAdapter implements
 			@Override
 			public void onClick(View v) {
 				Toast.makeText(context, "TODO: edit item", Toast.LENGTH_SHORT)
-						.show();
+				.show();
 			}
 		});
 		holder.move.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				Toast.makeText(context, "TODO: move item", Toast.LENGTH_SHORT)
-						.show();
+				.show();
 
 			}
 		});
@@ -193,12 +192,7 @@ public class ListAdapter extends BaseExpandableListAdapter implements
 			@Override
 			public void onClick(View view) {
 				// TODO: dialog with wizard
-				boxes.get(groupPosition)
-						.getItems()
-						.add(new Item(
-								"Test "
-										+ (boxes.get(groupPosition).getItems()
-												.size() + 1)));
+				boxes.get(groupPosition).getItems().add(new Item("Test "+ (boxes.get(groupPosition).getItems().size() + 1)));
 				ListAdapter.this.notifyDataSetChanged();
 			}
 		});
