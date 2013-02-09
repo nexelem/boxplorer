@@ -18,12 +18,15 @@ import com.nexelem.boxeee.db.BusinessException;
 import com.nexelem.boxeee.db.DBHelper;
 import com.nexelem.boxeee.model.Box;
 import com.nexelem.boxeee.service.BoxService;
+import com.nexelem.boxeee.service.ItemService;
 import com.nexelem.boxplorer.R;
 
 public class MainActivity extends Activity implements OnQueryTextListener {
 
 	private DBHelper helper = null;
-	private BoxService boxService = null;
+	private BoxService boxService;
+	private ItemService itemService;
+	private ListAdapter adapter;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -33,19 +36,20 @@ public class MainActivity extends Activity implements OnQueryTextListener {
 		this.helper = new DBHelper(this.getApplicationContext());
 		try {
 			this.boxService = new BoxService(this.helper);
+			this.itemService = new ItemService(this.helper);
 		} catch (BusinessException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
 		// Creating adapter with data
-		ListAdapter adapter = new ListAdapter(this, this.getData());
+		this.adapter = new ListAdapter(this, this.boxService, this.itemService);
 
 		// Creating expandable list view
 		ExpandableListView list = (ExpandableListView) this
 				.findViewById(R.id.listView);
-		list.setAdapter(adapter);
-		list.setOnChildClickListener(adapter);
+		list.setAdapter(this.adapter);
+		list.setOnChildClickListener(this.adapter);
 		list.requestFocus();
 
 		// Customizing action bar
@@ -115,8 +119,21 @@ public class MainActivity extends Activity implements OnQueryTextListener {
 
 	@Override
 	public boolean onQueryTextChange(String newText) {
-		// TODO: Filtering data
-		Toast.makeText(this, "Szukam: " + newText, Toast.LENGTH_SHORT).show();
+		if (newText.length() < 3) {
+			this.adapter.setBoxes(this.adapter.getFullList());
+		} else if (newText.length() >= 3) {
+			try {
+				this.adapter.searchFor(newText);
+				Toast.makeText(this, "Szukam: " + newText, Toast.LENGTH_SHORT)
+						.show();
+			} catch (BusinessException e) {
+				Toast.makeText(this, "ERROR: " + newText, Toast.LENGTH_SHORT)
+						.show();
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+		}
 		return true;
 	}
 

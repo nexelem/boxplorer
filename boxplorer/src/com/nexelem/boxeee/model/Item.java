@@ -14,7 +14,7 @@ public class Item {
 	@DatabaseField(canBeNull = false)
 	private String name;
 
-	private ItemState state;
+	private ItemState state = ItemState.DEFAULT;
 
 	@DatabaseField(foreign = true)
 	private Box box;
@@ -33,7 +33,7 @@ public class Item {
 	}
 
 	public UUID getId() {
-		return id;
+		return this.id;
 	}
 
 	public void setId(UUID id) {
@@ -41,7 +41,7 @@ public class Item {
 	}
 
 	public String getName() {
-		return name;
+		return this.name;
 	}
 
 	public void setName(String name) {
@@ -49,7 +49,7 @@ public class Item {
 	}
 
 	public ItemState getState() {
-		return state;
+		return this.state;
 	}
 
 	public void setState(ItemState state) {
@@ -57,7 +57,7 @@ public class Item {
 	}
 
 	public Box getBox() {
-		return box;
+		return this.box;
 	}
 
 	public void setBox(Box box) {

@@ -1,5 +1,6 @@
 package com.nexelem.boxeee;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
@@ -20,20 +21,48 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.nexelem.boxeee.animation.ToggleAnimation;
+import com.nexelem.boxeee.db.BusinessException;
 import com.nexelem.boxeee.model.Box;
 import com.nexelem.boxeee.model.Item;
 import com.nexelem.boxeee.model.ItemState;
+import com.nexelem.boxeee.service.BoxService;
+import com.nexelem.boxeee.service.ItemService;
 import com.nexelem.boxplorer.R;
 
 public class ListAdapter extends BaseExpandableListAdapter implements
-OnChildClickListener {
+		OnChildClickListener {
 
-	private List<Box> boxes;
-	private Context context;
+	private List<Box> boxes = new ArrayList<Box>();
+	private List<Box> fullList = new ArrayList<Box>();
+	private final Context context;
+	private final ItemService itemService;
+	private final BoxService boxService;
+	private final String searchText = "";
 
-	public ListAdapter(Context context, List<Box> boxes) {
+	public ListAdapter(Context context, BoxService boxService,
+			ItemService itemService) {
 		this.context = context;
+		this.itemService = itemService;
+		this.boxService = boxService;
+		this.updateListAdapterData();
+	}
+
+	private void updateListAdapterData() {
+		try {
+			this.boxes = this.boxService.list();
+			this.fullList = this.boxes;
+		} catch (BusinessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	public void setBoxes(List<Box> boxes) {
 		this.boxes = boxes;
+	}
+
+	public List<Box> getFullList() {
+		return this.fullList;
 	}
 
 	/**
@@ -42,7 +71,7 @@ OnChildClickListener {
 	@Override
 	public void onGroupCollapsed(int groupPosition) {
 		super.onGroupCollapsed(groupPosition);
-		for (Item item : boxes.get(groupPosition).getItems()) {
+		for (Item item : this.boxes.get(groupPosition).getItems()) {
 			item.setState(ItemState.NEW);
 		}
 	}
@@ -53,7 +82,8 @@ OnChildClickListener {
 	@Override
 	public boolean onChildClick(ExpandableListView parent, View v,
 			int groupPosition, int childPosition, long id) {
-		Item item = boxes.get(groupPosition).getItemsList().get(childPosition);
+		Item item = this.boxes.get(groupPosition).getItemsList()
+				.get(childPosition);
 		boolean expanded = false;
 
 		if (item.getState() != ItemState.DEFAULT_EXPANDED) {
@@ -65,24 +95,25 @@ OnChildClickListener {
 			expanded = true;
 		}
 
-		for (Box box : boxes) {
+		for (Box box : this.boxes) {
 			for (Item i : box.getItems()) {
-				if (i.getState() == ItemState.DEFAULT_EXPANDED
-						&& (!expanded || i != item)) {
+				if ((i.getState() == ItemState.DEFAULT_EXPANDED)
+						&& (!expanded || (i != item))) {
 					i.setState(ItemState.DEFAULT_TO_HIDE);
 				}
 			}
 		}
-		notifyDataSetChanged();
+		this.notifyDataSetChanged();
 		return true;
 	}
 
 	/**
 	 * Creating child record view - depending on item status
 	 */
-	public View getChildView(final int groupPosition, final int childPosition,
+	@Override
+	public View getChildView(final int boxPosition, final int itemPosition,
 			boolean isLastChild, View view, ViewGroup parent) {
-		LayoutInflater inflater = (LayoutInflater) context
+		LayoutInflater inflater = (LayoutInflater) this.context
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		final ViewHolder holder;
 
@@ -100,22 +131,30 @@ OnChildClickListener {
 			holder = (ViewHolder) view.getTag();
 		}
 
-		Item item = boxes.get(groupPosition).getItemsList().get(childPosition);
+		Item item = this.boxes.get(boxPosition).getItemsList()
+				.get(itemPosition);
 
-		if (item.getState() == ItemState.DEFAULT
-				|| item.getState() == ItemState.NEW) {
+		if (item == null) {
+			return view;
+		}
+
+		if ((item.getState() == ItemState.DEFAULT)
+				|| (item.getState() == ItemState.NEW)) {
 			View toolbar = view.findViewById(R.id.item_toolbar);
 			((LayoutParams) toolbar.getLayoutParams()).bottomMargin = -50;
 			toolbar.setVisibility(View.GONE);
 		}
 
-		if (item.getState().equals(ItemState.NEW)) {
+		AlphaAnimation alpha;
+		switch (item.getState()) {
+		case NEW:
 			item.setState(ItemState.DEFAULT);
-			AlphaAnimation alpha = new AlphaAnimation(0.0f, 1.0f);
+			alpha = new AlphaAnimation(0.0f, 1.0f);
 			alpha.setDuration(800);
 			holder.name.startAnimation(alpha);
-		} else if (item.getState().equals(ItemState.REMOVE)) {
-			AlphaAnimation alpha = new AlphaAnimation(1.0f, 0.0f);
+			break;
+		case REMOVE:
+			alpha = new AlphaAnimation(1.0f, 0.0f);
 			alpha.setDuration(800);
 			alpha.setAnimationListener(new AnimationListener() {
 
@@ -125,7 +164,8 @@ OnChildClickListener {
 
 				@Override
 				public void onAnimationEnd(Animation arg0) {
-					boxes.get(groupPosition).getItems().remove(childPosition);
+					ListAdapter.this.boxes.get(boxPosition).getItems()
+							.remove(itemPosition);
 					ListAdapter.this.notifyDataSetChanged();
 				}
 
@@ -134,35 +174,39 @@ OnChildClickListener {
 				}
 			});
 			view.startAnimation(alpha);
-		} else if (item.getState() == ItemState.DEFAULT_TO_HIDE) {
+			break;
+		case DEFAULT_TO_HIDE:
 			item.setState(ItemState.DEFAULT);
 			LinearLayout toolbar = (LinearLayout) view
 					.findViewById(R.id.item_toolbar);
 			ToggleAnimation animation = new ToggleAnimation(toolbar, 500);
 			toolbar.startAnimation(animation);
+			break;
 		}
 
-		holder.name.setText(boxes.get(groupPosition).getItemsList()
-				.get(childPosition).getName());
+		holder.name.setText(this.boxes.get(boxPosition).getItemsList()
+				.get(itemPosition).getName());
 		holder.add.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				boxes.get(groupPosition).getItemsList().get(childPosition).setState(ItemState.REMOVE);
+				ListAdapter.this.boxes.get(boxPosition).getItemsList()
+						.get(itemPosition).setState(ItemState.REMOVE);
 				ListAdapter.this.notifyDataSetChanged();
 			}
+
 		});
 		holder.edit.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Toast.makeText(context, "TODO: edit item", Toast.LENGTH_SHORT)
-				.show();
+				Toast.makeText(ListAdapter.this.context, "TODO: edit item",
+						Toast.LENGTH_SHORT).show();
 			}
 		});
 		holder.move.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Toast.makeText(context, "TODO: move item", Toast.LENGTH_SHORT)
-				.show();
+				Toast.makeText(ListAdapter.this.context, "TODO: move item",
+						Toast.LENGTH_SHORT).show();
 
 			}
 		});
@@ -173,9 +217,10 @@ OnChildClickListener {
 	/**
 	 * Creating group view
 	 */
+	@Override
 	public View getGroupView(final int groupPosition, boolean isExpanded,
 			View view, final ViewGroup parent) {
-		final LayoutInflater inflater = (LayoutInflater) context
+		final LayoutInflater inflater = (LayoutInflater) this.context
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		ViewHolder holder;
 
@@ -193,45 +238,65 @@ OnChildClickListener {
 			@Override
 			public void onClick(View view) {
 				// TODO: dialog with wizard
-				boxes.get(groupPosition).getItems().add(new Item("Test "+ (boxes.get(groupPosition).getItems().size() + 1)));
+				Item itemToSave = new Item("Test "
+						+ (ListAdapter.this.boxes.get(groupPosition).getItems()
+								.size() + 1), ListAdapter.this.boxes
+						.get(groupPosition));
+
+				try {
+					ListAdapter.this.itemService.create(itemToSave);
+				} catch (BusinessException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
+				ListAdapter.this.updateListAdapterData();
 				ListAdapter.this.notifyDataSetChanged();
 			}
 		});
 
-		holder.name.setText(boxes.get(groupPosition).getName());
+		holder.name.setText(this.boxes.get(groupPosition).getName());
 		return view;
 	}
 
+	@Override
 	public Object getGroup(int groupPosition) {
-		return boxes.get(groupPosition);
+		return this.boxes.get(groupPosition);
 	}
 
+	@Override
 	public int getGroupCount() {
-		return boxes.size();
+		return this.boxes.size();
 	}
 
+	@Override
 	public long getGroupId(int groupPosition) {
 		return groupPosition;
 	}
 
+	@Override
 	public boolean isChildSelectable(int groupPosition, int childPosition) {
 		return true;
 	}
 
+	@Override
 	public boolean hasStableIds() {
 		return true;
 	}
 
+	@Override
 	public Item getChild(int groupPosition, int childPosition) {
-		return boxes.get(groupPosition).getItemsList().get(childPosition);
+		return this.boxes.get(groupPosition).getItemsList().get(childPosition);
 	}
 
+	@Override
 	public long getChildId(int groupPosition, int childPosition) {
 		return childPosition;
 	}
 
+	@Override
 	public int getChildrenCount(int groupPosition) {
-		return boxes.get(groupPosition).getItems().size();
+		return this.boxes.get(groupPosition).getItems().size();
 	}
 
 	/**
@@ -245,4 +310,14 @@ OnChildClickListener {
 		public ImageView move;
 	}
 
+	public void searchFor(String newText) throws BusinessException {
+		if (this.searchText.startsWith(newText)) {
+			this.boxes = this.itemService.getByLikelyItemName(this.boxes,
+					newText);
+		} else {
+			this.boxes = this.itemService.getByLikelyItemName(this.fullList,
+					newText);
+		}
+		this.notifyDataSetChanged();
+	}
 }
