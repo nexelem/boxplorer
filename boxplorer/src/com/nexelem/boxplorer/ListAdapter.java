@@ -1,9 +1,15 @@
-package com.nexelem.boxeee;
+package com.nexelem.boxplorer;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import android.app.Activity;
+import android.app.DialogFragment;
+import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -20,14 +26,14 @@ import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.nexelem.boxeee.animation.ToggleAnimation;
-import com.nexelem.boxeee.db.BusinessException;
-import com.nexelem.boxeee.model.Box;
-import com.nexelem.boxeee.model.Item;
-import com.nexelem.boxeee.model.ItemState;
-import com.nexelem.boxeee.service.BoxService;
-import com.nexelem.boxeee.service.ItemService;
-import com.nexelem.boxplorer.R;
+import com.nexelem.boxplorer.animation.ToggleAnimation;
+import com.nexelem.boxplorer.db.BusinessException;
+import com.nexelem.boxplorer.model.Box;
+import com.nexelem.boxplorer.model.Item;
+import com.nexelem.boxplorer.model.ItemState;
+import com.nexelem.boxplorer.service.BoxService;
+import com.nexelem.boxplorer.service.ItemService;
+import com.nexelem.boxplorer.wizard.ItemDialog;
 
 public class ListAdapter extends BaseExpandableListAdapter implements
 		OnChildClickListener {
@@ -47,7 +53,7 @@ public class ListAdapter extends BaseExpandableListAdapter implements
 		this.updateListAdapterData();
 	}
 
-	private void updateListAdapterData() {
+	public void updateListAdapterData() {
 		try {
 			this.boxes = this.boxService.list();
 			this.fullList = this.boxes;
@@ -131,7 +137,7 @@ public class ListAdapter extends BaseExpandableListAdapter implements
 			holder = (ViewHolder) view.getTag();
 		}
 
-		Item item = this.boxes.get(boxPosition).getItemsList()
+		final Item item = this.boxes.get(boxPosition).getItemsList()
 				.get(itemPosition);
 
 		if (item == null) {
@@ -195,11 +201,29 @@ public class ListAdapter extends BaseExpandableListAdapter implements
 			}
 
 		});
+		// edycja przedmiotu
 		holder.edit.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Toast.makeText(ListAdapter.this.context, "TODO: edit item",
-						Toast.LENGTH_SHORT).show();
+				FragmentManager fm = null;
+				try {
+					fm = ((Activity) ListAdapter.this.context)
+							.getFragmentManager();
+				} catch (ClassCastException e) {
+					Log.d("Fragment",
+							"Can't get the fragment manager with this");
+				}
+
+				FragmentTransaction ft = fm.beginTransaction();
+				Fragment prev = fm.findFragmentByTag("item-dialog");
+				if (prev != null) {
+					ft.remove(prev);
+				}
+				ft.addToBackStack(null);
+				DialogFragment newFragment = ItemDialog.newInstance(item,
+						ListAdapter.this.getFullList(),
+						ListAdapter.this.itemService, ListAdapter.this);
+				newFragment.show(fm, "item-dialog");
 			}
 		});
 		holder.move.setOnClickListener(new OnClickListener() {
@@ -234,44 +258,58 @@ public class ListAdapter extends BaseExpandableListAdapter implements
 			holder = (ViewHolder) view.getTag();
 		}
 
+		// obsluga guzika dodawania przedmiotu do pudelka
 		holder.add.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View view) {
-				// TODO: dialog with wizard
-				Item itemToSave = new Item("Test "
-						+ (ListAdapter.this.boxes.get(groupPosition).getItems()
-								.size() + 1), ListAdapter.this.boxes
-						.get(groupPosition));
-
+				FragmentManager fm = null;
 				try {
-					ListAdapter.this.itemService.create(itemToSave);
-				} catch (BusinessException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					fm = ((Activity) ListAdapter.this.context)
+							.getFragmentManager();
+				} catch (ClassCastException e) {
+					Log.d("Fragment",
+							"Can't get the fragment manager with this");
 				}
 
-				ListAdapter.this.updateListAdapterData();
-				ListAdapter.this.notifyDataSetChanged();
+				FragmentTransaction ft = fm.beginTransaction();
+				Fragment prev = fm.findFragmentByTag("item-dialog");
+				if (prev != null) {
+					ft.remove(prev);
+				}
+				ft.addToBackStack(null);
+				DialogFragment newFragment = ItemDialog.newInstance(null,
+						ListAdapter.this.getFullList(),
+						ListAdapter.this.itemService, ListAdapter.this);
+				newFragment.show(fm, "item-dialog");
 			}
 		});
-
 		holder.name.setText(this.boxes.get(groupPosition).getName());
 		return view;
 	}
 
 	@Override
 	public Object getGroup(int groupPosition) {
-		return this.boxes.get(groupPosition);
+		if (this.getGroupCount() >= groupPosition) {
+			return this.boxes.get(groupPosition);
+		}
+		return null;
 	}
 
 	@Override
 	public int getGroupCount() {
-		return this.boxes.size();
+		if (this.boxes != null) {
+			return this.boxes.size();
+		}
+		return 0;
 	}
 
 	@Override
 	public long getGroupId(int groupPosition) {
-		return groupPosition;
+		Box box = ((Box) this.getGroup(groupPosition));
+		if (box != null) {
+			box.getId().getMostSignificantBits();
+		}
+		return 0l;
 	}
 
 	@Override

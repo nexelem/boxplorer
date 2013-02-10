@@ -1,12 +1,12 @@
-package com.nexelem.boxeee.dao;
+package com.nexelem.boxplorer.dao;
 
 import java.sql.SQLException;
 import java.util.List;
 import java.util.UUID;
 
 import com.j256.ormlite.dao.Dao;
-import com.nexelem.boxeee.db.DBHelper;
-import com.nexelem.boxeee.model.Box;
+import com.nexelem.boxplorer.db.DBHelper;
+import com.nexelem.boxplorer.model.Box;
 
 /**
  * Klasa DAO odpowiedzialna za obsluge tabeli Box w bazie danych

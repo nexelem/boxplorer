@@ -1,4 +1,4 @@
-package com.nexelem.boxeee.model;
+package com.nexelem.boxplorer.model;
 
 import java.util.UUID;
 

@@ -1,4 +1,4 @@
-package com.nexelem.boxeee.wizard;
+package com.nexelem.boxplorer.wizard;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;

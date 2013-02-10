@@ -1,4 +1,4 @@
-package com.nexelem.boxeee;
+package com.nexelem.boxplorer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,12 +14,11 @@ import android.widget.SearchView;
 import android.widget.SearchView.OnQueryTextListener;
 import android.widget.Toast;
 
-import com.nexelem.boxeee.db.BusinessException;
-import com.nexelem.boxeee.db.DBHelper;
-import com.nexelem.boxeee.model.Box;
-import com.nexelem.boxeee.service.BoxService;
-import com.nexelem.boxeee.service.ItemService;
-import com.nexelem.boxplorer.R;
+import com.nexelem.boxplorer.db.BusinessException;
+import com.nexelem.boxplorer.db.DBHelper;
+import com.nexelem.boxplorer.model.Box;
+import com.nexelem.boxplorer.service.BoxService;
+import com.nexelem.boxplorer.service.ItemService;
 
 public class MainActivity extends Activity implements OnQueryTextListener {
 

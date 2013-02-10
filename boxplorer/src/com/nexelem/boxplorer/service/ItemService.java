@@ -1,4 +1,4 @@
-package com.nexelem.boxeee.service;
+package com.nexelem.boxplorer.service;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -6,12 +6,12 @@ import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import com.nexelem.boxeee.dao.BoxDao;
-import com.nexelem.boxeee.dao.ItemDao;
-import com.nexelem.boxeee.db.BusinessException;
-import com.nexelem.boxeee.db.DBHelper;
-import com.nexelem.boxeee.model.Box;
-import com.nexelem.boxeee.model.Item;
+import com.nexelem.boxplorer.dao.BoxDao;
+import com.nexelem.boxplorer.dao.ItemDao;
+import com.nexelem.boxplorer.db.BusinessException;
+import com.nexelem.boxplorer.db.DBHelper;
+import com.nexelem.boxplorer.model.Box;
+import com.nexelem.boxplorer.model.Item;
 
 public class ItemService {
 

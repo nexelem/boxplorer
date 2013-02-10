@@ -3,4 +3,9 @@
 
     <string name="app_name">boxplorer</string>
     <string name="db_name">boxplorer.db</string>
+    <string name="add">dodaj</string>
+    <string name="cancel">anuluj</string>
+    <string name="item_name">nazwa przedmiotu</string>
+    <string name="add_item">dodaj przedmiot</string>
+    
 </resources>

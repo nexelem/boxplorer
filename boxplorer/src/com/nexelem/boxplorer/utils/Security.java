@@ -1,4 +1,4 @@
-package com.nexelem.boxeee.utils;
+package com.nexelem.boxplorer.utils;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;

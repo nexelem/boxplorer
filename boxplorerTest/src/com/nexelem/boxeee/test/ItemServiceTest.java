@@ -4,14 +4,14 @@ import java.util.List;
 
 import org.apache.commons.lang.math.RandomUtils;
 
-import com.nexelem.boxeee.db.BusinessException;
-import com.nexelem.boxeee.db.DBHelper;
-import com.nexelem.boxeee.model.Box;
-import com.nexelem.boxeee.model.Item;
-import com.nexelem.boxeee.service.BoxService;
-import com.nexelem.boxeee.service.ItemService;
 import com.nexelem.boxeee.test.populate.BoxPopulator;
 import com.nexelem.boxeee.test.populate.ItemPopulator;
+import com.nexelem.boxplorer.db.BusinessException;
+import com.nexelem.boxplorer.db.DBHelper;
+import com.nexelem.boxplorer.model.Box;
+import com.nexelem.boxplorer.model.Item;
+import com.nexelem.boxplorer.service.BoxService;
+import com.nexelem.boxplorer.service.ItemService;
 import com.nexelem.boxplorer.test.R;
 
 public class ItemServiceTest extends android.test.AndroidTestCase {

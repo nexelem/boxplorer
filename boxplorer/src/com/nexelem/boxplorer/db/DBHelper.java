@@ -1,4 +1,4 @@
-package com.nexelem.boxeee.db;
+package com.nexelem.boxplorer.db;
 
 import java.sql.SQLException;
 import java.util.logging.Level;
@@ -10,10 +10,10 @@ import android.database.sqlite.SQLiteDatabase;
 import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
-import com.nexelem.boxeee.model.Box;
-import com.nexelem.boxeee.model.Item;
-import com.nexelem.boxeee.service.BoxService;
 import com.nexelem.boxplorer.R;
+import com.nexelem.boxplorer.model.Box;
+import com.nexelem.boxplorer.model.Item;
+import com.nexelem.boxplorer.service.BoxService;
 
 public class DBHelper extends OrmLiteSqliteOpenHelper {
 
@@ -58,9 +58,9 @@ public class DBHelper extends OrmLiteSqliteOpenHelper {
 	}
 
 	private void insertInitValues() {
-		Box box1 = new Box("Drobiazgi", "Pokój gościnny");
-		Box box2 = new Box("Rower", "Garaż");
-		Box box3 = new Box("Gwarancje i części", "Przedpokój");
+		Box box1 = new Box("Drobiazgi", "Pok??j go??cinny");
+		Box box2 = new Box("Rower", "Gara??");
+		Box box3 = new Box("Gwarancje i cz????ci", "Przedpok??j");
 		Box box4 = new Box("Erotyczne", "Schowek");
 
 		try {

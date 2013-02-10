@@ -1,4 +1,4 @@
-package com.nexelem.boxeee.db;
+package com.nexelem.boxplorer.db;
 
 @SuppressWarnings("serial")
 public class BusinessException extends Throwable {

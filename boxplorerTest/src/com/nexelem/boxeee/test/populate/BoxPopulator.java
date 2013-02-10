@@ -2,9 +2,9 @@ package com.nexelem.boxeee.test.populate;
 
 import org.apache.commons.lang.math.RandomUtils;
 
-import com.nexelem.boxeee.db.BusinessException;
-import com.nexelem.boxeee.model.Box;
-import com.nexelem.boxeee.service.BoxService;
+import com.nexelem.boxplorer.db.BusinessException;
+import com.nexelem.boxplorer.model.Box;
+import com.nexelem.boxplorer.service.BoxService;
 
 public class BoxPopulator {
 
