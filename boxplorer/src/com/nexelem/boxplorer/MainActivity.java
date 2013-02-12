@@ -5,7 +5,9 @@ import java.util.List;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -76,8 +78,7 @@ public class MainActivity extends Activity implements OnQueryTextListener {
 					.show();
 			break;
 		case R.id.qr_code:
-			Toast.makeText(this, "TODO: " + item.getTitle(), Toast.LENGTH_SHORT)
-					.show();
+			this.readQrCode();
 			break;
 		case R.id.voice:
 			Toast.makeText(this, "TODO: " + item.getTitle(), Toast.LENGTH_SHORT)
@@ -85,6 +86,13 @@ public class MainActivity extends Activity implements OnQueryTextListener {
 			break;
 		}
 		return true;
+	}
+
+	private void readQrCode() {
+		Intent intent = new Intent("com.google.zxing.client.android.SCAN");
+		intent.putExtra("com.google.zxing.client.android.SCAN.SCAN_MODE",
+				"QR_CODE_MODE");
+		this.startActivityForResult(intent, 666);
 	}
 
 	@Override
@@ -139,5 +147,24 @@ public class MainActivity extends Activity implements OnQueryTextListener {
 	@Override
 	public boolean onQueryTextSubmit(String query) {
 		return false;
+	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		// TODO Auto-generated method stub
+		super.onActivityResult(requestCode, resultCode, data);
+		if (requestCode == 666) {
+			if (resultCode == RESULT_OK) {
+				String contents = data.getStringExtra("SCAN_RESULT");
+				String format = data.getStringExtra("SCAN_RESULT_FORMAT");
+				System.out.println("xZing contents: " + contents + " format: "
+						+ format);
+				Log.i("QR", "QR READED AS: " + contents);
+				// Handle successful scan
+			} else if (resultCode == RESULT_CANCELED) {
+				// Handle cancel
+				System.out.println("xZing Cancelled");
+			}
+		}
 	}
 }

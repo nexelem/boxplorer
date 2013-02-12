@@ -8,4 +8,19 @@
     <string name="item_name">nazwa przedmiotu</string>
     <string name="add_item">dodaj przedmiot</string>
     
+    <!-- qrcode: start -->
+    <string name="app_picker_name">Aplikacje</string>
+    <string name="bookmark_picker_name">Zakładki</string>
+    <string name="button_back">Wstecz</string>
+    <string name="button_cancel">Anuluj</string>
+    <string name="button_ok">OK</string>
+    <string name="contents_text">Zwykły tekst</string>
+    <string name="msg_camera_framework_bug">Przepraszamy, aparat Android napotkał problem. Może wystąpić potrzeba ponownego uruchomienia urządzenia.</string>
+    <string name="msg_default_status">Umieść kod QR w prostokącie wizjera aby zeskanować.</string>
+    <string name="msg_default_format">Format</string>
+    <string name="msg_default_meta">Metadanych</string>
+    <string name="msg_default_time">Czas</string>
+    <string name="msg_default_type">Typ</string>
+    <string name="result_text">Znaleziono zwykły tekst</string>
+    <!-- qrcode: end -->
 </resources>
