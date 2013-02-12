@@ -10,12 +10,23 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="25dp"
-        android:padding="10dp"
+        android:paddingBottom="@dimen/small_bottom_padding"
         android:text="Small Text"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:textColor="@android:color/black"
         android:textStyle="bold" />
-
+	
+    <TextView
+        android:id="@+id/group_location"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/group_name"
+        android:layout_below="@+id/group_name"
+        android:text="Small Text"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textColor="@color/box_location"
+        android:textSize="@dimen/box_location_size" />
+    
     <ImageView
         android:id="@+id/group_add_item"
         android:layout_width="wrap_content"
@@ -25,5 +36,7 @@
         android:layout_marginRight="27dp"
         android:scaleType="center"
         android:src="@drawable/add" />
+
+   
 
 </RelativeLayout>

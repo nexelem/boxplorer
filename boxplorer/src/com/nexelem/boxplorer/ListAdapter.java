@@ -222,7 +222,8 @@ public class ListAdapter extends BaseExpandableListAdapter implements
 				ft.addToBackStack(null);
 				DialogFragment newFragment = ItemDialog.newInstance(item,
 						ListAdapter.this.getFullList(),
-						ListAdapter.this.itemService, ListAdapter.this);
+						ListAdapter.this.itemService, ListAdapter.this,
+						boxPosition);
 				newFragment.show(fm, "item-dialog");
 			}
 		});
@@ -252,6 +253,7 @@ public class ListAdapter extends BaseExpandableListAdapter implements
 			view = inflater.inflate(R.layout.group_item, null);
 			holder = new ViewHolder();
 			holder.name = (TextView) view.findViewById(R.id.group_name);
+			holder.location = (TextView) view.findViewById(R.id.group_location);
 			holder.add = (ImageView) view.findViewById(R.id.group_add_item);
 			view.setTag(holder);
 		} else {
@@ -279,11 +281,13 @@ public class ListAdapter extends BaseExpandableListAdapter implements
 				ft.addToBackStack(null);
 				DialogFragment newFragment = ItemDialog.newInstance(null,
 						ListAdapter.this.getFullList(),
-						ListAdapter.this.itemService, ListAdapter.this);
+						ListAdapter.this.itemService, ListAdapter.this,
+						groupPosition);
 				newFragment.show(fm, "item-dialog");
 			}
 		});
 		holder.name.setText(this.boxes.get(groupPosition).getName());
+		holder.location.setText(this.boxes.get(groupPosition).getLocation());
 		return view;
 	}
 
@@ -342,6 +346,7 @@ public class ListAdapter extends BaseExpandableListAdapter implements
 	 */
 	class ViewHolder {
 		public TextView name;
+		public TextView location;
 		public ImageView add;
 		public ImageView edit;
 		public ImageView remove;

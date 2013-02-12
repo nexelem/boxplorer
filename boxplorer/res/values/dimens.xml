@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="default_form_margin_bottom">10px</dimen>
+    <dimen name="box_location_size">12dip</dimen>
     
     <!-- qrcode start -->
     <dimen name="standard_padding">8dip</dimen>
   	<dimen name="half_padding">4dip</dimen>
+  	<dimen name="small_bottom_padding">2dip</dimen>
     <!-- qrcode end -->
 </resources>

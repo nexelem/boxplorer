@@ -58,9 +58,9 @@ public class DBHelper extends OrmLiteSqliteOpenHelper {
 	}
 
 	private void insertInitValues() {
-		Box box1 = new Box("Drobiazgi", "Pok??j go??cinny");
-		Box box2 = new Box("Rower", "Gara??");
-		Box box3 = new Box("Gwarancje i cz????ci", "Przedpok??j");
+		Box box1 = new Box("Drobiazgi", "Pokój gościnny");
+		Box box2 = new Box("Rower", "Garaż");
+		Box box3 = new Box("Gwarancje i części", "Przedpokój");
 		Box box4 = new Box("Erotyczne", "Schowek");
 
 		try {

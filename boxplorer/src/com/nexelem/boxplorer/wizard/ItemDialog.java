@@ -26,14 +26,16 @@ public class ItemDialog extends DialogFragment {
 	private List<Box> boxList = null;
 	private ItemService itemService = null;
 	private ListAdapter listAdapter = null;
+	private int box = 0;
 
 	public static ItemDialog newInstance(Item item, List<Box> boxList,
-			ItemService itemService, ListAdapter listAdapter) {
+			ItemService itemService, ListAdapter listAdapter, int box) {
 		ItemDialog f = new ItemDialog();
 		f.setItem(item);
 		f.setBoxList(boxList);
 		f.setItemService(itemService);
 		f.listAdapter = listAdapter;
+		f.box = box;
 		return f;
 	}
 
@@ -54,7 +56,7 @@ public class ItemDialog extends DialogFragment {
 		final Spinner boxes = (Spinner) v.findViewById(R.id.item_boxlist);
 		final boolean updateItem = this.item == null ? false : true;
 		boxes.setAdapter(new BoxSpinnerAdapter(this.boxList));
-
+		boxes.setSelection(this.box);
 		if (this.item != null) {
 			itemName.setText(this.item.getName());
 		}
