@@ -3,6 +3,7 @@ package com.nexelem.boxplorer;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.DialogFragment;
 import android.app.Fragment;
@@ -294,6 +295,8 @@ public class ListAdapter extends BaseExpandableListAdapter implements
 	@Override
 	public Object getGroup(int groupPosition) {
 		if (this.getGroupCount() >= groupPosition) {
+			Box b = this.boxes.get(groupPosition);
+			Log.i("Box:", b.getId() + " " + b.getName());
 			return this.boxes.get(groupPosition);
 		}
 		return null;
@@ -362,5 +365,27 @@ public class ListAdapter extends BaseExpandableListAdapter implements
 					newText);
 		}
 		this.notifyDataSetChanged();
+	}
+
+	@SuppressLint("ShowToast")
+	public void searchForBox(String id) {
+		Log.i("QR", "Searching for Box id: " + id);
+		List<Box> boxesList = new ArrayList<Box>();
+		Box box;
+		try {
+			box = this.boxService.get(id);
+			if (box != null) {
+				boxesList.add(box);
+				this.boxes = boxesList;
+				this.notifyDataSetChanged();
+			} else {
+				Toast.makeText(this.context, "Box not found",
+						Toast.LENGTH_SHORT);
+			}
+		} catch (BusinessException e) {
+			Toast.makeText(this.context, "Unable to find Box",
+					Toast.LENGTH_SHORT);
+			e.printStackTrace();
+		}
 	}
 }

@@ -21,7 +21,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/default_form_margin_bottom"
-        android:spinnerMode="dialog" />
+        android:scrollbarStyle="insideOverlay"
+        android:scrollbars="horizontal"
+        android:spinnerMode="dropdown" />
 
     <LinearLayout
         android:layout_width="match_parent"

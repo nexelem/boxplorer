@@ -1,6 +1,7 @@
 package com.nexelem.boxplorer;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import android.app.ActionBar;
@@ -19,6 +20,7 @@ import android.widget.Toast;
 import com.nexelem.boxplorer.db.BusinessException;
 import com.nexelem.boxplorer.db.DBHelper;
 import com.nexelem.boxplorer.model.Box;
+import com.nexelem.boxplorer.search.SearchType;
 import com.nexelem.boxplorer.service.BoxService;
 import com.nexelem.boxplorer.service.ItemService;
 
@@ -92,7 +94,7 @@ public class MainActivity extends Activity implements OnQueryTextListener {
 		Intent intent = new Intent("com.google.zxing.client.android.SCAN");
 		intent.putExtra("com.google.zxing.client.android.SCAN.SCAN_MODE",
 				"QR_CODE_MODE");
-		this.startActivityForResult(intent, 666);
+		this.startActivityForResult(intent, SearchType.QR.ordinal());
 	}
 
 	@Override
@@ -128,6 +130,10 @@ public class MainActivity extends Activity implements OnQueryTextListener {
 	public boolean onQueryTextChange(String newText) {
 		if (newText.length() < 3) {
 			this.adapter.setBoxes(this.adapter.getFullList());
+		} else if (Arrays.asList(SearchType.QR.getSearchTag(),
+				SearchType.VOICE.getSearchTag(), SearchType.NFC.getSearchTag())
+				.contains(newText)) {
+			return true;
 		} else if (newText.length() >= 3) {
 			try {
 				this.adapter.searchFor(newText);
@@ -153,13 +159,17 @@ public class MainActivity extends Activity implements OnQueryTextListener {
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		// TODO Auto-generated method stub
 		super.onActivityResult(requestCode, resultCode, data);
-		if (requestCode == 666) {
+		if (requestCode == SearchType.QR.ordinal()) {
 			if (resultCode == RESULT_OK) {
 				String contents = data.getStringExtra("SCAN_RESULT");
-				String format = data.getStringExtra("SCAN_RESULT_FORMAT");
-				System.out.println("xZing contents: " + contents + " format: "
-						+ format);
+				// contents
 				Log.i("QR", "QR READED AS: " + contents);
+				this.adapter.searchForBox(contents);
+				SearchView searcher = (SearchView) this
+						.findViewById(R.id.searcher);
+				if (searcher != null) {
+					searcher.setQuery(":qr", false);
+				}
 				// Handle successful scan
 			} else if (resultCode == RESULT_CANCELED) {
 				// Handle cancel

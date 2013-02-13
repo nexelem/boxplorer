@@ -65,6 +65,10 @@ public class BoxService {
 		}
 	}
 
+	public Box get(String id) throws BusinessException {
+		return this.get(UUID.fromString(id));
+	}
+
 	public Box get(UUID id) throws BusinessException {
 		try {
 			return this.dao.get(id);
