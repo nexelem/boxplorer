@@ -7,7 +7,10 @@ import java.util.List;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.os.Bundle;
+import android.speech.RecognizerIntent;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -83,11 +86,18 @@ public class MainActivity extends Activity implements OnQueryTextListener {
 			this.readQrCode();
 			break;
 		case R.id.voice:
-			Toast.makeText(this, "TODO: " + item.getTitle(), Toast.LENGTH_SHORT)
-					.show();
+			this.readVoice();
 			break;
 		}
 		return true;
+	}
+
+	private void readVoice() {
+		Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+		intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
+				RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+		intent.putExtra(RecognizerIntent.EXTRA_PROMPT, "Speech recognition");
+		this.startActivityForResult(intent, SearchType.VOICE.ordinal());
 	}
 
 	private void readQrCode() {
@@ -102,7 +112,30 @@ public class MainActivity extends Activity implements OnQueryTextListener {
 		super.onCreateOptionsMenu(menu);
 		MenuInflater inflater = this.getMenuInflater();
 		inflater.inflate(R.menu.search_bar, menu);
+
 		return true;
+	}
+
+	@Override
+	public boolean onPrepareOptionsMenu(Menu menu) {
+		PackageManager pm = this.getApplicationContext().getPackageManager();
+		// sprawdzamy czy mozna rozpoznawac glos
+		List<ResolveInfo> activities = pm.queryIntentActivities(new Intent(
+				RecognizerIntent.ACTION_RECOGNIZE_SPEECH), 0);
+		if (activities.size() == 0) {
+			menu.findItem(R.id.voice).setVisible(false);
+		}
+
+		// sprawdzamy czy jest dostepne NFC
+		if (!pm.hasSystemFeature(PackageManager.FEATURE_NFC)) {
+			menu.findItem(R.id.nfc).setVisible(false);
+		}
+
+		// sprawdzamy czy jest dostepna kamera
+		if (!pm.hasSystemFeature(PackageManager.FEATURE_CAMERA)) {
+			menu.findItem(R.id.qr_code).setVisible(false);
+		}
+		return super.onPrepareOptionsMenu(menu);
 	}
 
 	/**
@@ -131,8 +164,7 @@ public class MainActivity extends Activity implements OnQueryTextListener {
 		if (newText.length() < 3) {
 			this.adapter.setBoxes(this.adapter.getFullList());
 		} else if (Arrays.asList(SearchType.QR.getSearchTag(),
-				SearchType.VOICE.getSearchTag(), SearchType.NFC.getSearchTag())
-				.contains(newText)) {
+				SearchType.NFC.getSearchTag()).contains(newText)) {
 			return true;
 		} else if (newText.length() >= 3) {
 			try {
@@ -174,6 +206,12 @@ public class MainActivity extends Activity implements OnQueryTextListener {
 			} else if (resultCode == RESULT_CANCELED) {
 				// Handle cancel
 				System.out.println("xZing Cancelled");
+			}
+		} else if (requestCode == SearchType.VOICE.ordinal()) {
+			String contents = data.getStringExtra("EXTRA_RESULTS");
+			SearchView searcher = (SearchView) this.findViewById(R.id.searcher);
+			if (searcher != null) {
+				searcher.setQuery(contents, true);
 			}
 		}
 	}
