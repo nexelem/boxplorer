@@ -12,7 +12,6 @@ import com.nexelem.boxplorer.model.Box;
 import com.nexelem.boxplorer.model.Item;
 import com.nexelem.boxplorer.service.BoxService;
 import com.nexelem.boxplorer.service.ItemService;
-import com.nexelem.boxplorer.test.R;
 
 public class BoxServiceTest extends android.test.AndroidTestCase {
 

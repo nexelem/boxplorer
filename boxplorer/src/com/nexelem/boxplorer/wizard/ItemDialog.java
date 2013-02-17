@@ -12,9 +12,9 @@ import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.nexelem.boxplorer.ListAdapter;
 import com.nexelem.boxplorer.R;
 import com.nexelem.boxplorer.adapter.BoxSpinnerAdapter;
+import com.nexelem.boxplorer.adapter.ListAdapter;
 import com.nexelem.boxplorer.db.BusinessException;
 import com.nexelem.boxplorer.model.Box;
 import com.nexelem.boxplorer.model.Item;

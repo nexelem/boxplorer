@@ -7,12 +7,19 @@ import android.database.DataSetObserver;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 
 import com.nexelem.boxplorer.R;
 import com.nexelem.boxplorer.model.Box;
 
-public class BoxSpinnerAdapter implements android.widget.SpinnerAdapter {
+/**
+ * Klasa obslugujaca liste wyboru pudelek
+ * 
+ * @author darek zon
+ * 
+ */
+public class BoxSpinnerAdapter implements SpinnerAdapter {
 
 	private final List<Box> boxList;
 
@@ -47,7 +54,6 @@ public class BoxSpinnerAdapter implements android.widget.SpinnerAdapter {
 
 	@Override
 	public int getItemViewType(int position) {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
@@ -71,7 +77,6 @@ public class BoxSpinnerAdapter implements android.widget.SpinnerAdapter {
 
 	@Override
 	public int getViewTypeCount() {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
@@ -90,14 +95,12 @@ public class BoxSpinnerAdapter implements android.widget.SpinnerAdapter {
 
 	@Override
 	public void registerDataSetObserver(DataSetObserver observer) {
-		// TODO Auto-generated method stub
-
+		// nie trzeba implementowac
 	}
 
 	@Override
 	public void unregisterDataSetObserver(DataSetObserver observer) {
-		// TODO Auto-generated method stub
-
+		// nie trzeba implementowac
 	}
 
 	@Override

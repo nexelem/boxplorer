@@ -12,7 +12,6 @@ import com.nexelem.boxplorer.model.Box;
 import com.nexelem.boxplorer.model.Item;
 import com.nexelem.boxplorer.service.BoxService;
 import com.nexelem.boxplorer.service.ItemService;
-import com.nexelem.boxplorer.test.R;
 
 public class ItemServiceTest extends android.test.AndroidTestCase {
 
@@ -22,6 +21,7 @@ public class ItemServiceTest extends android.test.AndroidTestCase {
 	private ItemPopulator populator = null;
 	private BoxPopulator boxPopulator = null;
 
+	@Override
 	protected void setUp() {
 		this.helper = new DBHelper(this.mContext);
 		try {
@@ -34,6 +34,7 @@ public class ItemServiceTest extends android.test.AndroidTestCase {
 		this.boxPopulator = new BoxPopulator(this.boxService);
 	}
 
+	@Override
 	protected void tearDown() {
 		this.helper.clearDatabase();
 		this.helper.close();
@@ -42,53 +43,53 @@ public class ItemServiceTest extends android.test.AndroidTestCase {
 	public void testCreateBoxWithItem() throws BusinessException {
 		Box box = this.boxPopulator.createBox();
 
-		Box savedBox = boxService.get(box.getId());
+		Box savedBox = this.boxService.get(box.getId());
 		assertEquals(box.getName(), savedBox.getName());
 		assertEquals(box.getId(), savedBox.getId());
 
-		Item item = populator.createItem();
+		Item item = this.populator.createItem();
 		item.setBox(savedBox);
-		service.create(item);
+		this.service.create(item);
 
-		Box boxWithItems = boxService.get(savedBox.getId());
+		Box boxWithItems = this.boxService.get(savedBox.getId());
 
 		assertEquals(1, boxWithItems.getItemsList().size());
 	}
 
 	public void testEditItem() throws BusinessException {
-		Item item = populator.createItem();
-		service.create(item);
+		Item item = this.populator.createItem();
+		this.service.create(item);
 
-		Item savedItem = service.get(item.getId());
+		Item savedItem = this.service.get(item.getId());
 		assertEquals(item.getId(), savedItem.getId());
 		assertEquals(item.getName(), savedItem.getName());
 
 		String newName = "_" + RandomUtils.nextInt();
 		savedItem.setName(newName);
-		service.update(savedItem);
+		this.service.update(savedItem);
 
-		Item updatedItem = service.get(item.getId());
+		Item updatedItem = this.service.get(item.getId());
 		assertEquals(newName, updatedItem.getName());
 	}
 
 	public void testRemoveItem() throws BusinessException {
-		Item item = populator.createItem();
-		service.create(item);
+		Item item = this.populator.createItem();
+		this.service.create(item);
 
-		Item savedItem = service.get(item.getId());
+		Item savedItem = this.service.get(item.getId());
 		assertEquals(item.getId(), savedItem.getId());
 		assertEquals(item.getName(), savedItem.getName());
 
-		service.delete(item.getId());
+		this.service.delete(item.getId());
 
-		Item deletedItem = service.get(item.getId());
+		Item deletedItem = this.service.get(item.getId());
 		assertNull(deletedItem);
 	}
 
 	public void testFindingByLikelyItemName() throws BusinessException {
 		Box box = this.boxPopulator.createBox();
 
-		populator.populateItems(10, box);
+		this.populator.populateItems(10, box);
 		Item item1 = new Item("Wiertarka", box);
 		Item item2 = new Item("Tarka", box);
 		Item item3 = new Item("Deska", box);
@@ -117,20 +118,20 @@ public class ItemServiceTest extends android.test.AndroidTestCase {
 	public void testMultiBoxFindingByLikelyItemName() throws BusinessException {
 		Box box1 = this.boxPopulator.createBox();
 		Box box2 = this.boxPopulator.createBox();
-		populator.populateItems(15, box1);
-		populator.populateItems(15, box2);
+		this.populator.populateItems(15, box1);
+		this.populator.populateItems(15, box2);
 		Item item1 = new Item("Wiertarka", box1);
 		Item item2 = new Item("Tarka", box1);
 		Item item3 = new Item("Deska", box1);
 		Item item4 = new Item("Maszynka", box2);
 		Item item5 = new Item("Kokos", box2);
 		Item item6 = new Item("Tatar", box2);
-		service.create(item1);
-		service.create(item2);
-		service.create(item3);
-		service.create(item4);
-		service.create(item5);
-		service.create(item6);
+		this.service.create(item1);
+		this.service.create(item2);
+		this.service.create(item3);
+		this.service.create(item4);
+		this.service.create(item5);
+		this.service.create(item6);
 
 		List<Box> boxes = this.boxService.list();
 

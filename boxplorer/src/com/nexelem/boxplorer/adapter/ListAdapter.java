@@ -1,9 +1,8 @@
-package com.nexelem.boxplorer;
+package com.nexelem.boxplorer.adapter;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.DialogFragment;
 import android.app.Fragment;
@@ -27,6 +26,7 @@ import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.nexelem.boxplorer.R;
 import com.nexelem.boxplorer.animation.ToggleAnimation;
 import com.nexelem.boxplorer.db.BusinessException;
 import com.nexelem.boxplorer.model.Box;
@@ -36,15 +36,37 @@ import com.nexelem.boxplorer.service.BoxService;
 import com.nexelem.boxplorer.service.ItemService;
 import com.nexelem.boxplorer.wizard.ItemDialog;
 
+/**
+ * Klasa obslugujaca wyswietlanie oraz akcje na elementach listy
+ * 
+ * @author bartek wilczynski, darek zon
+ */
 public class ListAdapter extends BaseExpandableListAdapter implements
 		OnChildClickListener {
 
+	/**
+	 * Lista przefiltrowanych pudelek (kiedy filtr nie jest nalozony
+	 * boxes==fullList)
+	 */
 	private List<Box> boxes = new ArrayList<Box>();
+
+	/**
+	 * Pelna lista pudelek (kiedy filtr nie jest nalozony fullList==boxes)
+	 */
 	private List<Box> fullList = new ArrayList<Box>();
+
+	/**
+	 * Kontekst aplikacji
+	 */
 	private final Context context;
+
+	/**
+	 * Szukany ciag znakow
+	 */
+	private String searchText = "";
+
 	private final ItemService itemService;
 	private final BoxService boxService;
-	private final String searchText = "";
 
 	public ListAdapter(Context context, BoxService boxService,
 			ItemService itemService) {
@@ -59,11 +81,16 @@ public class ListAdapter extends BaseExpandableListAdapter implements
 			this.boxes = this.boxService.list();
 			this.fullList = this.boxes;
 		} catch (BusinessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			Log.e("APP", "Unable to update ListAdapter data", e);
 		}
 	}
 
+	/**
+	 * Ustawia liste przefiltrowanych pudelek
+	 * 
+	 * @param boxes
+	 *            lista pudelek
+	 */
 	public void setBoxes(List<Box> boxes) {
 		this.boxes = boxes;
 	}
@@ -73,7 +100,7 @@ public class ListAdapter extends BaseExpandableListAdapter implements
 	}
 
 	/**
-	 * Called when group is collapsed
+	 * Metoda wywolywana kiedy zamykamy pudelko (grupe obiektow na liscie)
 	 */
 	@Override
 	public void onGroupCollapsed(int groupPosition) {
@@ -84,7 +111,7 @@ public class ListAdapter extends BaseExpandableListAdapter implements
 	}
 
 	/**
-	 * Called when item is clicked - opening toolbar
+	 * Metoda wywolywana kiedy klikamy na kokretny przedmiot)
 	 */
 	@Override
 	public boolean onChildClick(ExpandableListView parent, View v,
@@ -115,11 +142,12 @@ public class ListAdapter extends BaseExpandableListAdapter implements
 	}
 
 	/**
-	 * Creating child record view - depending on item status
+	 * Metoda tworzaca widok przedmiotu na liscie
 	 */
 	@Override
 	public View getChildView(final int boxPosition, final int itemPosition,
 			boolean isLastChild, View view, ViewGroup parent) {
+
 		LayoutInflater inflater = (LayoutInflater) this.context
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		final ViewHolder holder;
@@ -166,11 +194,11 @@ public class ListAdapter extends BaseExpandableListAdapter implements
 			alpha.setAnimationListener(new AnimationListener() {
 
 				@Override
-				public void onAnimationStart(Animation arg0) {
+				public void onAnimationStart(Animation arg) {
 				}
 
 				@Override
-				public void onAnimationEnd(Animation arg0) {
+				public void onAnimationEnd(Animation arg) {
 					ListAdapter.this.boxes.get(boxPosition).getItems()
 							.remove(itemPosition);
 					ListAdapter.this.notifyDataSetChanged();
@@ -226,6 +254,7 @@ public class ListAdapter extends BaseExpandableListAdapter implements
 						ListAdapter.this.itemService, ListAdapter.this,
 						boxPosition);
 				newFragment.show(fm, "item-dialog");
+				ft.commit();
 			}
 		});
 		holder.move.setOnClickListener(new OnClickListener() {
@@ -241,10 +270,10 @@ public class ListAdapter extends BaseExpandableListAdapter implements
 	}
 
 	/**
-	 * Creating group view
+	 * Metoda tworzy widok pudelek
 	 */
 	@Override
-	public View getGroupView(final int groupPosition, boolean isExpanded,
+	public View getGroupView(final int boxPosition, boolean isExpanded,
 			View view, final ViewGroup parent) {
 		final LayoutInflater inflater = (LayoutInflater) this.context
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -271,7 +300,8 @@ public class ListAdapter extends BaseExpandableListAdapter implements
 							.getFragmentManager();
 				} catch (ClassCastException e) {
 					Log.d("Fragment",
-							"Can't get the fragment manager with this");
+							"Can't get the fragment manager with this", e);
+					return;
 				}
 
 				FragmentTransaction ft = fm.beginTransaction();
@@ -283,25 +313,30 @@ public class ListAdapter extends BaseExpandableListAdapter implements
 				DialogFragment newFragment = ItemDialog.newInstance(null,
 						ListAdapter.this.getFullList(),
 						ListAdapter.this.itemService, ListAdapter.this,
-						groupPosition);
+						boxPosition);
 				newFragment.show(fm, "item-dialog");
+				ft.commit();
 			}
 		});
-		holder.name.setText(this.boxes.get(groupPosition).getName());
-		holder.location.setText(this.boxes.get(groupPosition).getLocation());
+		holder.name.setText(this.boxes.get(boxPosition).getName());
+		holder.location.setText(this.boxes.get(boxPosition).getLocation());
 		return view;
 	}
 
+	/**
+	 * Zwraca pudelko na podstawie jego pozycji na liscie
+	 */
 	@Override
-	public Object getGroup(int groupPosition) {
-		if (this.getGroupCount() >= groupPosition) {
-			Box b = this.boxes.get(groupPosition);
-			Log.i("Box:", b.getId() + " " + b.getName());
-			return this.boxes.get(groupPosition);
+	public Object getGroup(int boxPosition) {
+		if (this.getGroupCount() >= boxPosition) {
+			return this.boxes.get(boxPosition);
 		}
 		return null;
 	}
 
+	/**
+	 * Zwraca aktualna liczbe pudelek
+	 */
 	@Override
 	public int getGroupCount() {
 		if (this.boxes != null) {
@@ -310,9 +345,12 @@ public class ListAdapter extends BaseExpandableListAdapter implements
 		return 0;
 	}
 
+	/**
+	 * Zwraca id pudelka z podanej pozycji
+	 */
 	@Override
-	public long getGroupId(int groupPosition) {
-		Box box = ((Box) this.getGroup(groupPosition));
+	public long getGroupId(int boxPosition) {
+		Box box = ((Box) this.getGroup(boxPosition));
 		if (box != null) {
 			box.getId().getMostSignificantBits();
 		}
@@ -320,7 +358,7 @@ public class ListAdapter extends BaseExpandableListAdapter implements
 	}
 
 	@Override
-	public boolean isChildSelectable(int groupPosition, int childPosition) {
+	public boolean isChildSelectable(int boxPosition, int itemPosition) {
 		return true;
 	}
 
@@ -329,23 +367,78 @@ public class ListAdapter extends BaseExpandableListAdapter implements
 		return true;
 	}
 
+	/**
+	 * Zwraca przedmiot z podanego pudelka
+	 */
 	@Override
-	public Item getChild(int groupPosition, int childPosition) {
-		return this.boxes.get(groupPosition).getItemsList().get(childPosition);
-	}
-
-	@Override
-	public long getChildId(int groupPosition, int childPosition) {
-		return childPosition;
-	}
-
-	@Override
-	public int getChildrenCount(int groupPosition) {
-		return this.boxes.get(groupPosition).getItems().size();
+	public Item getChild(int groupPosition, int itemPosition) {
+		return this.boxes.get(groupPosition).getItemsList().get(itemPosition);
 	}
 
 	/**
-	 * Helper class for better performance
+	 * Metoda pobiera identyfikator przedmiotu (identyfikator w obrebie
+	 * wyswietlanej listy)
+	 */
+	@Override
+	public long getChildId(int boxPosition, int itemPosition) {
+		Item item = this.getChild(boxPosition, itemPosition);
+		if (item != null) {
+			return item.getId().getMostSignificantBits();
+		}
+		return 0l;
+	}
+
+	/**
+	 * Zwraca liczbe przedmiotow w pudelku
+	 */
+	@Override
+	public int getChildrenCount(int boxPosition) {
+		return this.boxes.get(boxPosition).getItems().size();
+	}
+
+	/**
+	 * Metoda wyszukujaca przedmiot na podstawie ciagu znakow
+	 * 
+	 * @throws BusinessException
+	 */
+	public void searchFor(String searchName) throws BusinessException {
+		if (this.searchText.startsWith(searchName)) {
+			this.boxes = this.itemService.getByLikelyItemName(this.boxes,
+					searchName);
+		} else {
+			this.boxes = this.itemService.getByLikelyItemName(this.fullList,
+					searchName);
+		}
+		this.searchText = searchName;
+		this.notifyDataSetChanged();
+	}
+
+	/**
+	 * Metoda wyswietlajaca pudelko na podstawie jego ID
+	 */
+	public void searchForBox(String boxId) {
+		Log.i("QR", "Searching for Box id: " + boxId);
+		Box box;
+		try {
+			box = this.boxService.get(boxId);
+			if (box != null) {
+				List<Box> boxesList = new ArrayList<Box>();
+				boxesList.add(box);
+				this.boxes = boxesList;
+				this.notifyDataSetChanged();
+			} else {
+				Toast.makeText(this.context, "Box not found",
+						Toast.LENGTH_SHORT).show();
+			}
+		} catch (BusinessException e) {
+			Toast.makeText(this.context, "Unable to find Box",
+					Toast.LENGTH_SHORT).show();
+			Log.w("QR", "Error while searching box " + boxId, e);
+		}
+	}
+
+	/**
+	 * Klasa pomocnicza zapewniajaca lepsza wydajnosc
 	 */
 	class ViewHolder {
 		public TextView name;
@@ -354,38 +447,5 @@ public class ListAdapter extends BaseExpandableListAdapter implements
 		public ImageView edit;
 		public ImageView remove;
 		public ImageView move;
-	}
-
-	public void searchFor(String newText) throws BusinessException {
-		if (this.searchText.startsWith(newText)) {
-			this.boxes = this.itemService.getByLikelyItemName(this.boxes,
-					newText);
-		} else {
-			this.boxes = this.itemService.getByLikelyItemName(this.fullList,
-					newText);
-		}
-		this.notifyDataSetChanged();
-	}
-
-	@SuppressLint("ShowToast")
-	public void searchForBox(String id) {
-		Log.i("QR", "Searching for Box id: " + id);
-		List<Box> boxesList = new ArrayList<Box>();
-		Box box;
-		try {
-			box = this.boxService.get(id);
-			if (box != null) {
-				boxesList.add(box);
-				this.boxes = boxesList;
-				this.notifyDataSetChanged();
-			} else {
-				Toast.makeText(this.context, "Box not found",
-						Toast.LENGTH_SHORT);
-			}
-		} catch (BusinessException e) {
-			Toast.makeText(this.context, "Unable to find Box",
-					Toast.LENGTH_SHORT);
-			e.printStackTrace();
-		}
 	}
 }

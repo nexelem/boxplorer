@@ -20,6 +20,7 @@ import android.widget.SearchView;
 import android.widget.SearchView.OnQueryTextListener;
 import android.widget.Toast;
 
+import com.nexelem.boxplorer.adapter.ListAdapter;
 import com.nexelem.boxplorer.db.BusinessException;
 import com.nexelem.boxplorer.db.DBHelper;
 import com.nexelem.boxplorer.model.Box;
@@ -27,11 +28,26 @@ import com.nexelem.boxplorer.search.SearchType;
 import com.nexelem.boxplorer.service.BoxService;
 import com.nexelem.boxplorer.service.ItemService;
 
+/**
+ * Klasa wejsciowa do aplikacji
+ * 
+ * @author bartek wilczynski, darek zon
+ */
 public class MainActivity extends Activity implements OnQueryTextListener {
 
-	private DBHelper helper = null;
+	/**
+	 * 
+	 */
 	private BoxService boxService;
+
+	/**
+	 * 
+	 */
 	private ItemService itemService;
+
+	/**
+	 * 
+	 */
 	private ListAdapter adapter;
 
 	@Override
@@ -39,13 +55,13 @@ public class MainActivity extends Activity implements OnQueryTextListener {
 		super.onCreate(savedInstanceState);
 		this.setContentView(R.layout.activity_main);
 
-		this.helper = new DBHelper(this.getApplicationContext());
+		DBHelper helper = new DBHelper(this.getApplicationContext());
 		try {
-			this.boxService = new BoxService(this.helper);
-			this.itemService = new ItemService(this.helper);
+			this.boxService = new BoxService(helper);
+			this.itemService = new ItemService(helper);
 		} catch (BusinessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			Log.e("APP", "Unable to get required DB Services", e);
+			throw new RuntimeException();
 		}
 
 		// Creating adapter with data
