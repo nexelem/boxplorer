@@ -129,3 +129,29 @@ org.eclipse.core.internal.resources.ResourceException: Invalid project descripti
 	at org.eclipse.jface.operation.ModalContext$ModalContextThread.run(ModalContext.java:121)
 Contains: OK
 Contains: /Volumes/Assist/darek/Projects/boxeee/boxplorer overlaps the location of another project: 'boxplorer'
+!SESSION 2013-02-17 23:18:16.426 -----------------------------------------------
+eclipse.buildId=M20120914-1800
+java.version=1.7.0_13
+java.vendor=Oracle Corporation
+BootLoader constants: OS=macosx, ARCH=x86_64, WS=cocoa, NL=pl_PL
+Framework arguments:  -product org.eclipse.epp.package.jee.product -keyring /Volumes/Assist/darek/.eclipse_keyring -showlocation
+Command-line arguments:  -os macosx -ws cocoa -arch x86_64 -product org.eclipse.epp.package.jee.product -keyring /Volumes/Assist/darek/.eclipse_keyring -showlocation
+
+!ENTRY org.eclipse.core.net 1 0 2013-02-17 23:18:25.809
+!MESSAGE System property http.nonProxyHosts has been set to local|*.local|169.254/16|*.169.254/16 by an external source. This value will be overwritten using the values from the preferences
+
+!ENTRY org.eclipse.equinox.p2.repository 2 0 2013-02-17 23:19:19.238
+!MESSAGE Server returned lastModified <= 0 for http://coffeescript-editor.eclipselabs.org.codespot.com/hg/content.jar
+
+!ENTRY org.eclipse.equinox.p2.repository 2 0 2013-02-17 23:20:02.422
+!MESSAGE Server returned lastModified <= 0 for http://coffeescript-editor.eclipselabs.org.codespot.com/hg/artifacts.jar
+!SESSION 2013-02-17 23:20:17.622 -----------------------------------------------
+eclipse.buildId=M20120914-1800
+java.version=1.7.0_13
+java.vendor=Oracle Corporation
+BootLoader constants: OS=macosx, ARCH=x86_64, WS=cocoa, NL=pl_PL
+Framework arguments:  -product org.eclipse.epp.package.jee.product -keyring /Volumes/Assist/darek/.eclipse_keyring -showlocation
+Command-line arguments:  -os macosx -ws cocoa -arch x86_64 -product org.eclipse.epp.package.jee.product -keyring /Volumes/Assist/darek/.eclipse_keyring -showlocation
+
+!ENTRY org.eclipse.core.net 1 0 2013-02-17 23:20:29.355
+!MESSAGE System property http.nonProxyHosts has been set to local|*.local|169.254/16|*.169.254/16 by an external source. This value will be overwritten using the values from the preferences
