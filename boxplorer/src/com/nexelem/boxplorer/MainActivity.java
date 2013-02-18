@@ -224,10 +224,10 @@ public class MainActivity extends Activity implements OnQueryTextListener {
 				System.out.println("xZing Cancelled");
 			}
 		} else if (requestCode == SearchType.VOICE.ordinal()) {
-			String contents = data.getStringExtra("EXTRA_RESULTS");
+			List<String> contents = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
 			SearchView searcher = (SearchView) this.findViewById(R.id.searcher);
 			if (searcher != null) {
-				searcher.setQuery(contents, true);
+				searcher.setQuery(contents.get(0), true);
 			}
 		}
 	}
