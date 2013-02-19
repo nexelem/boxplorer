@@ -99,6 +99,10 @@ public class ListAdapter extends BaseExpandableListAdapter implements OnChildCli
 		return this.fullList;
 	}
 
+	public Context getContext() {
+		return this.context;
+	}
+
 	/**
 	 * Metoda wywolywana kiedy zamykamy pudelko (grupe obiektow na liscie)
 	 */

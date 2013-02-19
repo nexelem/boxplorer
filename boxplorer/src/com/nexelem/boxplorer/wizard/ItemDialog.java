@@ -2,7 +2,9 @@ package com.nexelem.boxplorer.wizard;
 
 import java.util.List;
 
+import android.app.AlertDialog;
 import android.app.DialogFragment;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,8 +30,7 @@ public class ItemDialog extends DialogFragment {
 	private ListAdapter listAdapter = null;
 	private int box = 0;
 
-	public static ItemDialog newInstance(Item item, List<Box> boxList,
-			ItemService itemService, ListAdapter listAdapter, int box) {
+	public static ItemDialog newInstance(Item item, List<Box> boxList, ItemService itemService, ListAdapter listAdapter, int box) {
 		ItemDialog f = new ItemDialog();
 		f.setItem(item);
 		f.setBoxList(boxList);
@@ -42,14 +43,10 @@ public class ItemDialog extends DialogFragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		// mNum = this.getArguments().getInt("num");
-
-		// dupa i takie tam
 	}
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View v = inflater.inflate(R.layout.item_dialog, container, false);
 
 		final TextView itemName = (TextView) v.findViewById(R.id.item_name);
@@ -73,9 +70,21 @@ public class ItemDialog extends DialogFragment {
 		saveButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-
-				Item itemToSave = new Item(itemName.getText().toString(),
-						(Box) boxes.getSelectedItem());
+				String dialogItemName = itemName.getText().toString();
+				if (dialogItemName.length() == 0) {
+					AlertDialog alertDialog = new AlertDialog.Builder(ItemDialog.this.listAdapter.getContext()).create();
+					alertDialog.setTitle("Błąd dodawania");
+					alertDialog.setMessage("Przedmiot musi posiadać swoją nazwę");
+					alertDialog.setButton(DialogInterface.BUTTON_POSITIVE, "OK", new DialogInterface.OnClickListener() {
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							dialog.dismiss();
+						}
+					});
+					alertDialog.show();
+					return;
+				}
+				Item itemToSave = new Item(dialogItemName, (Box) boxes.getSelectedItem());
 
 				try {
 					if (updateItem) {
