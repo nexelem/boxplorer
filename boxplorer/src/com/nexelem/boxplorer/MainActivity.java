@@ -172,6 +172,7 @@ public class MainActivity extends Activity implements OnQueryTextListener {
 	public boolean onQueryTextChange(String newText) {
 		if (newText.length() < 3) {
 			this.adapter.setBoxes(this.adapter.getFullList());
+			this.adapter.notifyDataSetChanged();
 		} else if (Arrays.asList(SearchType.QR.getSearchTag(), SearchType.NFC.getSearchTag()).contains(newText)) {
 			return true;
 		} else if (newText.length() >= 3) {

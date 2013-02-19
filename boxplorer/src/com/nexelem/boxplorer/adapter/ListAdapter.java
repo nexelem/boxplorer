@@ -146,7 +146,6 @@ public class ListAdapter extends BaseExpandableListAdapter implements OnChildCli
 	 */
 	@Override
 	public View getChildView(final int boxPosition, final int itemPosition, boolean isLastChild, View view, ViewGroup parent) {
-
 		LayoutInflater inflater = (LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		final ViewHolder holder;
 
@@ -411,7 +410,7 @@ public class ListAdapter extends BaseExpandableListAdapter implements OnChildCli
 	 * @throws BusinessException
 	 */
 	public void searchFor(String searchName) throws BusinessException {
-		if (this.searchText.startsWith(searchName)) {
+		if ((searchName != null) && (this.searchText.length() < searchName.length()) && searchName.startsWith(this.searchText)) {
 			this.boxes = this.itemService.getByLikelyItemName(this.boxes, searchName);
 		} else {
 			this.boxes = this.itemService.getByLikelyItemName(this.fullList, searchName);
