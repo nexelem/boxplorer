@@ -68,8 +68,7 @@ public class MainActivity extends Activity implements OnQueryTextListener {
 		this.adapter = new ListAdapter(this, this.boxService, this.itemService);
 
 		// Creating expandable list view
-		ExpandableListView list = (ExpandableListView) this
-				.findViewById(R.id.listView);
+		ExpandableListView list = (ExpandableListView) this.findViewById(R.id.listView);
 		list.setAdapter(this.adapter);
 		list.setOnChildClickListener(this.adapter);
 		list.requestFocus();
@@ -95,8 +94,7 @@ public class MainActivity extends Activity implements OnQueryTextListener {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case R.id.nfc:
-			Toast.makeText(this, "TODO: " + item.getTitle(), Toast.LENGTH_SHORT)
-					.show();
+			Toast.makeText(this, "TODO: " + item.getTitle(), Toast.LENGTH_SHORT).show();
 			break;
 		case R.id.qr_code:
 			this.readQrCode();
@@ -110,16 +108,14 @@ public class MainActivity extends Activity implements OnQueryTextListener {
 
 	private void readVoice() {
 		Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
-		intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
-				RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+		intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
 		intent.putExtra(RecognizerIntent.EXTRA_PROMPT, "Speech recognition");
 		this.startActivityForResult(intent, SearchType.VOICE.ordinal());
 	}
 
 	private void readQrCode() {
 		Intent intent = new Intent("com.google.zxing.client.android.SCAN");
-		intent.putExtra("com.google.zxing.client.android.SCAN.SCAN_MODE",
-				"QR_CODE_MODE");
+		intent.putExtra("com.google.zxing.client.android.SCAN.SCAN_MODE", "QR_CODE_MODE");
 		this.startActivityForResult(intent, SearchType.QR.ordinal());
 	}
 
@@ -136,8 +132,7 @@ public class MainActivity extends Activity implements OnQueryTextListener {
 	public boolean onPrepareOptionsMenu(Menu menu) {
 		PackageManager pm = this.getApplicationContext().getPackageManager();
 		// sprawdzamy czy mozna rozpoznawac glos
-		List<ResolveInfo> activities = pm.queryIntentActivities(new Intent(
-				RecognizerIntent.ACTION_RECOGNIZE_SPEECH), 0);
+		List<ResolveInfo> activities = pm.queryIntentActivities(new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH), 0);
 		if (activities.size() == 0) {
 			menu.findItem(R.id.voice).setVisible(false);
 		}
@@ -165,9 +160,7 @@ public class MainActivity extends Activity implements OnQueryTextListener {
 			try {
 				boxes = this.boxService.list();
 			} catch (BusinessException e) {
-				Toast.makeText(this,
-						"Application error: unable to get boxes list",
-						Toast.LENGTH_SHORT).show();
+				Toast.makeText(this, "Application error: unable to get boxes list", Toast.LENGTH_SHORT).show();
 				e.printStackTrace();
 			}
 		}
@@ -179,19 +172,15 @@ public class MainActivity extends Activity implements OnQueryTextListener {
 	public boolean onQueryTextChange(String newText) {
 		if (newText.length() < 3) {
 			this.adapter.setBoxes(this.adapter.getFullList());
-		} else if (Arrays.asList(SearchType.QR.getSearchTag(),
-				SearchType.NFC.getSearchTag()).contains(newText)) {
+		} else if (Arrays.asList(SearchType.QR.getSearchTag(), SearchType.NFC.getSearchTag()).contains(newText)) {
 			return true;
 		} else if (newText.length() >= 3) {
 			try {
 				this.adapter.searchFor(newText);
-				Toast.makeText(this, "Szukam: " + newText, Toast.LENGTH_SHORT)
-						.show();
+				Toast.makeText(this, "Szukam: " + newText, Toast.LENGTH_SHORT).show();
 			} catch (BusinessException e) {
-				Toast.makeText(this, "ERROR: " + newText, Toast.LENGTH_SHORT)
-						.show();
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				Toast.makeText(this, "ERROR: " + newText, Toast.LENGTH_SHORT).show();
+				Log.e("APP", "Wystapil blad podczas poszukiwania przedmiotu", e);
 			}
 
 		}
@@ -203,32 +192,52 @@ public class MainActivity extends Activity implements OnQueryTextListener {
 		return false;
 	}
 
+	/**
+	 * Metoda obslugujaca wartosci zwracane przez uruchomienie aktywnosci
+	 */
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		// TODO Auto-generated method stub
 		super.onActivityResult(requestCode, resultCode, data);
 		if (requestCode == SearchType.QR.ordinal()) {
-			if (resultCode == RESULT_OK) {
-				String contents = data.getStringExtra("SCAN_RESULT");
-				// contents
-				Log.i("QR", "QR READED AS: " + contents);
+			this.handleQrCodeResult(resultCode, data);
+
+		} else if (requestCode == SearchType.VOICE.ordinal()) {
+			this.handleVoiceResult(resultCode, data);
+		}
+	}
+
+	/**
+	 * Metoda obslugujaca wyszukiwanie glosowe Pobiera pierszy element z listy
+	 * rozpoznanych slow i wyszukuje przedmiotu
+	 */
+	private void handleVoiceResult(int resultCode, Intent data) {
+		List<String> contents = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+		SearchView searcher = (SearchView) this.findViewById(R.id.searcher);
+		if (searcher != null) {
+			searcher.setQuery(contents.get(0), true);
+		}
+	}
+
+	/**
+	 * Metoda obslugujaca wyszukiwanie po kodzie QR. Pobiera rozpoznany element
+	 * i probuje wyszukac na jego podstawie pudelko
+	 */
+	private void handleQrCodeResult(int resultCode, Intent data) {
+		if (resultCode == RESULT_OK) {
+			String contents = data.getStringExtra("SCAN_RESULT");
+			Log.i("QR", "QR READED AS: " + contents);
+			try {
 				this.adapter.searchForBox(contents);
-				SearchView searcher = (SearchView) this
-						.findViewById(R.id.searcher);
+				SearchView searcher = (SearchView) this.findViewById(R.id.searcher);
 				if (searcher != null) {
 					searcher.setQuery(":qr", false);
 				}
-				// Handle successful scan
-			} else if (resultCode == RESULT_CANCELED) {
-				// Handle cancel
-				System.out.println("xZing Cancelled");
+			} catch (BusinessException e) {
+				Toast.makeText(this.getApplicationContext(), "Unable to find Box", Toast.LENGTH_SHORT).show();
+				Log.w("QR", "Error while searching box " + contents, e);
 			}
-		} else if (requestCode == SearchType.VOICE.ordinal()) {
-			List<String> contents = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
-			SearchView searcher = (SearchView) this.findViewById(R.id.searcher);
-			if (searcher != null) {
-				searcher.setQuery(contents.get(0), true);
-			}
+		} else if (resultCode == RESULT_CANCELED) {
+			Toast.makeText(this.getApplicationContext(), "Unable to find Box", Toast.LENGTH_SHORT).show();
 		}
 	}
 }

@@ -415,26 +415,23 @@ public class ListAdapter extends BaseExpandableListAdapter implements
 
 	/**
 	 * Metoda wyswietlajaca pudelko na podstawie jego ID
+	 * 
+	 * @throws BusinessException
 	 */
-	public void searchForBox(String boxId) {
+	public void searchForBox(String boxId) throws BusinessException {
 		Log.i("QR", "Searching for Box id: " + boxId);
 		Box box;
-		try {
-			box = this.boxService.get(boxId);
-			if (box != null) {
-				List<Box> boxesList = new ArrayList<Box>();
-				boxesList.add(box);
-				this.boxes = boxesList;
-				this.notifyDataSetChanged();
-			} else {
-				Toast.makeText(this.context, "Box not found",
-						Toast.LENGTH_SHORT).show();
-			}
-		} catch (BusinessException e) {
-			Toast.makeText(this.context, "Unable to find Box",
-					Toast.LENGTH_SHORT).show();
-			Log.w("QR", "Error while searching box " + boxId, e);
+		box = this.boxService.get(boxId);
+		if (box != null) {
+			List<Box> boxesList = new ArrayList<Box>();
+			boxesList.add(box);
+			this.boxes = boxesList;
+			this.notifyDataSetChanged();
+		} else {
+			Toast.makeText(this.context, "Box not found", Toast.LENGTH_SHORT)
+					.show();
 		}
+
 	}
 
 	/**
