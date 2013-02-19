@@ -114,7 +114,7 @@ public class MainActivity extends Activity implements OnQueryTextListener {
 	}
 
 	private void readQrCode() {
-		Intent intent = new Intent("com.google.zxing.client.android.SCAN");
+		Intent intent = new Intent("nex.com.google.zxing.client.android.SCAN");
 		intent.putExtra("com.google.zxing.client.android.SCAN.SCAN_MODE", "QR_CODE_MODE");
 		this.startActivityForResult(intent, SearchType.QR.ordinal());
 	}
