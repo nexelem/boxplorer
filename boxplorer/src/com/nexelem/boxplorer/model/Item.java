@@ -2,11 +2,14 @@ package com.nexelem.boxplorer.model;
 
 import java.util.UUID;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
 @DatabaseTable(tableName = "item")
-public class Item {
+public class Item implements Parcelable {
 
 	@DatabaseField(allowGeneratedIdInsert = true, generatedId = true)
 	private UUID id = UUID.randomUUID();
@@ -62,6 +65,17 @@ public class Item {
 
 	public void setBox(Box box) {
 		this.box = box;
+	}
+
+	@Override
+	public int describeContents() {
+		return 0;
+	}
+
+	@Override
+	public void writeToParcel(Parcel parcel, int flags) {
+		parcel.writeString(this.id.toString());
+		parcel.writeString(this.name);
 	}
 
 }

@@ -59,15 +59,13 @@ public class BoxSpinnerAdapter implements SpinnerAdapter {
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		final LayoutInflater inflater = (LayoutInflater) parent.getContext()
-				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		final LayoutInflater inflater = (LayoutInflater) parent.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
 		Box box = (Box) this.getItem(position);
 		if (box != null) {
 			View view = inflater.inflate(R.layout.box_spinner, null);
 			TextView groupName = (TextView) view.findViewById(R.id.box_name);
-			TextView groupLocation = (TextView) view
-					.findViewById(R.id.box_location);
+			TextView groupLocation = (TextView) view.findViewById(R.id.box_location);
 			groupName.setText(box.getName());
 			groupLocation.setText(box.getLocation());
 			return view;

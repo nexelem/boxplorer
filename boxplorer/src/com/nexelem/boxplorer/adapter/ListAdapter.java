@@ -34,8 +34,7 @@ import com.nexelem.boxplorer.db.BusinessException;
 import com.nexelem.boxplorer.model.Box;
 import com.nexelem.boxplorer.model.Item;
 import com.nexelem.boxplorer.model.ItemState;
-import com.nexelem.boxplorer.service.BoxService;
-import com.nexelem.boxplorer.service.ItemService;
+import com.nexelem.boxplorer.utils.ObjectKeeper;
 import com.nexelem.boxplorer.wizard.ItemDialog;
 
 /**
@@ -52,11 +51,6 @@ public class ListAdapter extends BaseExpandableListAdapter implements OnChildCli
 	private List<Box> boxes = new ArrayList<Box>();
 
 	/**
-	 * Pelna lista pudelek (kiedy filtr nie jest nalozony fullList==boxes)
-	 */
-	private List<Box> fullList = new ArrayList<Box>();
-
-	/**
 	 * Kontekst aplikacji
 	 */
 	private final Context context;
@@ -66,20 +60,16 @@ public class ListAdapter extends BaseExpandableListAdapter implements OnChildCli
 	 */
 	private String searchText = "";
 
-	private final ItemService itemService;
-	private final BoxService boxService;
-
-	public ListAdapter(Context context, BoxService boxService, ItemService itemService) {
+	public ListAdapter(Context context) {
 		this.context = context;
-		this.itemService = itemService;
-		this.boxService = boxService;
 		this.updateListAdapterData();
+		ObjectKeeper.getInstance().setListAdapter(this);
 	}
 
 	public void updateListAdapterData() {
 		try {
-			this.boxes = this.boxService.list();
-			this.fullList = this.boxes;
+			this.boxes = ObjectKeeper.getInstance().getBoxService().list();
+			ObjectKeeper.getInstance().setBoxList(this.boxes);
 		} catch (BusinessException e) {
 			Log.e("APP", "Unable to update ListAdapter data", e);
 		}
@@ -96,7 +86,7 @@ public class ListAdapter extends BaseExpandableListAdapter implements OnChildCli
 	}
 
 	public List<Box> getFullList() {
-		return this.fullList;
+		return ObjectKeeper.getInstance().getBoxList();
 	}
 
 	public Context getContext() {
@@ -218,7 +208,7 @@ public class ListAdapter extends BaseExpandableListAdapter implements OnChildCli
 					ft.remove(prev);
 				}
 				ft.addToBackStack(null);
-				DialogFragment newFragment = ItemDialog.newInstance(item, ListAdapter.this.getFullList(), ListAdapter.this.itemService, ListAdapter.this, boxPosition);
+				DialogFragment newFragment = ItemDialog.newInstance(item, ListAdapter.this, boxPosition);
 				newFragment.show(fm, "item-dialog");
 				ft.commit();
 			}
@@ -257,7 +247,7 @@ public class ListAdapter extends BaseExpandableListAdapter implements OnChildCli
 							Item it = ListAdapter.this.getChild(boxPosition, itemPosition);
 							if (it != null) {
 								try {
-									ListAdapter.this.itemService.delete(it.getId());
+									ObjectKeeper.getInstance().getItemService().delete(it.getId());
 									ListAdapter.this.updateListAdapterData();
 									ListAdapter.this.notifyDataSetChanged();
 								} catch (BusinessException e) {
@@ -321,7 +311,7 @@ public class ListAdapter extends BaseExpandableListAdapter implements OnChildCli
 					ft.remove(prev);
 				}
 				ft.addToBackStack(null);
-				DialogFragment newFragment = ItemDialog.newInstance(null, ListAdapter.this.getFullList(), ListAdapter.this.itemService, ListAdapter.this, boxPosition);
+				DialogFragment newFragment = ItemDialog.newInstance(null, ListAdapter.this, boxPosition);
 				newFragment.show(fm, "item-dialog");
 				ft.commit();
 			}
@@ -411,9 +401,9 @@ public class ListAdapter extends BaseExpandableListAdapter implements OnChildCli
 	 */
 	public void searchFor(String searchName) throws BusinessException {
 		if ((searchName != null) && (this.searchText.length() < searchName.length()) && searchName.startsWith(this.searchText)) {
-			this.boxes = this.itemService.getByLikelyItemName(this.boxes, searchName);
+			this.boxes = ObjectKeeper.getInstance().getItemService().getByLikelyItemName(this.boxes, searchName);
 		} else {
-			this.boxes = this.itemService.getByLikelyItemName(this.fullList, searchName);
+			this.boxes = ObjectKeeper.getInstance().getItemService().getByLikelyItemName(ObjectKeeper.getInstance().getBoxList(), searchName);
 		}
 		this.searchText = searchName;
 		this.notifyDataSetChanged();
@@ -427,7 +417,7 @@ public class ListAdapter extends BaseExpandableListAdapter implements OnChildCli
 	public void searchForBox(String boxId) throws BusinessException {
 		Log.i("QR", "Searching for Box id: " + boxId);
 		Box box;
-		box = this.boxService.get(boxId);
+		box = ObjectKeeper.getInstance().getBoxService().get(boxId);
 		if (box != null) {
 			List<Box> boxesList = new ArrayList<Box>();
 			boxesList.add(box);

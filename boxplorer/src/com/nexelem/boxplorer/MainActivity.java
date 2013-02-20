@@ -27,6 +27,7 @@ import com.nexelem.boxplorer.model.Box;
 import com.nexelem.boxplorer.search.SearchType;
 import com.nexelem.boxplorer.service.BoxService;
 import com.nexelem.boxplorer.service.ItemService;
+import com.nexelem.boxplorer.utils.ObjectKeeper;
 
 /**
  * Klasa wejsciowa do aplikacji
@@ -34,16 +35,6 @@ import com.nexelem.boxplorer.service.ItemService;
  * @author bartek wilczynski, darek zon
  */
 public class MainActivity extends Activity implements OnQueryTextListener {
-
-	/**
-	 * 
-	 */
-	private BoxService boxService;
-
-	/**
-	 * 
-	 */
-	private ItemService itemService;
 
 	/**
 	 * 
@@ -57,15 +48,15 @@ public class MainActivity extends Activity implements OnQueryTextListener {
 
 		DBHelper helper = new DBHelper(this.getApplicationContext());
 		try {
-			this.boxService = new BoxService(helper);
-			this.itemService = new ItemService(helper);
+			ObjectKeeper.getInstance().setBoxService(new BoxService(helper));
+			ObjectKeeper.getInstance().setItemService(new ItemService(helper));
 		} catch (BusinessException e) {
 			Log.e("APP", "Unable to get required DB Services", e);
 			throw new RuntimeException();
 		}
 
 		// Creating adapter with data
-		this.adapter = new ListAdapter(this, this.boxService, this.itemService);
+		this.adapter = new ListAdapter(this);
 
 		// Creating expandable list view
 		ExpandableListView list = (ExpandableListView) this.findViewById(R.id.listView);
@@ -156,9 +147,9 @@ public class MainActivity extends Activity implements OnQueryTextListener {
 	 */
 	public List<Box> getData() {
 		List<Box> boxes = new ArrayList<Box>();
-		if (this.boxService != null) {
+		if (ObjectKeeper.getInstance().getBoxService() != null) {
 			try {
-				boxes = this.boxService.list();
+				boxes = ObjectKeeper.getInstance().getBoxService().list();
 			} catch (BusinessException e) {
 				Toast.makeText(this, "Application error: unable to get boxes list", Toast.LENGTH_SHORT).show();
 				e.printStackTrace();

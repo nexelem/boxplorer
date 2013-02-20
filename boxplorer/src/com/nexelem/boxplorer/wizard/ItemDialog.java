@@ -1,7 +1,5 @@
 package com.nexelem.boxplorer.wizard;
 
-import java.util.List;
-
 import android.app.AlertDialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
@@ -20,29 +18,18 @@ import com.nexelem.boxplorer.adapter.ListAdapter;
 import com.nexelem.boxplorer.db.BusinessException;
 import com.nexelem.boxplorer.model.Box;
 import com.nexelem.boxplorer.model.Item;
-import com.nexelem.boxplorer.service.ItemService;
+import com.nexelem.boxplorer.utils.ObjectKeeper;
 
 public class ItemDialog extends DialogFragment {
 
 	private Item item = null;
-	private List<Box> boxList = null;
-	private ItemService itemService = null;
-	private ListAdapter listAdapter = null;
 	private int box = 0;
 
-	public static ItemDialog newInstance(Item item, List<Box> boxList, ItemService itemService, ListAdapter listAdapter, int box) {
+	public static ItemDialog newInstance(Item item, ListAdapter listAdapter, int box) {
 		ItemDialog f = new ItemDialog();
-		f.setItem(item);
-		f.setBoxList(boxList);
-		f.setItemService(itemService);
-		f.listAdapter = listAdapter;
+		f.item = item;
 		f.box = box;
 		return f;
-	}
-
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
 	}
 
 	@Override
@@ -52,7 +39,7 @@ public class ItemDialog extends DialogFragment {
 		final TextView itemName = (TextView) v.findViewById(R.id.item_name);
 		final Spinner boxes = (Spinner) v.findViewById(R.id.item_boxlist);
 		final boolean updateItem = this.item == null ? false : true;
-		boxes.setAdapter(new BoxSpinnerAdapter(this.boxList));
+		boxes.setAdapter(new BoxSpinnerAdapter(ObjectKeeper.getInstance().getBoxList()));
 		boxes.setSelection(this.box);
 		if (this.item != null) {
 			itemName.setText(this.item.getName());
@@ -72,7 +59,7 @@ public class ItemDialog extends DialogFragment {
 			public void onClick(View v) {
 				String dialogItemName = itemName.getText().toString();
 				if (dialogItemName.length() == 0) {
-					AlertDialog alertDialog = new AlertDialog.Builder(ItemDialog.this.listAdapter.getContext()).create();
+					AlertDialog alertDialog = new AlertDialog.Builder(ObjectKeeper.getInstance().getListAdapter().getContext()).create();
 					alertDialog.setTitle("Błąd dodawania");
 					alertDialog.setMessage("Przedmiot musi posiadać swoją nazwę");
 					alertDialog.setButton(DialogInterface.BUTTON_POSITIVE, "OK", new DialogInterface.OnClickListener() {
@@ -89,16 +76,16 @@ public class ItemDialog extends DialogFragment {
 				try {
 					if (updateItem) {
 						itemToSave.setId(ItemDialog.this.item.getId());
-						ItemDialog.this.getItemService().update(itemToSave);
+						ObjectKeeper.getInstance().getItemService().update(itemToSave);
 					} else {
-						ItemDialog.this.getItemService().create(itemToSave);
+						ObjectKeeper.getInstance().getItemService().create(itemToSave);
 					}
 				} catch (BusinessException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				ItemDialog.this.listAdapter.updateListAdapterData();
-				ItemDialog.this.listAdapter.notifyDataSetChanged();
+				ObjectKeeper.getInstance().getListAdapter().updateListAdapterData();
+				ObjectKeeper.getInstance().getListAdapter().notifyDataSetChanged();
 				ItemDialog.this.dismiss();
 			}
 		});
@@ -106,27 +93,33 @@ public class ItemDialog extends DialogFragment {
 		return v;
 	}
 
-	public Item getItem() {
-		return this.item;
+	/**
+	 * Obsluguje zapisanie stanu formatki podczas przechodzenia w tryb
+	 * landscape/portrait
+	 */
+	@Override
+	public void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		outState.putInt("box", this.box);
+		outState.putParcelable("item", this.item);
 	}
 
-	public void setItem(Item item) {
-		this.item = item;
+	/**
+	 * Odczytuje zachowany stan formatki
+	 */
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		if (savedInstanceState != null) {
+			int box = savedInstanceState.getInt("box", -1);
+			Item item = savedInstanceState.getParcelable("item");
+			if (box >= 0) {
+				this.box = box;
+			}
+			if (item != null) {
+				this.item = item;
+			}
+		}
 	}
 
-	public List<Box> getBoxList() {
-		return this.boxList;
-	}
-
-	public void setBoxList(List<Box> list) {
-		this.boxList = list;
-	}
-
-	public ItemService getItemService() {
-		return this.itemService;
-	}
-
-	public void setItemService(ItemService itemService) {
-		this.itemService = itemService;
-	}
 }
