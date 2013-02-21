@@ -6,6 +6,9 @@ import java.util.List;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.app.DialogFragment;
+import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
@@ -15,7 +18,10 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.ExpandableListView;
+import android.widget.ImageView;
 import android.widget.SearchView;
 import android.widget.SearchView.OnQueryTextListener;
 import android.widget.Toast;
@@ -28,6 +34,8 @@ import com.nexelem.boxplorer.search.SearchType;
 import com.nexelem.boxplorer.service.BoxService;
 import com.nexelem.boxplorer.service.ItemService;
 import com.nexelem.boxplorer.utils.ObjectKeeper;
+import com.nexelem.boxplorer.wizard.BoxDialog;
+
 
 /**
  * Klasa wejsciowa do aplikacji
@@ -63,7 +71,7 @@ public class MainActivity extends Activity implements OnQueryTextListener {
 		list.setAdapter(this.adapter);
 		list.setOnChildClickListener(this.adapter);
 		list.requestFocus();
-
+		
 		// Customizing action bar
 		ActionBar bar = this.getActionBar();
 		bar.setDisplayHomeAsUpEnabled(false);
@@ -72,6 +80,25 @@ public class MainActivity extends Activity implements OnQueryTextListener {
 		bar.setDisplayShowCustomEnabled(true);
 		bar.setCustomView(R.layout.actionbar);
 
+		// Setting add button action
+		ImageView addBox =  (ImageView) this.findViewById(R.id.add_box);
+		addBox.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				FragmentTransaction ft = getFragmentManager().beginTransaction();
+			    Fragment prev = getFragmentManager().findFragmentByTag("wizard");
+			    if (prev != null) {
+			        ft.remove(prev);
+			    }
+			    ft.addToBackStack(null);
+
+			    // Create and show the dialog.
+			    DialogFragment newFragment = new BoxDialog();
+			    newFragment.show(ft, "wizard");
+			}
+		});
+		
 		// Customizing search view
 		SearchView searcher = (SearchView) this.findViewById(R.id.searcher);
 		searcher.setOnQueryTextListener(this);

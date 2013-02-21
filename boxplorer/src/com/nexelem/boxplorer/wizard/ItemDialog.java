@@ -29,6 +29,7 @@ public class ItemDialog extends DialogFragment {
 		ItemDialog f = new ItemDialog();
 		f.item = item;
 		f.box = box;
+		Bundle b = new Bundle();
 		return f;
 	}
 

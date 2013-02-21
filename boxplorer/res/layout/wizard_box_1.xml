@@ -5,19 +5,30 @@
     android:orientation="vertical" >
 
     <EditText
-        android:id="@+id/editText1"
+        android:id="@+id/box_add_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:ems="10" >
+        android:ems="10"
+        android:hint="Box name" />
 
-        <requestFocus />
+    <EditText
+        android:id="@+id/box_add_localization"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="Localization" >
     </EditText>
 
-    <Button
-        android:id="@+id/next"
+    <CheckBox
+        android:id="@+id/box_add_qr"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="Next" />
+        android:text="Generate QR Code" />
+
+    <CheckBox
+        android:id="@+id/box_add_nfc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Tag NFC" />
 
 </LinearLayout>

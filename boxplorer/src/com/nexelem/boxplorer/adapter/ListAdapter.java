@@ -35,6 +35,7 @@ import com.nexelem.boxplorer.model.Box;
 import com.nexelem.boxplorer.model.Item;
 import com.nexelem.boxplorer.model.ItemState;
 import com.nexelem.boxplorer.utils.ObjectKeeper;
+import com.nexelem.boxplorer.wizard.BoxDialog;
 import com.nexelem.boxplorer.wizard.ItemDialog;
 
 /**
@@ -252,7 +253,7 @@ public class ListAdapter extends BaseExpandableListAdapter implements OnChildCli
 									ListAdapter.this.notifyDataSetChanged();
 								} catch (BusinessException e) {
 									Log.e("APP", "There where an issue during item deletion", e);
-									Toast.makeText(ListAdapter.this.context, "Wystąpił błąd podczas usuwania przedmiotu", Toast.LENGTH_SHORT).show();
+									Toast.makeText(ListAdapter.this.context, "WystÄ…piÅ‚ bÅ‚Ä…d podczas usuwania przedmiotu", Toast.LENGTH_SHORT).show();
 								}
 							}
 						}
@@ -271,7 +272,34 @@ public class ListAdapter extends BaseExpandableListAdapter implements OnChildCli
 		};
 
 		AlertDialog.Builder builder = new AlertDialog.Builder(this.context);
-		builder.setMessage("Czy na pewno usunąć przedmiot?").setPositiveButton("Tak", dialogClickListener).setNegativeButton("Nie", dialogClickListener).show();
+		builder.setMessage("Czy na pewno usunÄ…Ä‡ przedmiot?").setPositiveButton("Tak", dialogClickListener).setNegativeButton("Nie", dialogClickListener).show();
+	}
+	
+	private void removeBox(final View view, final int boxPosition) {
+		DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				switch (which) {
+				case DialogInterface.BUTTON_POSITIVE:
+					Box box = (Box) ListAdapter.this.getGroup(boxPosition);
+					if (box != null) {
+						try {
+							ObjectKeeper.getInstance().getBoxService().delete(box.getId());
+							ListAdapter.this.updateListAdapterData();
+							ListAdapter.this.notifyDataSetChanged();
+						} catch (BusinessException e) {
+							Log.e("APP", "There where an issue during box deletion", e);
+							Toast.makeText(ListAdapter.this.context, "Wystąpił błąd podczas usuwania pudełka", Toast.LENGTH_SHORT).show();
+						}
+					}
+					break;
+				case DialogInterface.BUTTON_NEGATIVE:
+					break;
+				}
+			}
+		};
+		AlertDialog.Builder builder = new AlertDialog.Builder(this.context);
+		builder.setMessage("Czy na pewno usunąć pudełko?").setPositiveButton("Tak", dialogClickListener).setNegativeButton("Nie", dialogClickListener).show();
 	}
 
 	/**
@@ -288,6 +316,8 @@ public class ListAdapter extends BaseExpandableListAdapter implements OnChildCli
 			holder.name = (TextView) view.findViewById(R.id.group_name);
 			holder.location = (TextView) view.findViewById(R.id.group_location);
 			holder.add = (ImageView) view.findViewById(R.id.group_add_item);
+			holder.remove = (ImageView) view.findViewById(R.id.group_remove_item);
+			holder.edit = (ImageView) view.findViewById(R.id.group_edit_item);
 			view.setTag(holder);
 		} else {
 			holder = (ViewHolder) view.getTag();
@@ -316,6 +346,30 @@ public class ListAdapter extends BaseExpandableListAdapter implements OnChildCli
 				ft.commit();
 			}
 		});
+		
+		holder.remove.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				removeBox(view, boxPosition);
+			}
+		});
+		
+		holder.edit.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				FragmentTransaction ft = ((Activity) context).getFragmentManager().beginTransaction();
+			    Fragment prev = ((Activity) context).getFragmentManager().findFragmentByTag("wizard");
+			    if (prev != null) {
+			        ft.remove(prev);
+			    }
+			    ft.addToBackStack(null);
+
+			    // Create and show the dialog.
+			    DialogFragment newFragment = new BoxDialog((Box)getGroup(boxPosition));
+			    newFragment.show(ft, "wizard");
+			}
+		});
+		
 		holder.name.setText(this.boxes.get(boxPosition).getName());
 		holder.location.setText(this.boxes.get(boxPosition).getLocation());
 		return view;
