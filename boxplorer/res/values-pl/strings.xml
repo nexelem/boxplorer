@@ -15,5 +15,12 @@
     <string name="msg_camera_framework_bug">Przykro nam, ale kamera w aparacie nie działa poprawnie. Być może potrzebne będzie ponowne uruchomienie aparatu.</string>
     <string name="msg_default_status">Aby przeskanować kod QR umieść go w obrębie kwadratu widocznym na wyświetlaczu</string>
     <string name="result_text">Znaleziono tekst</string>
+    <string name="button_ok">OK</string>
+    <string name="qr_image">Obraz</string>
+    <string name="msg_default_format">Format</string>
+    <string name="msg_default_type">Typ</string>
+    <string name="msg_default_time">Czas</string>
+    <string name="msg_default_meta">Meta</string>
+    <string name="contents_text">Zawartość</string>
     <!-- qrcode: end -->
 </resources>

@@ -9,11 +9,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        android:src="@drawable/add_white" />
+        android:src="@drawable/add_white"
+        android:contentDescription="@string/add" />
     
     <SearchView
         android:id="@+id/searcher"
-        android:layout_width="wrap_content"
+        android:layout_width="0dip"
         android:layout_height="wrap_content"
         android:layout_weight="0.7"
         android:iconifiedByDefault="true" >

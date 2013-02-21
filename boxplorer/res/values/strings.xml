@@ -7,7 +7,8 @@
     <string name="add">Add</string>
     <string name="cancel">Cancel</string>
     <string name="item_name">Item name</string>
-    <string name="add_item">Add item</string>
+    <string name="edit_item">Edit item</string>
+    <string name="remove_item">Remove item</string>
     
     <!-- qrcode: start -->
     <string name="button_ok">OK</string>

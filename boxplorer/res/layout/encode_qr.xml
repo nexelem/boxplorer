@@ -19,7 +19,6 @@
               android:layout_width="fill_parent"
               android:layout_height="fill_parent"
               android:fillViewport="true"
-              android:background="@color/encode_view"
               android:orientation="vertical"
               android:gravity="center">
 
@@ -27,7 +26,8 @@
              android:layout_width="fill_parent"
              android:layout_height="wrap_content"
              android:layout_gravity="center_horizontal"
-             android:scaleType="center"/>
+             android:scaleType="center"
+             android:contentDescription="@string/qr_image"/>
 
   <ScrollView android:layout_width="fill_parent"
               android:layout_height="wrap_content"
@@ -42,7 +42,8 @@
               android:textColor="@color/contents_text"
               android:paddingBottom="@dimen/standard_padding"
               android:paddingLeft="@dimen/standard_padding"
-              android:paddingRight="@dimen/standard_padding"/>
+              android:paddingRight="@dimen/standard_padding"
+              android:textIsSelectable="true" />
 
   </ScrollView>
 
