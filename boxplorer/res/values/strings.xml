@@ -3,24 +3,23 @@
 
     <string name="app_name">boxplorer</string>
     <string name="db_name">boxplorer.db</string>
-    <string name="add">dodaj</string>
-    <string name="cancel">anuluj</string>
-    <string name="item_name">nazwa przedmiotu</string>
-    <string name="add_item">dodaj przedmiot</string>
+    
+    <string name="add">Add</string>
+    <string name="cancel">Cancel</string>
+    <string name="item_name">Item name</string>
+    <string name="edit_item">Edit item</string>
+    <string name="remove_item">Remove item</string>
     
     <!-- qrcode: start -->
-    <string name="app_picker_name">Aplikacje</string>
-    <string name="bookmark_picker_name">Zakładki</string>
-    <string name="button_back">Wstecz</string>
-    <string name="button_cancel">Anuluj</string>
     <string name="button_ok">OK</string>
-    <string name="contents_text">Zwykły tekst</string>
-    <string name="msg_camera_framework_bug">Przepraszamy, aparat Android napotkał problem. Może wystąpić potrzeba ponownego uruchomienia urządzenia.</string>
-    <string name="msg_default_status">Umieść kod QR w prostokącie wizjera aby zeskanować.</string>
+    <string name="qr_image">Image</string>
+    <string name="msg_camera_framework_bug">We are sorry, but Android camera seems to not working right. There might be  Może wystąpić potrzeba ponownego uruchomienia urządzenia.</string>
+    <string name="msg_default_status">To scan please place QR Code in rectangle</string>
+    <string name="result_text">Text found</string>
     <string name="msg_default_format">Format</string>
-    <string name="msg_default_meta">Metadanych</string>
-    <string name="msg_default_time">Czas</string>
-    <string name="msg_default_type">Typ</string>
-    <string name="result_text">Znaleziono zwykły tekst</string>
+    <string name="msg_default_type">Type</string>
+    <string name="msg_default_time">Time</string>
+    <string name="msg_default_meta">Meta</string>
+    <string name="contents_text">Content</string>
     <!-- qrcode: end -->
 </resources>

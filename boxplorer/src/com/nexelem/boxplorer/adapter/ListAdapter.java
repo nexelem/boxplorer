@@ -146,7 +146,6 @@ public class ListAdapter extends BaseExpandableListAdapter implements OnChildCli
 			holder.name = (TextView) view.findViewById(R.id.item_name);
 			holder.add = (ImageView) view.findViewById(R.id.item_toolbar_remove);
 			holder.edit = (ImageView) view.findViewById(R.id.item_toolbar_edit);
-			holder.move = (ImageView) view.findViewById(R.id.item_toolbar_move);
 
 			view.setTag(holder);
 		} else {

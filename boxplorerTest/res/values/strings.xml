@@ -1,6 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
-    <string name="app_name">BoxeeeTestTest</string>
-	<string name="db_name">boxeee_test.db</string>
+    <string name="app_name">BoxeeeTest</string>
 </resources>

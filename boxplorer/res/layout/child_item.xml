@@ -15,7 +15,7 @@
         android:paddingBottom="15dp"
         android:paddingLeft="10dp"
         android:paddingTop="15dp"
-        android:text="Small Text"
+        android:text="@string/item_name"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:textColor="@android:color/holo_red_dark"
         android:textStyle="bold" />
@@ -28,18 +28,12 @@
         android:visibility="visible" >
 
         <ImageView
-            android:id="@+id/item_toolbar_move"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.33"
-            android:src="@drawable/move" />
-
-        <ImageView
             android:id="@+id/item_toolbar_edit"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_weight="0.33"
-            android:src="@drawable/edit" />
+            android:src="@drawable/edit"
+            android:contentDescription="@string/edit_item" />
 
         <ImageView
             android:id="@+id/item_toolbar_remove"
@@ -47,7 +41,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="0.33"
             android:scaleType="fitCenter"
-            android:src="@drawable/remove" />
+            android:src="@drawable/remove"
+            android:contentDescription="@string/remove_item" />
 
     </LinearLayout>
 
