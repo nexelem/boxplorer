@@ -27,19 +27,22 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        style="?android:attr/buttonBarStyle" >
 
         <Button
             android:id="@+id/item_cancel"
             android:layout_width="154dp"
             android:layout_height="wrap_content"
-            android:text="@string/cancel" />
+            android:text="@string/cancel"
+            style="?android:attr/buttonBarButtonStyle" />
 
         <Button
             android:id="@+id/item_save"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/add" />
+            android:text="@string/add"
+            style="?android:attr/buttonBarButtonStyle" />
     </LinearLayout>
 
 </LinearLayout>
