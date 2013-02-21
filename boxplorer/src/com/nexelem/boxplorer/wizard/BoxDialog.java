@@ -31,12 +31,14 @@ public class BoxDialog extends DialogFragment {
 	
 	private int step;
 	private ViewFlipper flipper;
+	private boolean update = false;
 
 	public BoxDialog(){
 	}
 	
 	public BoxDialog(Box box){
 		this.box = box;
+		update = true;
 	}
 
 	@Override
@@ -132,7 +134,10 @@ public class BoxDialog extends DialogFragment {
 					BoxDialog.this.isNfc = isNfc.isChecked();
 
 					try {
-						ObjectKeeper.getInstance().getBoxService().create(box);
+						if(update)
+							ObjectKeeper.getInstance().getBoxService().update(box);
+						else
+							ObjectKeeper.getInstance().getBoxService().create(box);
 						ObjectKeeper.getInstance().getListAdapter().updateListAdapterData();
 						ObjectKeeper.getInstance().getListAdapter().notifyDataSetChanged();
 					} catch (BusinessException e) {
