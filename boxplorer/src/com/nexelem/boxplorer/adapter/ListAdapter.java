@@ -61,6 +61,8 @@ public class ListAdapter extends BaseExpandableListAdapter implements OnChildCli
 	 */
 	private String searchText = "";
 
+	private boolean expandAll = false;
+	
 	public ListAdapter(Context context) {
 		this.context = context;
 		this.updateListAdapterData();
@@ -92,6 +94,10 @@ public class ListAdapter extends BaseExpandableListAdapter implements OnChildCli
 
 	public Context getContext() {
 		return this.context;
+	}
+	
+	public void expandAll(boolean expand){
+		expandAll = expand;
 	}
 
 	/**
@@ -299,7 +305,7 @@ public class ListAdapter extends BaseExpandableListAdapter implements OnChildCli
 	public View getGroupView(final int boxPosition, boolean isExpanded, View view, final ViewGroup parent) {
 		final LayoutInflater inflater = (LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		ViewHolder holder;
-
+		
 		if (view == null) {
 			view = inflater.inflate(R.layout.group_item, null);
 			holder = new ViewHolder();

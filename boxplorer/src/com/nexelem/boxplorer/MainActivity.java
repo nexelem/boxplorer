@@ -48,6 +48,7 @@ public class MainActivity extends Activity implements OnQueryTextListener {
 	 * 
 	 */
 	private ListAdapter adapter;
+	private ExpandableListView list;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -67,7 +68,7 @@ public class MainActivity extends Activity implements OnQueryTextListener {
 		this.adapter = new ListAdapter(this);
 
 		// Creating expandable list view
-		ExpandableListView list = (ExpandableListView) this.findViewById(R.id.listView);
+		list = (ExpandableListView) this.findViewById(R.id.listView);
 		list.setAdapter(this.adapter);
 		list.setOnChildClickListener(this.adapter);
 		list.requestFocus();
@@ -191,11 +192,13 @@ public class MainActivity extends Activity implements OnQueryTextListener {
 		if (newText.length() < 3) {
 			this.adapter.setBoxes(this.adapter.getFullList());
 			this.adapter.notifyDataSetChanged();
+			collapseAll();
 		} else if (Arrays.asList(SearchType.QR.getSearchTag(), SearchType.NFC.getSearchTag()).contains(newText)) {
 			return true;
 		} else if (newText.length() >= 3) {
 			try {
 				this.adapter.searchFor(newText);
+				expandAll();
 				Toast.makeText(this, "Szukam: " + newText, Toast.LENGTH_SHORT).show();
 			} catch (BusinessException e) {
 				Toast.makeText(this, "ERROR: " + newText, Toast.LENGTH_SHORT).show();
@@ -204,6 +207,18 @@ public class MainActivity extends Activity implements OnQueryTextListener {
 
 		}
 		return true;
+	}
+
+	private void collapseAll() {
+		for(int i = 0; i < adapter.getGroupCount(); i++){
+			list.collapseGroup(i);
+		}
+	}
+	
+	private void expandAll() {
+		for(int i = 0; i < adapter.getGroupCount(); i++){
+			list.expandGroup(i, true);
+		}
 	}
 
 	@Override
@@ -235,6 +250,7 @@ public class MainActivity extends Activity implements OnQueryTextListener {
 		if (searcher != null) {
 			searcher.setQuery(contents.get(0), true);
 		}
+		expandAll();
 	}
 
 	/**
@@ -251,6 +267,7 @@ public class MainActivity extends Activity implements OnQueryTextListener {
 				if (searcher != null) {
 					searcher.setQuery(":qr", false);
 				}
+				expandAll();
 			} catch (BusinessException e) {
 				Toast.makeText(this.getApplicationContext(), "Unable to find Box", Toast.LENGTH_SHORT).show();
 				Log.w("QR", "Error while searching box " + contents, e);
