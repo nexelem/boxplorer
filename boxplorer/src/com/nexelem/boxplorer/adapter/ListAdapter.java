@@ -146,7 +146,6 @@ public class ListAdapter extends BaseExpandableListAdapter implements OnChildCli
 			holder.name = (TextView) view.findViewById(R.id.item_name);
 			holder.add = (ImageView) view.findViewById(R.id.item_toolbar_remove);
 			holder.edit = (ImageView) view.findViewById(R.id.item_toolbar_edit);
-
 			view.setTag(holder);
 		} else {
 			holder = (ViewHolder) view.getTag();
@@ -213,14 +212,6 @@ public class ListAdapter extends BaseExpandableListAdapter implements OnChildCli
 				ft.commit();
 			}
 		});
-		holder.move.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				Toast.makeText(ListAdapter.this.context, "TODO: move item", Toast.LENGTH_SHORT).show();
-
-			}
-		});
-
 		return view;
 	}
 
