@@ -28,5 +28,12 @@
     <color name="viewfinder_laser">#ffcc0000</color> <!-- Android standard ICS color -->
     <color name="viewfinder_mask">#60000000</color>
     <!-- qr end -->
+    
+    <!-- Piotrek's layout colors -->
+    <color name="main_color">#0bb6c6</color>
+    <color name="font_dark_color">#00415e</color>
+	<color name="box_localization">#838383</color>
+    <color name="item_background">#f4f5f5</color>
+    <color name="item_rectangle">#dde0e0</color>
 
 </resources>

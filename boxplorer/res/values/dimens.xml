@@ -8,4 +8,13 @@
   	<dimen name="half_padding">4dip</dimen>
   	<dimen name="small_bottom_padding">2dip</dimen>
     <!-- qrcode end -->
+    
+    <!-- Piotrek's layout dimensions -->
+    <dimen name="box_name_height">25dp</dimen>
+    <dimen name="box_location_height">13dp</dimen>
+    <dimen name="item_name_height">17dp</dimen>
+    
+    <dimen name="list_left_margin">25dp</dimen>
+    <dimen name="actions_margin">15dp</dimen>
+    
 </resources>

@@ -1,62 +1,89 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="horizontal"
-    android:padding="8dp" >
+    android:layout_height="wrap_content"
+    android:orientation="horizontal" >
 
     <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="0.3"
-        android:orientation="vertical" >
+        android:id="@+id/expand_bg"
+        android:layout_width="25dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center"
+        android:background="@drawable/box_rectangle" >
 
-        <TextView
-            android:id="@+id/group_name"
-            android:layout_width="wrap_content"
+        <ImageView
+            android:id="@+id/expand_indicator"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="25dp"
-            android:paddingBottom="@dimen/small_bottom_padding"
-            android:text="Small Text"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textColor="@android:color/black"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/group_location"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="25dp"
-            android:text="Small Text"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textColor="@color/box_location"
-            android:textSize="@dimen/box_location_size" />
+            android:layout_gravity="center"
+            android:scaleType="centerInside"
+            android:src="@drawable/expand_off" />
 
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/expand_height"
         android:layout_width="fill_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="0.6" >
+        android:layout_height="75dp"
+        android:layout_gravity="center"
+        android:orientation="horizontal"
+        android:padding="8dp" >
+
+        <LinearLayout
+            android:layout_width="173dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="-3dp"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/group_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="@dimen/small_bottom_padding"
+                android:text="Rupiecie"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textColor="@color/font_dark_color"
+                android:textSize="@dimen/box_name_height" />
+
+            <TextView
+                android:id="@+id/group_location"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="-8dp"
+                android:text="Piwnica"
+                android:textAllCaps="true"
+                android:textColor="@color/box_localization"
+                android:textSize="@dimen/box_location_height" />
+        </LinearLayout>
 
         <ImageView
             android:id="@+id/group_edit_item"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="0.25"
             android:src="@drawable/edit" />
 
         <ImageView
             android:id="@+id/group_remove_item"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="@dimen/actions_margin"
+            android:layout_weight="0.25"
             android:src="@drawable/remove" />
 
         <ImageView
             android:id="@+id/group_add_item"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="@dimen/actions_margin"
+            android:layout_weight="0.25"
             android:scaleType="center"
             android:src="@drawable/add" />
 
     </LinearLayout>
+
 </LinearLayout>

@@ -2,47 +2,83 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/item_view"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/item_background"
     android:orientation="vertical" >
 
-    <TextView
-        android:id="@+id/item_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:focusable="false"
-        android:focusableInTouchMode="false"
-        android:paddingBottom="15dp"
-        android:paddingLeft="10dp"
-        android:paddingTop="15dp"
-        android:text="@string/item_name"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:textColor="@android:color/holo_red_dark"
-        android:textStyle="bold" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <LinearLayout
+            android:layout_width="25dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/item_rectangle" >
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/item_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:paddingBottom="15dp"
+            android:paddingLeft="10dp"
+            android:paddingTop="15dp"
+            android:text="@string/item_name"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="@color/font_dark_color"
+            android:textSize="@dimen/item_name_height"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:id="@+id/item_toolbar_edit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="0.1"
+            android:contentDescription="@string/edit_item"
+            android:src="@drawable/edit"
+            android:visibility="gone" />
+
+        <ImageView
+            android:id="@+id/item_toolbar_remove"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="0.1"
+            android:contentDescription="@string/remove_item"
+            android:scaleType="fitCenter"
+            android:src="@drawable/remove"
+            android:visibility="gone" />
+
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/item_toolbar"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_marginBottom="-50dp"
-        android:visibility="visible" >
+        android:orientation="horizontal"
+        android:visibility="gone" >
 
-        <ImageView
-            android:id="@+id/item_toolbar_edit"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.33"
-            android:src="@drawable/edit"
-            android:contentDescription="@string/edit_item" />
+        <LinearLayout
+            android:layout_width="25dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/item_rectangle" >
+        </LinearLayout>
 
-        <ImageView
-            android:id="@+id/item_toolbar_remove"
-            android:layout_width="fill_parent"
+        <TextView
+            android:id="@+id/group_location"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="0.33"
-            android:scaleType="fitCenter"
-            android:src="@drawable/remove"
-            android:contentDescription="@string/remove_item" />
+            android:layout_marginLeft="10dp"
+            android:text="Lokalizacja: Rupiecie, Piwnica"
+            android:textAllCaps="true"
+            android:textColor="@color/box_localization"
+            android:textSize="@dimen/box_location_height" />
 
     </LinearLayout>
 

@@ -20,6 +20,8 @@ public class Box {
 
 	@DatabaseField(canBeNull = false)
 	private String location;
+	
+	private BoxState state = BoxState.NORMAL;
 
 	@ForeignCollectionField(eager = true)
 	Collection<Item> items = new ArrayList<Item>();
@@ -73,6 +75,14 @@ public class Box {
 
 	public void setItems(List<Item> items) {
 		this.items = items;
+	}
+
+	public BoxState getState() {
+		return state;
+	}
+
+	public void setState(BoxState state) {
+		this.state = state;
 	}
 
 	@Override

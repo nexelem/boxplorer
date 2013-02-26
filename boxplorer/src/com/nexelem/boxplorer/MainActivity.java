@@ -12,6 +12,7 @@ import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
 import android.util.Log;
@@ -55,6 +56,9 @@ public class MainActivity extends Activity implements OnQueryTextListener {
 		super.onCreate(savedInstanceState);
 		this.setContentView(R.layout.activity_main);
 
+		// Loading fonts
+		Fonts.loadFonts(this);
+		
 		DBHelper helper = new DBHelper(this.getApplicationContext());
 		try {
 			ObjectKeeper.getInstance().setBoxService(new BoxService(helper));
@@ -80,7 +84,7 @@ public class MainActivity extends Activity implements OnQueryTextListener {
 		bar.setDisplayShowHomeEnabled(false);
 		bar.setDisplayShowCustomEnabled(true);
 		bar.setCustomView(R.layout.actionbar);
-
+		
 		// Setting add button action
 		ImageView addBox =  (ImageView) this.findViewById(R.id.add_box);
 		addBox.setOnClickListener(new OnClickListener() {

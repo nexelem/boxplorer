@@ -6,28 +6,26 @@ import android.view.animation.Transformation;
 
 public class HeightAnimation extends Animation {
 
-	int mFromHeight;
+	int fromHeight;
 	View mView;
-	private boolean hide;
+	int toHeight;
 	
-	public HeightAnimation(View view, boolean hide) {
+	public HeightAnimation(View view, int toHeight) {
 	    this.mView = view;
-	    this.mFromHeight = view.getHeight();
-	    this.hide = hide;
+	    this.fromHeight = view.getHeight();
+	    this.toHeight = toHeight;
 	}
 	
 	@Override
 	protected void applyTransformation(float interpolatedTime, Transformation t) {
-	    int newHeight;
-	    newHeight = (int) (mFromHeight * (hide ? 1 : 0) - interpolatedTime);
+        super.applyTransformation(interpolatedTime, t);
+	    int newHeight = (int) (fromHeight +((toHeight - fromHeight)* interpolatedTime));
 	    mView.getLayoutParams().height = newHeight;
-	    //mView.setAlpha(interpolatedTime);
 	    mView.requestLayout();
 	}
 	
 	@Override
-	public void initialize(int width, int height, int parentWidth,
-	        int parentHeight) {
+	public void initialize(int width, int height, int parentWidth,int parentHeight) {
 	    super.initialize(width, height, parentWidth, parentHeight);
 	}
 	
