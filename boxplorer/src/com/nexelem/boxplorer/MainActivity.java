@@ -310,7 +310,8 @@ public class MainActivity extends Activity implements OnQueryTextListener {
 	@Override
 	protected void onPause() {
 		super.onPause();
-		this.nfcAdapter.disableForegroundDispatch(this);
+		if(this.nfcAdapter != null)
+			this.nfcAdapter.disableForegroundDispatch(this);
 	}
 
 	@Override
@@ -325,8 +326,8 @@ public class MainActivity extends Activity implements OnQueryTextListener {
 			throw new RuntimeException("fail", e);
 		}
 		IntentFilter[] intentFiltersArray = new IntentFilter[] { ndef, };
-		this.nfcAdapter.enableForegroundDispatch(this, pendingIntent, intentFiltersArray, techListsArray);
-
+		if(this.nfcAdapter != null)
+			this.nfcAdapter.enableForegroundDispatch(this, pendingIntent, intentFiltersArray, techListsArray);
 	}
 
 }

@@ -49,6 +49,7 @@
 				<category android:name="android.intent.category.DEFAULT" />
 				<data android:mimeType="application/com.nex.boxplorer" />
       		</intent-filter>
-    	</activity>    
+    	</activity>
+		<activity android:name=".utils.NfcWriterActivity"></activity>    
     </application>
 </manifest>
