@@ -11,13 +11,12 @@ import com.nexelem.boxplorer.model.Box;
 /**
  * Klasa DAO odpowiedzialna za obsluge tabeli Box w bazie danych
  * 
- * 
  * @author darek
  * 
  */
 public class BoxDao {
 
-	private Dao<Box, UUID> helper;
+	private final Dao<Box, UUID> helper;
 
 	public BoxDao(DBHelper helper) throws SQLException {
 		this.helper = helper.getDao(Box.class);
@@ -33,7 +32,6 @@ public class BoxDao {
 
 	public void update(Box box) throws SQLException {
 		this.helper.update(box);
-
 	}
 
 	public void delete(UUID id) throws SQLException {

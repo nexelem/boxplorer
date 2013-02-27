@@ -1,0 +1,20 @@
+package controllers
+
+import play.api._
+import play.api.mvc._
+
+object Backup extends Controller {
+  
+  def list = Action {
+    Ok("Your new application is ready.")
+  }
+  
+  def get = Action {
+    Ok("Your new application is ready.")
+  }
+  
+  def save = Action {
+    Ok("Your new application is ready.")
+  }
+  
+}

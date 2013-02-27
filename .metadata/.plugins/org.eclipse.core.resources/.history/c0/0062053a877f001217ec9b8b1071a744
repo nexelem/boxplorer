@@ -1,0 +1,12 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+# Home page
+POST     /register                           controllers.User.register
+POST     /login                              controllers.User.login
+
+# Map static resources from the /public folder to the /assets URL path
+GET     /backup               controllers.Backups.list
+GET		/backup/:id			  controllers.Backups.get
+POST	/backup				  controllers.Backups.save

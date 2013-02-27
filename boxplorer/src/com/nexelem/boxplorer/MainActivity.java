@@ -9,10 +9,15 @@ import android.app.Activity;
 import android.app.DialogFragment;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
+import android.app.PendingIntent;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.IntentFilter.MalformedMimeTypeException;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
-import android.graphics.drawable.ColorDrawable;
+import android.nfc.NfcAdapter;
+import android.nfc.Tag;
+import android.nfc.tech.NfcF;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
 import android.util.Log;
@@ -37,7 +42,6 @@ import com.nexelem.boxplorer.service.ItemService;
 import com.nexelem.boxplorer.utils.ObjectKeeper;
 import com.nexelem.boxplorer.wizard.BoxDialog;
 
-
 /**
  * Klasa wejsciowa do aplikacji
  * 
@@ -50,6 +54,7 @@ public class MainActivity extends Activity implements OnQueryTextListener {
 	 */
 	private ListAdapter adapter;
 	private ExpandableListView list;
+	private NfcAdapter nfcAdapter;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +63,7 @@ public class MainActivity extends Activity implements OnQueryTextListener {
 
 		// Loading fonts
 		Fonts.loadFonts(this);
-		
+
 		DBHelper helper = new DBHelper(this.getApplicationContext());
 		try {
 			ObjectKeeper.getInstance().setBoxService(new BoxService(helper));
@@ -72,11 +77,11 @@ public class MainActivity extends Activity implements OnQueryTextListener {
 		this.adapter = new ListAdapter(this);
 
 		// Creating expandable list view
-		list = (ExpandableListView) this.findViewById(R.id.listView);
-		list.setAdapter(this.adapter);
-		list.setOnChildClickListener(this.adapter);
-		list.requestFocus();
-		
+		this.list = (ExpandableListView) this.findViewById(R.id.listView);
+		this.list.setAdapter(this.adapter);
+		this.list.setOnChildClickListener(this.adapter);
+		this.list.requestFocus();
+
 		// Customizing action bar
 		ActionBar bar = this.getActionBar();
 		bar.setDisplayHomeAsUpEnabled(false);
@@ -84,30 +89,32 @@ public class MainActivity extends Activity implements OnQueryTextListener {
 		bar.setDisplayShowHomeEnabled(false);
 		bar.setDisplayShowCustomEnabled(true);
 		bar.setCustomView(R.layout.actionbar);
-		
+
 		// Setting add button action
-		ImageView addBox =  (ImageView) this.findViewById(R.id.add_box);
+		ImageView addBox = (ImageView) this.findViewById(R.id.add_box);
 		addBox.setOnClickListener(new OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
-				FragmentTransaction ft = getFragmentManager().beginTransaction();
-			    Fragment prev = getFragmentManager().findFragmentByTag("wizard");
-			    if (prev != null) {
-			        ft.remove(prev);
-			    }
-			    ft.addToBackStack(null);
+				FragmentTransaction ft = MainActivity.this.getFragmentManager().beginTransaction();
+				Fragment prev = MainActivity.this.getFragmentManager().findFragmentByTag("wizard");
+				if (prev != null) {
+					ft.remove(prev);
+				}
+				ft.addToBackStack(null);
 
-			    // Create and show the dialog.
-			    DialogFragment newFragment = new BoxDialog();
-			    newFragment.show(ft, "wizard");
+				// Create and show the dialog.
+				DialogFragment newFragment = new BoxDialog();
+				newFragment.show(ft, "wizard");
 			}
 		});
-		
+
 		// Customizing search view
 		SearchView searcher = (SearchView) this.findViewById(R.id.searcher);
 		searcher.setOnQueryTextListener(this);
 		searcher.setIconified(false);
+
+		this.nfcAdapter = NfcAdapter.getDefaultAdapter(this);
 	}
 
 	/**
@@ -196,13 +203,13 @@ public class MainActivity extends Activity implements OnQueryTextListener {
 		if (newText.length() < 3) {
 			this.adapter.setBoxes(this.adapter.getFullList());
 			this.adapter.notifyDataSetChanged();
-			collapseAll();
+			this.collapseAll();
 		} else if (Arrays.asList(SearchType.QR.getSearchTag(), SearchType.NFC.getSearchTag()).contains(newText)) {
 			return true;
 		} else if (newText.length() >= 3) {
 			try {
 				this.adapter.searchFor(newText);
-				expandAll();
+				this.expandAll();
 				Toast.makeText(this, "Szukam: " + newText, Toast.LENGTH_SHORT).show();
 			} catch (BusinessException e) {
 				Toast.makeText(this, "ERROR: " + newText, Toast.LENGTH_SHORT).show();
@@ -214,14 +221,14 @@ public class MainActivity extends Activity implements OnQueryTextListener {
 	}
 
 	private void collapseAll() {
-		for(int i = 0; i < adapter.getGroupCount(); i++){
-			list.collapseGroup(i);
+		for (int i = 0; i < this.adapter.getGroupCount(); i++) {
+			this.list.collapseGroup(i);
 		}
 	}
-	
+
 	private void expandAll() {
-		for(int i = 0; i < adapter.getGroupCount(); i++){
-			list.expandGroup(i, true);
+		for (int i = 0; i < this.adapter.getGroupCount(); i++) {
+			this.list.expandGroup(i, true);
 		}
 	}
 
@@ -251,10 +258,10 @@ public class MainActivity extends Activity implements OnQueryTextListener {
 	private void handleVoiceResult(int resultCode, Intent data) {
 		List<String> contents = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
 		SearchView searcher = (SearchView) this.findViewById(R.id.searcher);
-		if (searcher != null) {
+		if ((searcher != null) && (contents != null)) {
 			searcher.setQuery(contents.get(0), true);
 		}
-		expandAll();
+		this.expandAll();
 	}
 
 	/**
@@ -271,7 +278,7 @@ public class MainActivity extends Activity implements OnQueryTextListener {
 				if (searcher != null) {
 					searcher.setQuery(":qr", false);
 				}
-				expandAll();
+				this.expandAll();
 			} catch (BusinessException e) {
 				Toast.makeText(this.getApplicationContext(), "Unable to find Box", Toast.LENGTH_SHORT).show();
 				Log.w("QR", "Error while searching box " + contents, e);
@@ -280,4 +287,34 @@ public class MainActivity extends Activity implements OnQueryTextListener {
 			Toast.makeText(this.getApplicationContext(), "Unable to find Box", Toast.LENGTH_SHORT).show();
 		}
 	}
+
+	@Override
+	protected void onNewIntent(Intent intent) {
+		super.onNewIntent(intent);
+		Tag tagFromIntent = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
+
+	}
+
+	@Override
+	protected void onPause() {
+		super.onPause();
+		this.nfcAdapter.disableForegroundDispatch(this);
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+		PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, new Intent(this, this.getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
+		String[][] techListsArray = new String[][] { new String[] { NfcF.class.getName() } };
+		IntentFilter ndef = new IntentFilter(NfcAdapter.ACTION_NDEF_DISCOVERED);
+		try {
+			ndef.addDataType("application/com.nex.boxplorer");
+		} catch (MalformedMimeTypeException e) {
+			throw new RuntimeException("fail", e);
+		}
+		IntentFilter[] intentFiltersArray = new IntentFilter[] { ndef, };
+		this.nfcAdapter.enableForegroundDispatch(this, pendingIntent, intentFiltersArray, techListsArray);
+
+	}
+
 }

@@ -22,4 +22,5 @@
     <string name="msg_default_meta">Meta</string>
     <string name="contents_text">Content</string>
     <!-- qrcode: end -->
+    <string name="tap_nfc_write">Please tap NFC Tag to proceed</string>
 </resources>

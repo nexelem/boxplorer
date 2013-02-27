@@ -29,7 +29,6 @@ public class ItemDialog extends DialogFragment {
 		ItemDialog f = new ItemDialog();
 		f.item = item;
 		f.box = box;
-		Bundle b = new Bundle();
 		return f;
 	}
 
@@ -45,7 +44,6 @@ public class ItemDialog extends DialogFragment {
 		if (this.item != null) {
 			itemName.setText(this.item.getName());
 		}
-
 		Button cancelButton = (Button) v.findViewById(R.id.item_cancel);
 		cancelButton.setOnClickListener(new OnClickListener() {
 			@Override
@@ -114,7 +112,7 @@ public class ItemDialog extends DialogFragment {
 		if (savedInstanceState != null) {
 			int box = savedInstanceState.getInt("box", -1);
 			Item item = savedInstanceState.getParcelable("item");
-			if (box >= 0) {
+			if (box > -1) {
 				this.box = box;
 			}
 			if (item != null) {

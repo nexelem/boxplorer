@@ -9,8 +9,9 @@
         android:targetSdkVersion="17" />
 
     <uses-permission android:name="android.permission.CAMERA" />
-    <uses-feature android:name="android.hardware.camera" />
-    <uses-feature android:name="android.hardware.camera.autofocus" />
+    <uses-permission android:name="android.permission.NFC" />
+    <uses-feature android:name="android.hardware.camera" android:required="false" />
+    <uses-feature android:name="android.hardware.camera.autofocus" android:required="false" />
     
     <application
         android:allowBackup="true"
@@ -41,6 +42,13 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+        <!-- nfc -->
+		<activity android:name="IntentReceiver">
+			<intent-filter>
+			    <action android:name="android.nfc.action.NDEF_DISCOVERED" />
+				<category android:name="android.intent.category.DEFAULT" />
+				<data android:mimeType="application/com.nex.boxplorer" />
+      		</intent-filter>
+    	</activity>    
     </application>
-
 </manifest>

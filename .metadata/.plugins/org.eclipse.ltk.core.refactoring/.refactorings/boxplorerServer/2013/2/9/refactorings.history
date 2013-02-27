@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename resource &apos;boxplorerServer/app/controllers/Application.scala&apos; to &apos;Backup.scala&apos;" description="Rename resource &apos;Application.scala&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="app/controllers/Application.scala" name="Backup.scala" stamp="1361823049181" updateReferences="true"/>
+</session>

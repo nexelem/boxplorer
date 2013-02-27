@@ -15,7 +15,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.AlphaAnimation;
@@ -69,13 +68,13 @@ public class ListAdapter extends BaseExpandableListAdapter implements OnChildCli
 	private String searchText = "";
 
 	private int bgHeight = 0;
-	
+	private boolean expandAll = false;
+
 	public ListAdapter(Context context) {
 		this.context = context;
 		this.updateListAdapterData();
 		ObjectKeeper.getInstance().setListAdapter(this);
 	}
-	
 
 	public void updateListAdapterData() {
 		try {
@@ -103,7 +102,11 @@ public class ListAdapter extends BaseExpandableListAdapter implements OnChildCli
 	public Context getContext() {
 		return this.context;
 	}
-	
+
+	public void expandAll(boolean expand) {
+		this.expandAll = expand;
+	}
+
 	/**
 	 * Metoda wywolywana kiedy zamykamy pudelko (grupe obiektow na liscie)
 	 */
@@ -115,8 +118,6 @@ public class ListAdapter extends BaseExpandableListAdapter implements OnChildCli
 		}
 		this.boxes.get(groupPosition).setState(BoxState.COLLAPSE);
 	}
-	
-	
 
 	@Override
 	public void onGroupExpanded(int groupPosition) {
@@ -137,7 +138,7 @@ public class ListAdapter extends BaseExpandableListAdapter implements OnChildCli
 			LinearLayout toolbar = (LinearLayout) v.findViewById(R.id.item_toolbar);
 			ToggleAnimation animation = new ToggleAnimation(toolbar, 500);
 			toolbar.startAnimation(animation);
-			
+
 			ImageView edit = (ImageView) v.findViewById(R.id.item_toolbar_edit);
 			ImageView remove = (ImageView) v.findViewById(R.id.item_toolbar_remove);
 			edit.setVisibility(View.VISIBLE);
@@ -174,13 +175,13 @@ public class ListAdapter extends BaseExpandableListAdapter implements OnChildCli
 			holder.name = (TextView) view.findViewById(R.id.item_name);
 			holder.add = (ImageView) view.findViewById(R.id.item_toolbar_remove);
 			holder.edit = (ImageView) view.findViewById(R.id.item_toolbar_edit);
-			
+
 			holder.name.setTypeface(Fonts.LIGHT_FONT);
 			view.setTag(holder);
 		} else {
 			holder = (ViewHolder) view.getTag();
 		}
-		
+
 		final Item item = this.boxes.get(boxPosition).getItemsList().get(itemPosition);
 
 		if (item == null) {
@@ -208,20 +209,20 @@ public class ListAdapter extends BaseExpandableListAdapter implements OnChildCli
 			LinearLayout toolbar = (LinearLayout) view.findViewById(R.id.item_toolbar);
 			ToggleAnimation animation = new ToggleAnimation(toolbar, 500);
 			toolbar.startAnimation(animation);
-			
+
 			AlphaAnimation a = new AlphaAnimation(1, 0);
 			a.setDuration(500);
 			a.setFillAfter(true);
 			a.setAnimationListener(new AnimationListener() {
-				
+
 				@Override
 				public void onAnimationStart(Animation animation) {
 				}
-				
+
 				@Override
 				public void onAnimationRepeat(Animation animation) {
 				}
-				
+
 				@Override
 				public void onAnimationEnd(Animation animation) {
 					holder.edit.setVisibility(View.GONE);
@@ -316,7 +317,7 @@ public class ListAdapter extends BaseExpandableListAdapter implements OnChildCli
 		AlertDialog.Builder builder = new AlertDialog.Builder(this.context);
 		builder.setMessage("Czy na pewno usunÄ…Ä‡ przedmiot?").setPositiveButton("Tak", dialogClickListener).setNegativeButton("Nie", dialogClickListener).show();
 	}
-	
+
 	private void removeBox(final View view, final int boxPosition) {
 		DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
 			@Override
@@ -351,9 +352,7 @@ public class ListAdapter extends BaseExpandableListAdapter implements OnChildCli
 	public View getGroupView(final int boxPosition, boolean isExpanded, View view, final ViewGroup parent) {
 		final LayoutInflater inflater = (LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		ViewHolder holder;
-		
-		
-		
+
 		if (view == null) {
 			view = inflater.inflate(R.layout.group_item, null);
 			holder = new ViewHolder();
@@ -363,47 +362,47 @@ public class ListAdapter extends BaseExpandableListAdapter implements OnChildCli
 			holder.remove = (ImageView) view.findViewById(R.id.group_remove_item);
 			holder.edit = (ImageView) view.findViewById(R.id.group_edit_item);
 			holder.indicator = (ImageView) view.findViewById(R.id.expand_indicator);
-			
-			holder.bg = (View) view.findViewById(R.id.expand_bg);
-			holder.height = (View) view.findViewById(R.id.expand_height);
+
+			holder.bg = view.findViewById(R.id.expand_bg);
+			holder.height = view.findViewById(R.id.expand_height);
 
 			holder.name.setTypeface(Fonts.REGULAR_FONT);
 			holder.location.setTypeface(Fonts.REGULAR_FONT);
-			
+
 			view.setTag(holder);
 		} else {
 			holder = (ViewHolder) view.getTag();
 		}
-		
+
 		Box box = this.boxes.get(boxPosition);
-		if(box.getState() == BoxState.EXPAND){
+		if (box.getState() == BoxState.EXPAND) {
 			box.setState(BoxState.NORMAL);
-			RotateAnimation rotation = new RotateAnimation(0f,90f,Animation.RELATIVE_TO_SELF,0.5f,Animation.RELATIVE_TO_SELF,0.5f);
+			RotateAnimation rotation = new RotateAnimation(0f, 90f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
 			rotation.setDuration(100);
 			rotation.setInterpolator(new AccelerateInterpolator());
 			rotation.setFillAfter(true);
-			
+
 			HeightAnimation height = new HeightAnimation(holder.bg, holder.height.getHeight());
 			height.setDuration(100);
 			height.setInterpolator(new AccelerateInterpolator());
 			height.setFillAfter(true);
-			bgHeight = holder.bg.getHeight();
-			
+			this.bgHeight = holder.bg.getHeight();
+
 			holder.indicator.startAnimation(rotation);
 			holder.bg.startAnimation(height);
-			
-		} else if(box.getState() == BoxState.COLLAPSE){
+
+		} else if (box.getState() == BoxState.COLLAPSE) {
 			box.setState(BoxState.NORMAL);
-			RotateAnimation rotation = new RotateAnimation(90f,0f,Animation.RELATIVE_TO_SELF,0.5f,Animation.RELATIVE_TO_SELF,0.5f);
+			RotateAnimation rotation = new RotateAnimation(90f, 0f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
 			rotation.setDuration(200);
 			rotation.setInterpolator(new LinearInterpolator());
 			rotation.setFillAfter(true);
-			
-			HeightAnimation height = new HeightAnimation(holder.bg, bgHeight);
+
+			HeightAnimation height = new HeightAnimation(holder.bg, this.bgHeight);
 			height.setDuration(200);
 			height.setInterpolator(new AccelerateInterpolator());
 			height.setFillAfter(true);
-			
+
 			holder.indicator.startAnimation(rotation);
 			holder.bg.startAnimation(height);
 		}
@@ -431,30 +430,30 @@ public class ListAdapter extends BaseExpandableListAdapter implements OnChildCli
 				ft.commit();
 			}
 		});
-		
+
 		holder.remove.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View view) {
-				removeBox(view, boxPosition);
+				ListAdapter.this.removeBox(view, boxPosition);
 			}
 		});
-		
+
 		holder.edit.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View view) {
-				FragmentTransaction ft = ((Activity) context).getFragmentManager().beginTransaction();
-			    Fragment prev = ((Activity) context).getFragmentManager().findFragmentByTag("wizard");
-			    if (prev != null) {
-			        ft.remove(prev);
-			    }
-			    ft.addToBackStack(null);
+				FragmentTransaction ft = ((Activity) ListAdapter.this.context).getFragmentManager().beginTransaction();
+				Fragment prev = ((Activity) ListAdapter.this.context).getFragmentManager().findFragmentByTag("wizard");
+				if (prev != null) {
+					ft.remove(prev);
+				}
+				ft.addToBackStack(null);
 
-			    // Create and show the dialog.
-			    DialogFragment newFragment = new BoxDialog((Box)getGroup(boxPosition));
-			    newFragment.show(ft, "wizard");
+				// Create and show the dialog.
+				DialogFragment newFragment = new BoxDialog((Box) ListAdapter.this.getGroup(boxPosition));
+				newFragment.show(ft, "wizard");
 			}
 		});
-		
+
 		holder.name.setText(this.boxes.get(boxPosition).getName());
 		holder.location.setText(this.boxes.get(boxPosition).getLocation());
 		return view;
