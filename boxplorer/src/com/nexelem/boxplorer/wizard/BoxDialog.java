@@ -203,6 +203,7 @@ public class BoxDialog extends DialogFragment {
 
 	private void writeNfcTag() {
 		Intent intent = new Intent(this.getActivity().getApplication().getApplicationContext(), NfcWriterActivity.class);
+		intent.putExtra(Intent.EXTRA_UID, this.box.getId().toString());
 		this.startActivity(intent);
 	}
 

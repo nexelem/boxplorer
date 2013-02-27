@@ -39,6 +39,7 @@ import com.nexelem.boxplorer.model.Box;
 import com.nexelem.boxplorer.search.SearchType;
 import com.nexelem.boxplorer.service.BoxService;
 import com.nexelem.boxplorer.service.ItemService;
+import com.nexelem.boxplorer.utils.NfcTagReader;
 import com.nexelem.boxplorer.utils.ObjectKeeper;
 import com.nexelem.boxplorer.wizard.BoxDialog;
 
@@ -292,7 +293,18 @@ public class MainActivity extends Activity implements OnQueryTextListener {
 	protected void onNewIntent(Intent intent) {
 		super.onNewIntent(intent);
 		Tag tagFromIntent = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
-
+		String id = NfcTagReader.getUUID(tagFromIntent);
+		try {
+			this.adapter.searchForBox(id);
+		} catch (BusinessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		SearchView searcher = (SearchView) this.findViewById(R.id.searcher);
+		if (searcher != null) {
+			searcher.setQuery(":nfc", false);
+		}
+		this.expandAll();
 	}
 
 	@Override

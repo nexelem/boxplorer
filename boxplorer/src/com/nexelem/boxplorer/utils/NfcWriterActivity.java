@@ -83,7 +83,6 @@ public class NfcWriterActivity extends Activity {
 
 			try {
 				Ndef ndef = Ndef.get(this.tag);
-
 				if (ndef == null) {
 					NdefFormatable formatable = NdefFormatable.get(this.tag);
 
