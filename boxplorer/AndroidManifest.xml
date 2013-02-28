@@ -20,10 +20,10 @@
         android:theme="@style/AppTheme" >
         <activity
             android:name="com.nexelem.boxplorer.MainActivity"
-            android:label="@string/app_name" >
+            android:label="@string/app_name"
+            android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -43,13 +43,14 @@
             </intent-filter>
         </activity>
         <!-- nfc -->
-		<activity android:name="IntentReceiver">
-			<intent-filter>
-			    <action android:name="android.nfc.action.NDEF_DISCOVERED" />
-				<category android:name="android.intent.category.DEFAULT" />
-				<data android:mimeType="application/com.nex.boxplorer" />
-      		</intent-filter>
+		<activity android:name="com.nexelem.boxplorer.NfcReceiverActivity" android:launchMode="singleTop">
+		    <intent-filter>
+    			<action android:name="android.nfc.action.NDEF_DISCOVERED"/>
+    			<category android:name="android.intent.category.DEFAULT"/>
+    			<data android:mimeType="application/com.nexelem.boxplorer" />
+			</intent-filter>
+			<meta-data android:name="android.nfc.action.TECH_DISCOVERED" android:resource="@xml/nfc_tech_filter" />
     	</activity>
-		<activity android:name=".utils.NfcWriterActivity"></activity>    
+		<activity android:name=".utils.NfcWriterActivity" android:launchMode="singleTop"></activity>    
     </application>
 </manifest>

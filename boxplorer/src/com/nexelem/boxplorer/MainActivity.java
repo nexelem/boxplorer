@@ -9,23 +9,21 @@ import android.app.Activity;
 import android.app.DialogFragment;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
-import android.app.PendingIntent;
 import android.content.Intent;
-import android.content.IntentFilter;
-import android.content.IntentFilter.MalformedMimeTypeException;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.nfc.NfcAdapter;
 import android.nfc.Tag;
-import android.nfc.tech.NfcF;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.SearchView;
@@ -55,7 +53,6 @@ public class MainActivity extends Activity implements OnQueryTextListener {
 	 */
 	private ListAdapter adapter;
 	private ExpandableListView list;
-	private NfcAdapter nfcAdapter;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -110,12 +107,12 @@ public class MainActivity extends Activity implements OnQueryTextListener {
 			}
 		});
 
+		this.handleTagReceive(this.getIntent());
+
 		// Customizing search view
 		SearchView searcher = (SearchView) this.findViewById(R.id.searcher);
 		searcher.setOnQueryTextListener(this);
 		searcher.setIconified(false);
-
-		this.nfcAdapter = NfcAdapter.getDefaultAdapter(this);
 	}
 
 	/**
@@ -125,7 +122,7 @@ public class MainActivity extends Activity implements OnQueryTextListener {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case R.id.nfc:
-			Toast.makeText(this, "TODO: " + item.getTitle(), Toast.LENGTH_SHORT).show();
+			this.readNfcTag();
 			break;
 		case R.id.qr_code:
 			this.readQrCode();
@@ -135,6 +132,22 @@ public class MainActivity extends Activity implements OnQueryTextListener {
 			break;
 		}
 		return true;
+	}
+
+	private void readNfcTag() {
+		(new DialogFragment() {
+			@Override
+			public void onCreate(Bundle savedInstanceState) {
+				super.onCreate(savedInstanceState);
+			}
+
+			@Override
+			public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+				View v = inflater.inflate(R.layout.wizard_box_3, container, false);
+				return v;
+			}
+		}).show(this.getFragmentManager(), "findByNfc");
+
 	}
 
 	private void readVoice() {
@@ -174,7 +187,7 @@ public class MainActivity extends Activity implements OnQueryTextListener {
 		}
 
 		// sprawdzamy czy jest dostepna kamera
-		if (!pm.hasSystemFeature(PackageManager.FEATURE_CAMERA)) {
+		if (!pm.hasSystemFeature(PackageManager.FEATURE_CAMERA) && !pm.hasSystemFeature(PackageManager.FEATURE_CAMERA_FRONT)) {
 			menu.findItem(R.id.qr_code).setVisible(false);
 		}
 		return super.onPrepareOptionsMenu(menu);
@@ -292,7 +305,17 @@ public class MainActivity extends Activity implements OnQueryTextListener {
 	@Override
 	protected void onNewIntent(Intent intent) {
 		super.onNewIntent(intent);
+		this.handleTagReceive(intent);
+	}
+
+	private void handleTagReceive(Intent intent) {
+		if (intent == null) {
+			return;
+		}
 		Tag tagFromIntent = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
+		if (tagFromIntent == null) {
+			return;
+		}
 		String id = NfcTagReader.getUUID(tagFromIntent);
 		try {
 			this.adapter.searchForBox(id);
@@ -306,28 +329,4 @@ public class MainActivity extends Activity implements OnQueryTextListener {
 		}
 		this.expandAll();
 	}
-
-	@Override
-	protected void onPause() {
-		super.onPause();
-		if(this.nfcAdapter != null)
-			this.nfcAdapter.disableForegroundDispatch(this);
-	}
-
-	@Override
-	protected void onResume() {
-		super.onResume();
-		PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, new Intent(this, this.getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
-		String[][] techListsArray = new String[][] { new String[] { NfcF.class.getName() } };
-		IntentFilter ndef = new IntentFilter(NfcAdapter.ACTION_NDEF_DISCOVERED);
-		try {
-			ndef.addDataType("application/com.nex.boxplorer");
-		} catch (MalformedMimeTypeException e) {
-			throw new RuntimeException("fail", e);
-		}
-		IntentFilter[] intentFiltersArray = new IntentFilter[] { ndef, };
-		if(this.nfcAdapter != null)
-			this.nfcAdapter.enableForegroundDispatch(this, pendingIntent, intentFiltersArray, techListsArray);
-	}
-
 }

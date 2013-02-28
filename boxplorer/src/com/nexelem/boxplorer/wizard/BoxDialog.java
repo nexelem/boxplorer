@@ -199,16 +199,18 @@ public class BoxDialog extends DialogFragment {
 	private void setStep(int i) {
 		this.flipper.setDisplayedChild(i);
 		this.step = i;
-		
-		if(i == 2){
-			writeNfcTag();
+
+		if (i == 2) {
+			this.writeNfcTag();
 		}
 	}
 
 	private void writeNfcTag() {
 		Intent intent = new Intent(this.getActivity(), NfcWriterActivity.class);
 		intent.putExtra(Intent.EXTRA_UID, this.box.getId().toString());
-		this.startActivity(intent);
+		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+		this.startActivityForResult(intent, 0);
 	}
 
 }
