@@ -13,11 +13,12 @@ public class NfcTagReader {
 	public static String getUUID(Tag tagToRead) {
 		Ndef tag = Ndef.get(tagToRead);
 		try {
+			tag.connect();
 			NdefMessage ndefM = tag.getNdefMessage();
 			NdefRecord[] nrec = ndefM.getRecords();
 			StringBuilder sb = new StringBuilder();
 			for (NdefRecord rec : nrec) {
-				sb.append(rec.getPayload());
+				sb.append(new String(rec.getPayload()));
 			}
 			return sb.toString();
 		} catch (IOException e) {

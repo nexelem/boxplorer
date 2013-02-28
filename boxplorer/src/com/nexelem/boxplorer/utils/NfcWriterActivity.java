@@ -17,15 +17,19 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.nexelem.boxplorer.R;
+
 public class NfcWriterActivity extends Activity {
 
 	private NfcAdapter adapter;
 	private boolean writingMode = false;
+	private String uuid = "";
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		// this.setContentView(R.layout.main);
+		this.setContentView(R.layout.wizard);
+		this.uuid = this.getIntent().getStringExtra(Intent.EXTRA_UID);
 		this.adapter = NfcAdapter.getDefaultAdapter(this);
 	}
 
@@ -33,9 +37,9 @@ public class NfcWriterActivity extends Activity {
 	protected void onNewIntent(Intent intent) {
 		if (this.writingMode && NfcAdapter.ACTION_TAG_DISCOVERED.equals(intent.getAction())) {
 			Tag tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
-			byte[] text = new String(intent.getStringExtra(Intent.EXTRA_UID)).getBytes(Charset.forName("US-ASCII"));
+			byte[] text = this.uuid.getBytes(Charset.forName("US-ASCII"));
 
-			NdefRecord record = new NdefRecord(NdefRecord.TNF_EXTERNAL_TYPE, "application/com.nexelem.boxplorer".getBytes(Charset.forName("US-ASCII")), new byte[0], text);
+			NdefRecord record = new NdefRecord(NdefRecord.TNF_MIME_MEDIA, "application/com.nexelem.boxplorer".getBytes(Charset.forName("US-ASCII")), new byte[0], text);
 			NdefMessage msg = new NdefMessage(new NdefRecord[] { record });
 
 			new WriteTask(this, msg, tag).execute();
