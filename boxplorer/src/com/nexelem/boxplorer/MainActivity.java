@@ -322,6 +322,7 @@ public class MainActivity extends Activity implements OnQueryTextListener {
 		} catch (BusinessException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			return;
 		}
 		SearchView searcher = (SearchView) this.findViewById(R.id.searcher);
 		if (searcher != null) {

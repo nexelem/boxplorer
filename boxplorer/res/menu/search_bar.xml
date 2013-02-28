@@ -7,17 +7,17 @@
      >
      	<menu>
 		   	<item android:id="@+id/voice"
-		          android:title="Voice"
+		          android:title="@string/search_voice"
 				  android:showAsAction="ifRoom"
 		          android:icon="@drawable/voice"
 		          />
 		     <item android:id="@+id/qr_code"
-		          android:title="QR Code"
+		          android:title="@string/search_qr_code"
 				  android:showAsAction="ifRoom"
 		          android:icon="@drawable/qr"
 		          />
 		      <item android:id="@+id/nfc"
-		          android:title="NFC"
+		          android:title="@string/search_nfc"
 		          android:showAsAction="ifRoom"
 		          android:icon="@drawable/nfc"
 		         />

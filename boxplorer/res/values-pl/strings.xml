@@ -4,6 +4,13 @@
     <string name="app_name">boxplorer</string>
     <string name="db_name">boxplorer.db</string>
     
+    <!-- menu -->
+	<string name="search_voice">Głosowo</string>
+	<string name="search_qr_code">Kod QR</string>
+	<string name="search_nfc">Tag NFC</string>
+    
+	<string name="item_dialog_title">Dodaj przedmiot</string>
+	
     <string name="add">Dodaj</string>
     <string name="cancel">Anuluj</string>
     <string name="item_name">Nazwa przedmiotu</string>
@@ -22,5 +29,6 @@
     <string name="msg_default_time">Czas</string>
     <string name="msg_default_meta">Meta</string>
     <string name="contents_text">Zawartość</string>
-    <!-- qrcode: end -->
+    <!-- nfc: end -->
+    <string name="tap_nfc_write">Proszę przyłożyć tag NFC aby kontynuować</string>
 </resources>

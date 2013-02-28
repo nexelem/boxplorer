@@ -35,7 +35,7 @@ public class ItemDialog extends DialogFragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View v = inflater.inflate(R.layout.item_dialog, container, false);
-
+		this.getDialog().setTitle(R.string.item_dialog_title);
 		final TextView itemName = (TextView) v.findViewById(R.id.item_name);
 		final Spinner boxes = (Spinner) v.findViewById(R.id.item_boxlist);
 		final boolean updateItem = this.item == null ? false : true;
