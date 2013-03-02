@@ -1,4 +1,4 @@
-package com.nexelem.boxplorer;
+package com.nexelem.boxplorer.activity;
 
 import android.app.Activity;
 import android.app.PendingIntent;
@@ -13,9 +13,8 @@ import android.nfc.tech.NfcA;
 import android.nfc.tech.NfcF;
 import android.os.Bundle;
 
-import com.nexelem.boxplorer.utils.NfcTagReader;
 
-public class NfcReceiverActivity extends Activity {
+public class NfcReceiver extends Activity {
 
 	private IntentFilter[] intentFiltersArray;
 	private String[][] techListsArray;
@@ -29,11 +28,7 @@ public class NfcReceiverActivity extends Activity {
 		this.pendingIntent = PendingIntent.getActivity(this, 0, new Intent(this, this.getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
 		IntentFilter ndef = new IntentFilter(NfcAdapter.ACTION_NDEF_DISCOVERED);
 		try {
-			ndef.addDataType("*/*"); /*
-									 * Handles all MIME based dispatches. You
-									 * should specify only the ones that you
-									 * need.
-									 */
+			ndef.addDataType(NfcWriter.NFC_MIME_TYPE);
 		} catch (MalformedMimeTypeException e) {
 			throw new RuntimeException("fail", e);
 		}
@@ -42,16 +37,10 @@ public class NfcReceiverActivity extends Activity {
 		this.techListsArray = new String[][] { new String[] { NfcF.class.getName(), MifareUltralight.class.getName(), NfcA.class.getName(), Ndef.class.getName() } };
 
 		Tag tagFromIntent = this.getIntent().getParcelableExtra(NfcAdapter.EXTRA_TAG);
-		Intent intent = new Intent(this, MainActivity.class);
+		Intent intent = new Intent(this, Main.class);
 		intent.putExtra(NfcAdapter.EXTRA_TAG, tagFromIntent);
 		intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
 		this.startActivity(intent);
-	}
-
-	@Override
-	protected void onNewIntent(Intent intent) {
-		Tag tagFromIntent = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
-		System.out.println(NfcTagReader.getUUID(tagFromIntent));
 	}
 
 	@Override

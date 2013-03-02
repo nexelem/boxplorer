@@ -1,4 +1,4 @@
-package com.nexelem.boxplorer;
+package com.nexelem.boxplorer.activity;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -30,6 +30,11 @@ import android.widget.SearchView;
 import android.widget.SearchView.OnQueryTextListener;
 import android.widget.Toast;
 
+import com.nexelem.boxplorer.Fonts;
+import com.nexelem.boxplorer.R;
+import com.nexelem.boxplorer.R.id;
+import com.nexelem.boxplorer.R.layout;
+import com.nexelem.boxplorer.R.menu;
 import com.nexelem.boxplorer.adapter.ListAdapter;
 import com.nexelem.boxplorer.db.BusinessException;
 import com.nexelem.boxplorer.db.DBHelper;
@@ -46,7 +51,7 @@ import com.nexelem.boxplorer.wizard.BoxDialog;
  * 
  * @author bartek wilczynski, darek zon
  */
-public class MainActivity extends Activity implements OnQueryTextListener {
+public class Main extends Activity implements OnQueryTextListener {
 
 	/**
 	 * 
@@ -94,8 +99,8 @@ public class MainActivity extends Activity implements OnQueryTextListener {
 
 			@Override
 			public void onClick(View v) {
-				FragmentTransaction ft = MainActivity.this.getFragmentManager().beginTransaction();
-				Fragment prev = MainActivity.this.getFragmentManager().findFragmentByTag("wizard");
+				FragmentTransaction ft = Main.this.getFragmentManager().beginTransaction();
+				Fragment prev = Main.this.getFragmentManager().findFragmentByTag("wizard");
 				if (prev != null) {
 					ft.remove(prev);
 				}
@@ -330,4 +335,5 @@ public class MainActivity extends Activity implements OnQueryTextListener {
 		}
 		this.expandAll();
 	}
+
 }

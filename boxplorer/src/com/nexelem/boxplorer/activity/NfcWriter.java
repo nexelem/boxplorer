@@ -1,4 +1,4 @@
-package com.nexelem.boxplorer.utils;
+package com.nexelem.boxplorer.activity;
 
 import java.nio.charset.Charset;
 
@@ -15,11 +15,14 @@ import android.nfc.tech.NdefFormatable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.nexelem.boxplorer.R;
 
-public class NfcWriterActivity extends Activity {
+public class NfcWriter extends Activity {
+
+	public static final int STATUS_SUCCESS = 1;
+	public static final int STATUS_ERROR = 0;
+	public static final String NFC_MIME_TYPE = "application/com.nexelem.boxplorer";
 
 	private NfcAdapter adapter;
 	private boolean writingMode = false;
@@ -39,7 +42,7 @@ public class NfcWriterActivity extends Activity {
 			Tag tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
 			byte[] text = this.uuid.getBytes(Charset.forName("US-ASCII"));
 
-			NdefRecord record = new NdefRecord(NdefRecord.TNF_MIME_MEDIA, "application/com.nexelem.boxplorer".getBytes(Charset.forName("US-ASCII")), new byte[0], text);
+			NdefRecord record = new NdefRecord(NdefRecord.TNF_MIME_MEDIA, NfcWriter.NFC_MIME_TYPE.getBytes(Charset.forName("US-ASCII")), new byte[0], text);
 			NdefMessage msg = new NdefMessage(new NdefRecord[] { record });
 
 			new WriteTask(this, msg, tag).execute();
@@ -73,7 +76,7 @@ public class NfcWriterActivity extends Activity {
 		Activity host = null;
 		NdefMessage msg = null;
 		Tag tag = null;
-		String text = null;
+		int returnText = -1;
 
 		WriteTask(Activity host, NdefMessage msg, Tag tag) {
 			this.host = host;
@@ -97,36 +100,36 @@ public class NfcWriterActivity extends Activity {
 							try {
 								formatable.format(this.msg);
 							} catch (Exception e) {
-								this.text = "Tag refused to format";
+								this.returnText = R.string.nfc_tag_refused_to_format;
 							}
 						} catch (Exception e) {
-							this.text = "Tag refused to connect";
+							this.returnText = R.string.nfc_tag_refused_to_connect;
 						} finally {
 							formatable.close();
 						}
 					} else {
-						this.text = "Tag does not support NDEF";
+						this.returnText = R.string.nfc_tag_does_not_support_ndef;
 					}
 				} else {
 					ndef.connect();
 
 					try {
 						if (!ndef.isWritable()) {
-							this.text = "Tag is read-only";
+							this.returnText = R.string.nfc_tag_is_read_only;
 						} else if (ndef.getMaxSize() < size) {
-							this.text = "Message is too big for tag";
+							this.returnText = R.string.nfc_message_is_too_big;
 						} else {
 							ndef.writeNdefMessage(this.msg);
 						}
 					} catch (Exception e) {
-						this.text = "Tag refused to connect";
+						this.returnText = R.string.nfc_tag_refused_to_connect;
 					} finally {
 						ndef.close();
 					}
 				}
 			} catch (Exception e) {
 				Log.e("URLTagger", "Exception when writing tag", e);
-				this.text = "General exception: " + e.getMessage();
+				this.returnText = R.string.nfc_general_exception;
 			}
 
 			return (null);
@@ -134,10 +137,10 @@ public class NfcWriterActivity extends Activity {
 
 		@Override
 		protected void onPostExecute(Void unused) {
-			if (this.text != null) {
-				Toast.makeText(this.host, this.text, Toast.LENGTH_SHORT).show();
-			}
+			// this.host.sendReturnMessage();
 			this.host.finish();
+			// TODO WYWOLAC METODA Z NFC_WRITER KTORA ZWROCI ODPOWIEDZ DO
+			// BOX_DIALOG
 		}
 	}
 }

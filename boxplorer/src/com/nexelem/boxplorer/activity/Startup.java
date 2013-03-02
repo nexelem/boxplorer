@@ -1,4 +1,8 @@
-package com.nexelem.boxplorer;
+package com.nexelem.boxplorer.activity;
+
+import com.nexelem.boxplorer.R;
+import com.nexelem.boxplorer.R.id;
+import com.nexelem.boxplorer.R.layout;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -9,7 +13,7 @@ import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 
-public class StartupActivity extends Activity {
+public class Startup extends Activity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +49,7 @@ public class StartupActivity extends Activity {
 			
 			@Override
 			public void onAnimationEnd(Animation animation) {
-				Intent intent = new Intent(StartupActivity.this, MainActivity.class);
+				Intent intent = new Intent(Startup.this, Main.class);
 				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 				intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 				startActivity(intent);

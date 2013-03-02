@@ -19,9 +19,9 @@ import android.widget.Toast;
 import android.widget.ViewFlipper;
 
 import com.nexelem.boxplorer.R;
+import com.nexelem.boxplorer.activity.NfcWriter;
 import com.nexelem.boxplorer.db.BusinessException;
 import com.nexelem.boxplorer.model.Box;
-import com.nexelem.boxplorer.utils.NfcWriterActivity;
 import com.nexelem.boxplorer.utils.ObjectKeeper;
 import com.nexelem.boxplorer.utils.QRCodeUtils;
 
@@ -206,7 +206,7 @@ public class BoxDialog extends DialogFragment {
 	}
 
 	private void writeNfcTag() {
-		Intent intent = new Intent(this.getActivity(), NfcWriterActivity.class);
+		Intent intent = new Intent(this.getActivity(), NfcWriter.class);
 		intent.putExtra(Intent.EXTRA_UID, this.box.getId().toString());
 		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 

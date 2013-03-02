@@ -30,4 +30,10 @@
     <string name="contents_text">Content</string>
     <!-- nfc: end -->
     <string name="tap_nfc_write">Please tap NFC Tag to proceed</string>
+    <string name="nfc_tag_refused_to_format">Tag refused to format</string>
+    <string name="nfc_tag_refused_to_connect">Tag refused to connect</string>
+    <string name="nfc_tag_does_not_support_ndef">Tag does not support NDEF format</string>
+    <string name="nfc_tag_is_read_only">Tag is read-only</string>
+    <string name="nfc_message_is_too_big">Message is too big for tag</string>
+    <string name="nfc_general_exception">General error</string>
 </resources>
