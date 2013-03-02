@@ -5,6 +5,7 @@
     <string name="db_name">boxplorer.db</string>
     
     <!-- menu -->
+    <string name="input_methods">Metody wprowadzania</string>
 	<string name="search_voice">Głosowo</string>
 	<string name="search_qr_code">Kod QR</string>
 	<string name="search_nfc">Tag NFC</string>
@@ -14,10 +15,19 @@
     <string name="add">Dodaj</string>
     <string name="cancel">Anuluj</string>
     <string name="item_name">Nazwa przedmiotu</string>
-    <string name="add_item">Dodaj przedmiot</string>
     <string name="edit_item">Edytuj przedmiot</string>
+    <string name="add_item">Dodaj przedmiot</string>
     <string name="remove_item">Usuń przedmiot</string>
-
+    <string name="box_name">Nazwa pudła</string>
+    <string name="box_location">Lokalizacja pudła</string>
+    <string name="itme_location">Lokalizacja przedmiotu</string>
+    <string name="generate_qr_code">Generuj kod QR</string>
+    <string name="write_nfc_tag">Zapis tag NFC</string>
+    <string name="send_qr_code">Wyślij kod QR</string>
+	<string name="application_logo">Logo aplikacji</string>
+    <string name="nfc_logo">Logo NFC</string>
+    <string name="box_expand_indicator">Wskaźnik rozsunięcia pudełka</string>
+    
     <!-- qrcode: start -->
     <string name="msg_camera_framework_bug">Przykro nam, ale kamera w aparacie nie działa poprawnie. Być może potrzebne będzie ponowne uruchomienie aparatu.</string>
     <string name="msg_default_status">Aby przeskanować kod QR umieść go w obrębie kwadratu widocznym na wyświetlaczu</string>
@@ -31,4 +41,10 @@
     <string name="contents_text">Zawartość</string>
     <!-- nfc: end -->
     <string name="tap_nfc_write">Proszę przyłożyć tag NFC aby kontynuować</string>
+    <string name="nfc_tag_refused_to_format">Nie udało się sformatować tagu</string>
+    <string name="nfc_tag_refused_to_connect">Nie udało się połączyć z tagiem</string>
+    <string name="nfc_tag_does_not_support_ndef">Tag nie obsługuje formatu NDEF</string>
+    <string name="nfc_tag_is_read_only">Tag jest tylko do odczytu</string>
+    <string name="nfc_message_is_too_big">Tag ma za mało miejsca</string>
+    <string name="nfc_general_exception">Błąd</string>
 </resources>

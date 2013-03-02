@@ -11,7 +11,8 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginBottom="20dp"
         android:layout_marginTop="20dp"
-        android:src="@drawable/nfc_example" />
+        android:src="@drawable/nfc_example"
+        android:contentDescription="@string/nfc_logo" />
 
     <TextView
         android:id="@+id/textView1"

@@ -17,7 +17,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:scaleType="centerInside"
-            android:src="@drawable/expand_off" />
+            android:src="@drawable/expand_off"
+            android:contentDescription="@string/box_expand_indicator" />
 
     </LinearLayout>
 
@@ -41,7 +42,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingBottom="@dimen/small_bottom_padding"
-                android:text="Rupiecie"
+                android:text="@string/box_name"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:textColor="@color/font_dark_color"
                 android:textSize="@dimen/box_name_height" />
@@ -51,7 +52,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="-8dp"
-                android:text="Piwnica"
+                android:text="@string/box_location"
                 android:textAllCaps="true"
                 android:textColor="@color/box_localization"
                 android:textSize="@dimen/box_location_height" />
@@ -63,7 +64,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_weight="0.25"
-            android:src="@drawable/edit" />
+            android:src="@drawable/edit"
+            android:contentDescription="@string/edit_item" />
 
         <ImageView
             android:id="@+id/group_remove_item"
@@ -72,7 +74,8 @@
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="@dimen/actions_margin"
             android:layout_weight="0.25"
-            android:src="@drawable/remove" />
+            android:src="@drawable/remove"
+            android:contentDescription="@string/remove_item" />
 
         <ImageView
             android:id="@+id/group_add_item"
@@ -82,7 +85,8 @@
             android:layout_marginLeft="@dimen/actions_margin"
             android:layout_weight="0.25"
             android:scaleType="center"
-            android:src="@drawable/add" />
+            android:src="@drawable/add"
+            android:contentDescription="@string/add_item" />
 
     </LinearLayout>
 

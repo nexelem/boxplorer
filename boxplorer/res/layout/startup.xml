@@ -12,6 +12,7 @@
         android:layout_height="match_parent"
         android:layout_gravity="center"
         android:scaleType="centerInside"
-        android:src="@drawable/logo" />
+        android:src="@drawable/logo"
+        android:contentDescription="@string/application_logo" />
 
 </LinearLayout>

@@ -11,13 +11,14 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginBottom="20dp"
         android:layout_marginTop="20dp"
-        android:src="@drawable/qr_example" />
+        android:src="@drawable/qr_example"
+        android:contentDescription="@string/generate_qr_code" />
 
     <Button
         android:id="@+id/next2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:text="Print" />
+        android:text="@string/send_qr_code" />
 
 </LinearLayout>

@@ -9,26 +9,26 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:hint="Box name" />
+        android:hint="@string/box_name" />
 
     <EditText
         android:id="@+id/box_add_localization"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:hint="Localization" >
+        android:hint="@string/box_location" >
     </EditText>
 
     <CheckBox
         android:id="@+id/box_add_qr"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Generate QR Code" />
+        android:text="@string/generate_qr_code" />
 
     <CheckBox
         android:id="@+id/box_add_nfc"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Tag NFC" />
+        android:text="@string/write_nfc_tag" />
 
 </LinearLayout>

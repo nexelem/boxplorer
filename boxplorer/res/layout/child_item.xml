@@ -75,7 +75,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
-            android:text="Lokalizacja: Rupiecie, Piwnica"
+            android:text="@string/itme_location"
             android:textAllCaps="true"
             android:textColor="@color/box_localization"
             android:textSize="@dimen/box_location_height" />

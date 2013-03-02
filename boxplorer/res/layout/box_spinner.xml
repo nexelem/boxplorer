@@ -11,7 +11,7 @@
         android:layout_alignParentTop="true"
         android:layout_marginLeft="16dp"
         android:layout_marginTop="18dp"
-        android:text="Medium Text"
+        android:text="@string/box_name"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <TextView
@@ -20,6 +20,6 @@
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/box_name"
         android:layout_below="@+id/box_name"
-        android:text="TextView" />
+        android:text="@string/box_location" />
 
 </RelativeLayout>

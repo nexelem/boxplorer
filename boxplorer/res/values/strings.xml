@@ -5,6 +5,7 @@
     <string name="db_name">boxplorer.db</string>
     
     <!-- menu -->
+    <string name="input_methods">Input methods</string>
 	<string name="search_voice">Voice</string>
 	<string name="search_qr_code">QR code</string>
 	<string name="search_nfc">NFC Tag</string>
@@ -15,7 +16,18 @@
     <string name="cancel">Cancel</string>
     <string name="item_name">Item name</string>
     <string name="edit_item">Edit item</string>
+    <string name="add_item">Add item</string>
     <string name="remove_item">Remove item</string>
+    <string name="box_name">Box name</string>
+    <string name="box_location">Box location</string>
+    <string name="itme_location">Item location</string>
+    <string name="generate_qr_code">Generate QR code</string>
+    <string name="write_nfc_tag">Write NFC tag</string>
+    <string name="send_qr_code">Send QR code</string>
+    <string name="application_logo">Application logo</string>
+    <string name="nfc_logo">NFC logo</string>
+    <string name="box_expand_indicator">Box expand indicator</string>
+    
     
     <!-- qrcode: start -->
     <string name="button_ok">OK</string>
