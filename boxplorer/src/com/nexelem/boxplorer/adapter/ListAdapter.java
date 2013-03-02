@@ -68,7 +68,6 @@ public class ListAdapter extends BaseExpandableListAdapter implements OnChildCli
 	private String searchText = "";
 
 	private int bgHeight = 0;
-	private boolean expandAll = false;
 
 	public ListAdapter(Context context) {
 		this.context = context;
@@ -101,10 +100,6 @@ public class ListAdapter extends BaseExpandableListAdapter implements OnChildCli
 
 	public Context getContext() {
 		return this.context;
-	}
-
-	public void expandAll(boolean expand) {
-		this.expandAll = expand;
 	}
 
 	/**

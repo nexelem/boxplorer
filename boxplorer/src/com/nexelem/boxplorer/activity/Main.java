@@ -8,6 +8,7 @@ import android.app.ActionBar;
 import android.app.Activity;
 import android.app.DialogFragment;
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -32,9 +33,6 @@ import android.widget.Toast;
 
 import com.nexelem.boxplorer.Fonts;
 import com.nexelem.boxplorer.R;
-import com.nexelem.boxplorer.R.id;
-import com.nexelem.boxplorer.R.layout;
-import com.nexelem.boxplorer.R.menu;
 import com.nexelem.boxplorer.adapter.ListAdapter;
 import com.nexelem.boxplorer.db.BusinessException;
 import com.nexelem.boxplorer.db.DBHelper;
@@ -99,16 +97,17 @@ public class Main extends Activity implements OnQueryTextListener {
 
 			@Override
 			public void onClick(View v) {
-				FragmentTransaction ft = Main.this.getFragmentManager().beginTransaction();
+				FragmentManager fm = Main.this.getFragmentManager();
+				FragmentTransaction ft = fm.beginTransaction();
 				Fragment prev = Main.this.getFragmentManager().findFragmentByTag("wizard");
 				if (prev != null) {
 					ft.remove(prev);
 				}
 				ft.addToBackStack(null);
-
 				// Create and show the dialog.
 				DialogFragment newFragment = new BoxDialog();
 				newFragment.show(ft, "wizard");
+				ft.commit();
 			}
 		});
 
@@ -275,6 +274,9 @@ public class Main extends Activity implements OnQueryTextListener {
 	 * rozpoznanych slow i wyszukuje przedmiotu
 	 */
 	private void handleVoiceResult(int resultCode, Intent data) {
+		if (data == null) { // anulowalismy wyszukiwanie glosowe
+			return;
+		}
 		List<String> contents = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
 		SearchView searcher = (SearchView) this.findViewById(R.id.searcher);
 		if ((searcher != null) && (contents != null)) {
