@@ -1,11 +1,25 @@
 package com.nexelem.boxplorer.wizard;
 
+<<<<<<< HEAD
 import android.annotation.SuppressLint;
+=======
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
+>>>>>>> f1649804c11338e2df568c23d26b93e0c97c0489
 import android.app.DialogFragment;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.animation.AnimationUtils;
@@ -145,6 +159,14 @@ public class BoxDialog extends DialogFragment {
 		TextView qrText = (TextView) step2.findViewById(R.id.box_qr_text);
 		qrTitle.setTypeface(Fonts.LIGHT_FONT);
 		qrText.setTypeface(Fonts.LIGHT_FONT);
+		Button share = (Button) step2.findViewById(R.id.share_qr);
+		share.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				BoxDialog.this.shareQrCode();
+			}
+		});
 
 		if (savedInstanceState != null) {
 			name.setText(savedInstanceState.getString("name"));
@@ -263,7 +285,7 @@ public class BoxDialog extends DialogFragment {
 			}
 		}
 
-		for (int j = 0; j < 3; j++) {
+		for(int j = 0; j < 3; j++){
 			this.steps[j].setBackgroundResource(j <= i ? R.color.main_color : R.color.dark_gray);
 		}
 
@@ -285,6 +307,24 @@ public class BoxDialog extends DialogFragment {
 			}
 
 		}
+	}
+	
+	private void shareQrCode(){
+		Bitmap icon = QrUtils.generateQRCode(BoxDialog.this.getActivity(), BoxDialog.this.box.getId().toString());
+		Intent share = new Intent(Intent.ACTION_SEND);
+		share.setType("image/jpeg");
+		ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+		icon.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+	    File path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+	    File f = new File(path, "boxplorer-qrcode.jpg");
+		try {
+		    FileOutputStream fo = new FileOutputStream(f);
+		    fo.write(bytes.toByteArray());
+		} catch (IOException e) {                       
+		        e.printStackTrace();
+		}
+		share.putExtra(Intent.EXTRA_STREAM, Uri.parse("file://"+f.getAbsolutePath()));
+		this.startActivity(Intent.createChooser(share, "Share Image"));
 	}
 
 }
