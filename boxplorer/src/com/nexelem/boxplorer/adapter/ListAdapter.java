@@ -383,7 +383,6 @@ public class ListAdapter extends BaseExpandableListAdapter implements OnChildCli
 		}
 
 		Box box = this.boxes.get(boxPosition);
-		System.out.println(box.getId().toString());
 		if (box.getState() == BoxState.EXPAND) {
 			box.setState(BoxState.NORMAL);
 			RotateAnimation rotation = new RotateAnimation(0f, 90f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);

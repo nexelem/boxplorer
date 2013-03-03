@@ -305,7 +305,13 @@ public class BoxDialog extends DialogFragment {
 	}
 
 	private void shareQrCode() {
-		Bitmap icon = QrUtils.generateQRCode(BoxDialog.this.getActivity(), BoxDialog.this.box.getId().toString());
+		Bitmap icon;
+		try {
+			icon = QrUtils.generateQRCode(BoxDialog.this.getActivity(), BoxDialog.this.box.getId().toString());
+		} catch (BusinessException e1) {
+			Toast.makeText(this.getActivity(), R.string.qr_generation_failed, Toast.LENGTH_SHORT).show();
+			return;
+		}
 		Intent share = new Intent(Intent.ACTION_SEND);
 		share.setType("image/jpeg");
 		ByteArrayOutputStream bytes = new ByteArrayOutputStream();
