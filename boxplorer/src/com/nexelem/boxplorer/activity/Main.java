@@ -1,7 +1,6 @@
 package com.nexelem.boxplorer.activity;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import android.app.ActionBar;
@@ -29,8 +28,6 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
-import android.widget.SearchView;
-import android.widget.SearchView.OnQueryTextListener;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -39,11 +36,11 @@ import com.nexelem.boxplorer.R;
 import com.nexelem.boxplorer.adapter.ListAdapter;
 import com.nexelem.boxplorer.db.BusinessException;
 import com.nexelem.boxplorer.db.DBHelper;
+import com.nexelem.boxplorer.enums.SearchType;
 import com.nexelem.boxplorer.model.Box;
-import com.nexelem.boxplorer.search.SearchType;
 import com.nexelem.boxplorer.service.BoxService;
 import com.nexelem.boxplorer.service.ItemService;
-import com.nexelem.boxplorer.utils.NfcTagReader;
+import com.nexelem.boxplorer.utils.NfcUtils;
 import com.nexelem.boxplorer.utils.ObjectKeeper;
 import com.nexelem.boxplorer.wizard.BoxDialog;
 
@@ -60,11 +57,15 @@ public class Main extends Activity implements TextWatcher {
 	private ListAdapter adapter;
 	private ExpandableListView list;
 	private ImageView clear;
+	private NfcAdapter nfcAdapter;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		this.setContentView(R.layout.activity_main);
+		if (NfcUtils.isNfcAvailable(this.getApplicationContext())) {
+			this.nfcAdapter = NfcAdapter.getDefaultAdapter(this.getApplicationContext());
+		}
 
 		// Loading fonts
 		Fonts.loadFonts(this);
@@ -111,19 +112,19 @@ public class Main extends Activity implements TextWatcher {
 				// Create and show the dialog.
 				DialogFragment newFragment = new BoxDialog();
 				newFragment.show(ft, "wizard");
-				//ft.commit();
+				// ft.commit();
 			}
 		});
 
 		this.handleTagReceive(this.getIntent());
 
 		// Customizing search view
-		final TextView searcher = (TextView) findViewById(R.id.searcher);
+		final TextView searcher = (TextView) this.findViewById(R.id.searcher);
 		searcher.addTextChangedListener(this);
 		searcher.setTypeface(Fonts.LIGHT_FONT);
-		clear = (ImageView) findViewById(R.id.searcher_clear);
-		clear.setOnClickListener(new OnClickListener() {
-			
+		this.clear = (ImageView) this.findViewById(R.id.searcher_clear);
+		this.clear.setOnClickListener(new OnClickListener() {
+
 			@Override
 			public void onClick(View v) {
 				searcher.setText("");
@@ -199,7 +200,7 @@ public class Main extends Activity implements TextWatcher {
 		}
 
 		// sprawdzamy czy jest dostepne NFC
-		if (!pm.hasSystemFeature(PackageManager.FEATURE_NFC)) {
+		if (!NfcUtils.isNfcAvailable(this.getApplicationContext())) {
 			menu.findItem(R.id.nfc).setVisible(false);
 		}
 
@@ -309,27 +310,48 @@ public class Main extends Activity implements TextWatcher {
 		if (tagFromIntent == null) {
 			return;
 		}
-		String id = NfcTagReader.getUUID(tagFromIntent);
+		String id;
 		try {
-			this.adapter.searchForBox(id);
-		} catch (BusinessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			id = NfcUtils.getContent(tagFromIntent);
+		} catch (BusinessException e1) {
+			Toast.makeText(this.getApplicationContext(), R.string.nfc_unable_to_read, Toast.LENGTH_SHORT);
 			return;
 		}
-		TextView searcher = (TextView) this.findViewById(R.id.searcher);
-		if (searcher != null) {
-			searcher.setText(":nfc");
+		try {
+			this.adapter.searchForBox(id);
+			TextView searcher = (TextView) this.findViewById(R.id.searcher);
+			if (searcher != null) {
+				searcher.setText(":nfc");
+			}
+			this.expandAll();
+		} catch (BusinessException e) {
+			Toast.makeText(this.getApplicationContext(), R.string.box_not_found, Toast.LENGTH_SHORT).show();
 		}
-		this.expandAll();
+
 	}
 
 	@Override
-	public void afterTextChanged(Editable s) {		
+	protected void onPause() {
+		super.onPause();
+		if (NfcUtils.isNfcAvailable(this.getApplicationContext())) {
+			this.nfcAdapter.disableForegroundDispatch(this);
+		}
 	}
 
 	@Override
-	public void beforeTextChanged(CharSequence s, int start, int count, int after) {		
+	protected void onResume() {
+		super.onResume();
+		if (NfcUtils.isNfcAvailable(this.getApplicationContext())) {
+			this.nfcAdapter.enableForegroundDispatch(this, NfcUtils.getPendingIntent(this), NfcUtils.getIntentFilters(), NfcUtils.getTechList());
+		}
+	}
+
+	@Override
+	public void afterTextChanged(Editable s) {
+	}
+
+	@Override
+	public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 	}
 
 	@Override
@@ -344,7 +366,8 @@ public class Main extends Activity implements TextWatcher {
 			try {
 				this.adapter.searchFor(newText);
 				this.expandAll();
-				//Toast.makeText(this, "Szukam: " + newText, Toast.LENGTH_SHORT).show();
+				// Toast.makeText(this, "Szukam: " + newText,
+				// Toast.LENGTH_SHORT).show();
 			} catch (BusinessException e) {
 				Toast.makeText(this, "ERROR: " + newText, Toast.LENGTH_SHORT).show();
 				Log.e("APP", "Wystapil blad podczas poszukiwania przedmiotu", e);

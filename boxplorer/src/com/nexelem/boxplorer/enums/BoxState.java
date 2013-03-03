@@ -1,4 +1,4 @@
-package com.nexelem.boxplorer.model;
+package com.nexelem.boxplorer.enums;
 
 public enum BoxState {
 	EXPAND, COLLAPSE, NORMAL;

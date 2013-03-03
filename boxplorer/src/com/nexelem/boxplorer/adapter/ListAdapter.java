@@ -34,10 +34,11 @@ import com.nexelem.boxplorer.R;
 import com.nexelem.boxplorer.animation.HeightAnimation;
 import com.nexelem.boxplorer.animation.ToggleAnimation;
 import com.nexelem.boxplorer.db.BusinessException;
+import com.nexelem.boxplorer.enums.BoxState;
+import com.nexelem.boxplorer.enums.ItemState;
+import com.nexelem.boxplorer.enums.SearchType;
 import com.nexelem.boxplorer.model.Box;
-import com.nexelem.boxplorer.model.BoxState;
 import com.nexelem.boxplorer.model.Item;
-import com.nexelem.boxplorer.model.ItemState;
 import com.nexelem.boxplorer.utils.ObjectKeeper;
 import com.nexelem.boxplorer.wizard.BoxDialog;
 import com.nexelem.boxplorer.wizard.ItemDialog;
@@ -230,7 +231,7 @@ public class ListAdapter extends BaseExpandableListAdapter implements OnChildCli
 		}
 
 		holder.name.setText(this.boxes.get(boxPosition).getItemsList().get(itemPosition).getName());
-		holder.location.setText(this.boxes.get(boxPosition).getLocation()+ ", "+this.boxes.get(boxPosition).getName());
+		holder.location.setText(this.boxes.get(boxPosition).getLocation() + ", " + this.boxes.get(boxPosition).getName());
 		holder.add.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -275,7 +276,7 @@ public class ListAdapter extends BaseExpandableListAdapter implements OnChildCli
 		d.setMessage(R.string.item_remove_question);
 		d.setTitle(R.string.item_remove);
 		d.setOnAcceptListener(new OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
 				alpha.setDuration(800);
@@ -308,8 +309,8 @@ public class ListAdapter extends BaseExpandableListAdapter implements OnChildCli
 				d.dismiss();
 			}
 		});
-		d.setOnRejectListener( new OnClickListener() {
-			
+		d.setOnRejectListener(new OnClickListener() {
+
 			@Override
 			public void onClick(View v) {
 				d.dismiss();
@@ -342,7 +343,7 @@ public class ListAdapter extends BaseExpandableListAdapter implements OnChildCli
 			}
 		});
 		d.setOnRejectListener(new OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
 				d.dismiss();
@@ -382,6 +383,7 @@ public class ListAdapter extends BaseExpandableListAdapter implements OnChildCli
 		}
 
 		Box box = this.boxes.get(boxPosition);
+		System.out.println(box.getId().toString());
 		if (box.getState() == BoxState.EXPAND) {
 			box.setState(BoxState.NORMAL);
 			RotateAnimation rotation = new RotateAnimation(0f, 90f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
@@ -403,24 +405,24 @@ public class ListAdapter extends BaseExpandableListAdapter implements OnChildCli
 			alpha.setDuration(200);
 			alpha.setInterpolator(new LinearInterpolator());
 			alpha.setAnimationListener(new AnimationListener() {
-				
+
 				@Override
 				public void onAnimationStart(Animation arg0) {
 					holder.edit.setVisibility(View.VISIBLE);
 					holder.remove.setVisibility(View.VISIBLE);
 				}
-				
+
 				@Override
-				public void onAnimationRepeat(Animation arg0) {			
+				public void onAnimationRepeat(Animation arg0) {
 				}
-				
+
 				@Override
 				public void onAnimationEnd(Animation arg0) {
 				}
 			});
 			holder.edit.startAnimation(alpha);
 			holder.remove.startAnimation(alpha);
-			
+
 		} else if (box.getState() == BoxState.COLLAPSE) {
 			box.setState(BoxState.NORMAL);
 			RotateAnimation rotation = new RotateAnimation(90f, 0f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
@@ -435,21 +437,21 @@ public class ListAdapter extends BaseExpandableListAdapter implements OnChildCli
 
 			holder.indicator.startAnimation(rotation);
 			holder.bg.startAnimation(height);
-			
+
 			AlphaAnimation alpha = new AlphaAnimation(1, 0);
 			alpha.setFillAfter(true);
 			alpha.setDuration(200);
 			alpha.setInterpolator(new LinearInterpolator());
 			alpha.setAnimationListener(new AnimationListener() {
-				
+
 				@Override
 				public void onAnimationStart(Animation arg0) {
 				}
-				
+
 				@Override
-				public void onAnimationRepeat(Animation arg0) {			
+				public void onAnimationRepeat(Animation arg0) {
 				}
-				
+
 				@Override
 				public void onAnimationEnd(Animation arg0) {
 					holder.edit.setVisibility(View.GONE);
@@ -592,11 +594,16 @@ public class ListAdapter extends BaseExpandableListAdapter implements OnChildCli
 	 * @throws BusinessException
 	 */
 	public void searchFor(String searchName) throws BusinessException {
+		if (SearchType.NFC.getSearchTag().equals(searchName)) {
+			return;
+		}
+
 		if ((searchName != null) && (this.searchText.length() < searchName.length()) && searchName.startsWith(this.searchText)) {
 			this.boxes = ObjectKeeper.getInstance().getItemService().getByLikelyItemName(this.boxes, searchName);
 		} else {
 			this.boxes = ObjectKeeper.getInstance().getItemService().getByLikelyItemName(ObjectKeeper.getInstance().getBoxList(), searchName);
 		}
+
 		this.searchText = searchName;
 		this.notifyDataSetChanged();
 	}
@@ -606,8 +613,8 @@ public class ListAdapter extends BaseExpandableListAdapter implements OnChildCli
 	 * 
 	 * @throws BusinessException
 	 */
-	public void searchForBox(String boxId) throws BusinessException {
-		Log.i("QR", "Searching for Box id: " + boxId);
+	public boolean searchForBox(String boxId) throws BusinessException {
+		Log.i("APP", "Searching for Box id: " + boxId);
 		Box box;
 		box = ObjectKeeper.getInstance().getBoxService().get(boxId);
 		if (box != null) {
@@ -615,10 +622,10 @@ public class ListAdapter extends BaseExpandableListAdapter implements OnChildCli
 			boxesList.add(box);
 			this.boxes = boxesList;
 			this.notifyDataSetChanged();
+			return true;
 		} else {
-			Toast.makeText(this.context, "Box not found", Toast.LENGTH_SHORT).show();
+			return false;
 		}
-
 	}
 
 	/**

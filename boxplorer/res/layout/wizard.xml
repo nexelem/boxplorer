@@ -12,7 +12,7 @@
         android:layout_marginBottom="10dp"
         android:layout_marginLeft="@dimen/wizard_title_margin"
         android:layout_marginTop="15dp"
-        android:text="default text"
+        android:text="@string/box_add"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="@color/main_color"
         android:textSize="@dimen/wizard_title_height" />

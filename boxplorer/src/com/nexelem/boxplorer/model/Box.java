@@ -8,6 +8,7 @@ import java.util.UUID;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.field.ForeignCollectionField;
 import com.j256.ormlite.table.DatabaseTable;
+import com.nexelem.boxplorer.enums.BoxState;
 
 @DatabaseTable(tableName = "box")
 public class Box {

@@ -36,6 +36,7 @@
 	<string name="application_logo">Logo aplikacji</string>
     <string name="nfc_logo">Logo NFC</string>
     <string name="box_expand_indicator">Wskaźnik rozsunięcia pudełka</string>
+    <string name="box_not_found">Nie znaleziono pudła</string>
     
     <!-- qrcode: start -->
     <string name="msg_camera_framework_bug">Przykro nam, ale kamera w aparacie nie działa poprawnie. Być może potrzebne będzie ponowne uruchomienie aparatu.</string>
@@ -49,6 +50,8 @@
     <string name="msg_default_meta">Meta</string>
     <string name="contents_text">Zawartość</string>
 	<string name="qr_description">Wydrukuj i naklej kod QR w łatwo dostępnym miejscu na pudełku.</string>
+    <string name="qr_generation_failed">Nie udało się utworzyć kodu QR</string>
+
     <!-- nfc: end -->
     <string name="tap_nfc_write">Proszę przyłożyć tag NFC aby kontynuować</string>
     <string name="nfc_tag_refused_to_format">Nie udało się sformatować tagu</string>
@@ -58,4 +61,7 @@
     <string name="nfc_message_is_too_big">Tag ma za mało miejsca</string>
     <string name="nfc_general_exception">Błąd</string>
     <string name="nfc_description">Aby zapisać informację o pudełku na tagu nfc zbliż do niego telefon.</string>
+    <string name="nfc_tag_saved">Tag został zapisany</string>
+    <string name="nfc_unable_to_read">Nie udało się poprawnie odczytać tagu NFC</string>
+
 </resources>

@@ -1,4 +1,4 @@
-package com.nexelem.boxplorer.search;
+package com.nexelem.boxplorer.enums;
 
 public enum SearchType {
 	TEXT(""), QR(":qr"), VOICE(":voice"), NFC(":nfc");

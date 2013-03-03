@@ -7,6 +7,7 @@ import android.os.Parcelable;
 
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
+import com.nexelem.boxplorer.enums.ItemState;
 
 @DatabaseTable(tableName = "item")
 public class Item implements Parcelable {

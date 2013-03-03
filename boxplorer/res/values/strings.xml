@@ -36,6 +36,7 @@
     <string name="application_logo">Application logo</string>
     <string name="nfc_logo">NFC logo</string>
     <string name="box_expand_indicator">Box expand indicator</string>
+    <string name="box_not_found">Box not found</string>
     
     
     <!-- qrcode: start -->
@@ -50,6 +51,8 @@
     <string name="msg_default_meta">Meta</string>
     <string name="contents_text">Content</string>
     <string name="qr_description">Print and put your QR code at easliy accesible place at the box.</string>
+    <string name="qr_generation_failed">Unable to generate QR Code</string>
+
     <!-- nfc: end -->
     <string name="tap_nfc_write">Please tap NFC Tag to proceed</string>
     <string name="nfc_tag_refused_to_format">Tag refused to format</string>
@@ -59,4 +62,6 @@
     <string name="nfc_message_is_too_big">Message is too big for tag</string>
     <string name="nfc_general_exception">General error</string>
 	<string name="nfc_description">In order to save your box information on NFC tag put the phone closer.</string>
+    <string name="nfc_tag_saved">Tag has been saved</string>
+    <string name="nfc_unable_to_read">Unable to read NFC tag properly</string>
 </resources>
