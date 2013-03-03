@@ -39,7 +39,7 @@ public class ItemDialog extends DialogFragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 	    getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
 
-		View v = inflater.inflate(R.layout.item_dialog2, container, false);
+		View v = inflater.inflate(R.layout.item_dialog, container, false);
 		
 		// Title
 		TextView title = (TextView) v.findViewById(R.id.wizard_title);

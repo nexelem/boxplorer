@@ -9,7 +9,11 @@
 	<string name="search_voice">Głosowo</string>
 	<string name="search_qr_code">Kod QR</string>
 	<string name="search_nfc">Tag NFC</string>
-    
+   
+	<string name="box_remove_question">Jesteś pewien, że chcesz usunąć dane pudło?</string>
+	<string name="box_remove">usuwania pudła</string>
+	<string name="item_remove_question">Jesteś pewien, że chcesz usunąć dany przedmiot?</string>
+	<string name="item_remove">usuwanie przedmiotu</string>
 	<string name="item_name_empty">Wprowadź nazwę przedmiotu</string>
 	<string name="box_name_empty">Wprowadź nazwę pudła</string>
 	<string name="box_add">dodaj pudło</string>

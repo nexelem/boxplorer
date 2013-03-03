@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:background="@color/main_color"
     android:orientation="horizontal" >
 
@@ -13,14 +13,37 @@
         android:layout_marginTop="3dp"
         android:contentDescription="@string/add"
         android:src="@drawable/add_box" />
-    
-    <SearchView
-        android:id="@+id/searcher"
-        android:layout_width="0dip"
-        android:layout_height="wrap_content"
-        android:layout_weight="0.7"
-        android:iconifiedByDefault="true" >
 
-    </SearchView>
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent" >
+
+        <EditText
+            android:id="@+id/searcher"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:background="@drawable/searcher_bg"
+            android:drawableLeft="@drawable/searcher_bg_icon"
+            android:drawablePadding="10dp"
+            android:ems="10"
+            android:paddingLeft="15dp"
+            android:singleLine="true"
+            android:textColor="@android:color/white"
+            android:textSize="20sp" >
+
+        </EditText>
+
+        <ImageView
+            android:id="@+id/searcher_clear"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right|center_vertical"
+            android:layout_marginRight="15dp"
+            android:src="@drawable/clear"
+            android:visibility="gone" />
+
+    </FrameLayout>
 
 </LinearLayout>

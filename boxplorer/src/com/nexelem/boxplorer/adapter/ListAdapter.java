@@ -4,13 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.DialogFragment;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -43,6 +41,7 @@ import com.nexelem.boxplorer.model.ItemState;
 import com.nexelem.boxplorer.utils.ObjectKeeper;
 import com.nexelem.boxplorer.wizard.BoxDialog;
 import com.nexelem.boxplorer.wizard.ItemDialog;
+import com.nexelem.boxplorer.wizard.RemoveDialog;
 
 /**
  * Klasa obslugujaca wyswietlanie oraz akcje na elementach listy
@@ -170,8 +169,9 @@ public class ListAdapter extends BaseExpandableListAdapter implements OnChildCli
 			holder.name = (TextView) view.findViewById(R.id.item_name);
 			holder.add = (ImageView) view.findViewById(R.id.item_toolbar_remove);
 			holder.edit = (ImageView) view.findViewById(R.id.item_toolbar_edit);
-
+			holder.location = (TextView) view.findViewById(R.id.group_location);
 			holder.name.setTypeface(Fonts.LIGHT_FONT);
+			holder.location.setTypeface(Fonts.LIGHT_FONT);
 			view.setTag(holder);
 		} else {
 			holder = (ViewHolder) view.getTag();
@@ -230,6 +230,7 @@ public class ListAdapter extends BaseExpandableListAdapter implements OnChildCli
 		}
 
 		holder.name.setText(this.boxes.get(boxPosition).getItemsList().get(itemPosition).getName());
+		holder.location.setText(this.boxes.get(boxPosition).getLocation()+ ", "+this.boxes.get(boxPosition).getName());
 		holder.add.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -269,75 +270,86 @@ public class ListAdapter extends BaseExpandableListAdapter implements OnChildCli
 	 * ListAdapter
 	 */
 	private void removeItem(final View view, final AlphaAnimation alpha, final int boxPosition, final int itemPosition) {
-		DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+
+		final RemoveDialog d = new RemoveDialog();
+		d.setMessage(R.string.item_remove_question);
+		d.setTitle(R.string.item_remove);
+		d.setOnAcceptListener(new OnClickListener() {
+			
 			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				switch (which) {
-				case DialogInterface.BUTTON_POSITIVE:
-					alpha.setDuration(800);
-					alpha.setAnimationListener(new AnimationListener() {
+			public void onClick(View v) {
+				alpha.setDuration(800);
+				alpha.setAnimationListener(new AnimationListener() {
 
-						@Override
-						public void onAnimationStart(Animation arg) {
-						}
+					@Override
+					public void onAnimationStart(Animation arg) {
+					}
 
-						@Override
-						public void onAnimationEnd(Animation arg) {
-							Item it = ListAdapter.this.getChild(boxPosition, itemPosition);
-							if (it != null) {
-								try {
-									ObjectKeeper.getInstance().getItemService().delete(it.getId());
-									ListAdapter.this.updateListAdapterData();
-									ListAdapter.this.notifyDataSetChanged();
-								} catch (BusinessException e) {
-									Log.e("APP", "There where an issue during item deletion", e);
-									Toast.makeText(ListAdapter.this.context, "WystÄ…piÅ‚ bÅ‚Ä…d podczas usuwania przedmiotu", Toast.LENGTH_SHORT).show();
-								}
+					@Override
+					public void onAnimationEnd(Animation arg) {
+						Item it = ListAdapter.this.getChild(boxPosition, itemPosition);
+						if (it != null) {
+							try {
+								ObjectKeeper.getInstance().getItemService().delete(it.getId());
+								ListAdapter.this.updateListAdapterData();
+								ListAdapter.this.notifyDataSetChanged();
+							} catch (BusinessException e) {
+								Log.e("APP", "There where an issue during item deletion", e);
+								Toast.makeText(ListAdapter.this.context, "WystÄ…piÅ‚ bÅ‚Ä…d podczas usuwania przedmiotu", Toast.LENGTH_SHORT).show();
 							}
 						}
+					}
 
-						@Override
-						public void onAnimationRepeat(Animation animation) {
-						}
-					});
-					view.startAnimation(alpha);
-					break;
-
-				case DialogInterface.BUTTON_NEGATIVE:
-					break;
-				}
+					@Override
+					public void onAnimationRepeat(Animation animation) {
+					}
+				});
+				view.startAnimation(alpha);
+				d.dismiss();
 			}
-		};
-
-		AlertDialog.Builder builder = new AlertDialog.Builder(this.context);
-		builder.setMessage("Czy na pewno usunÄ…Ä‡ przedmiot?").setPositiveButton("Tak", dialogClickListener).setNegativeButton("Nie", dialogClickListener).show();
+		});
+		d.setOnRejectListener( new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				d.dismiss();
+			}
+		});
+		FragmentManager fm = ((Activity) ListAdapter.this.context).getFragmentManager();
+		d.show(fm, "remove-dialog");
 	}
 
 	private void removeBox(final View view, final int boxPosition) {
-		DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+		final RemoveDialog d = new RemoveDialog();
+		d.setMessage(R.string.box_remove_question);
+		d.setTitle(R.string.box_remove);
+		d.setOnAcceptListener(new OnClickListener() {
+
 			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				switch (which) {
-				case DialogInterface.BUTTON_POSITIVE:
-					Box box = (Box) ListAdapter.this.getGroup(boxPosition);
-					if (box != null) {
-						try {
-							ObjectKeeper.getInstance().getBoxService().delete(box.getId());
-							ListAdapter.this.updateListAdapterData();
-							ListAdapter.this.notifyDataSetChanged();
-						} catch (BusinessException e) {
-							Log.e("APP", "There where an issue during box deletion", e);
-							Toast.makeText(ListAdapter.this.context, "Wystąpił błąd podczas usuwania pudełka", Toast.LENGTH_SHORT).show();
-						}
+			public void onClick(View v) {
+				Box box = (Box) ListAdapter.this.getGroup(boxPosition);
+				if (box != null) {
+					try {
+						ObjectKeeper.getInstance().getBoxService().delete(box.getId());
+						ListAdapter.this.updateListAdapterData();
+						ListAdapter.this.notifyDataSetChanged();
+					} catch (BusinessException e) {
+						Log.e("APP", "There where an issue during box deletion", e);
+						Toast.makeText(ListAdapter.this.context, "Wystąpił błąd podczas usuwania pudełka", Toast.LENGTH_SHORT).show();
 					}
-					break;
-				case DialogInterface.BUTTON_NEGATIVE:
-					break;
 				}
+				d.dismiss();
 			}
-		};
-		AlertDialog.Builder builder = new AlertDialog.Builder(this.context);
-		builder.setMessage("Czy na pewno usunąć pudełko?").setPositiveButton("Tak", dialogClickListener).setNegativeButton("Nie", dialogClickListener).show();
+		});
+		d.setOnRejectListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				d.dismiss();
+			}
+		});
+		FragmentManager fm = ((Activity) ListAdapter.this.context).getFragmentManager();
+		d.show(fm, "remove-dialog");
 	}
 
 	/**
@@ -346,7 +358,7 @@ public class ListAdapter extends BaseExpandableListAdapter implements OnChildCli
 	@Override
 	public View getGroupView(final int boxPosition, boolean isExpanded, View view, final ViewGroup parent) {
 		final LayoutInflater inflater = (LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		ViewHolder holder;
+		final ViewHolder holder;
 
 		if (view == null) {
 			view = inflater.inflate(R.layout.group_item, null);
@@ -386,6 +398,29 @@ public class ListAdapter extends BaseExpandableListAdapter implements OnChildCli
 			holder.indicator.startAnimation(rotation);
 			holder.bg.startAnimation(height);
 
+			AlphaAnimation alpha = new AlphaAnimation(0, 1);
+			alpha.setFillAfter(true);
+			alpha.setDuration(200);
+			alpha.setInterpolator(new LinearInterpolator());
+			alpha.setAnimationListener(new AnimationListener() {
+				
+				@Override
+				public void onAnimationStart(Animation arg0) {
+					holder.edit.setVisibility(View.VISIBLE);
+					holder.remove.setVisibility(View.VISIBLE);
+				}
+				
+				@Override
+				public void onAnimationRepeat(Animation arg0) {			
+				}
+				
+				@Override
+				public void onAnimationEnd(Animation arg0) {
+				}
+			});
+			holder.edit.startAnimation(alpha);
+			holder.remove.startAnimation(alpha);
+			
 		} else if (box.getState() == BoxState.COLLAPSE) {
 			box.setState(BoxState.NORMAL);
 			RotateAnimation rotation = new RotateAnimation(90f, 0f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
@@ -400,6 +435,30 @@ public class ListAdapter extends BaseExpandableListAdapter implements OnChildCli
 
 			holder.indicator.startAnimation(rotation);
 			holder.bg.startAnimation(height);
+			
+			AlphaAnimation alpha = new AlphaAnimation(1, 0);
+			alpha.setFillAfter(true);
+			alpha.setDuration(200);
+			alpha.setInterpolator(new LinearInterpolator());
+			alpha.setAnimationListener(new AnimationListener() {
+				
+				@Override
+				public void onAnimationStart(Animation arg0) {
+				}
+				
+				@Override
+				public void onAnimationRepeat(Animation arg0) {			
+				}
+				
+				@Override
+				public void onAnimationEnd(Animation arg0) {
+					holder.edit.setVisibility(View.GONE);
+					holder.remove.setVisibility(View.GONE);
+
+				}
+			});
+			holder.edit.startAnimation(alpha);
+			holder.remove.startAnimation(alpha);
 		}
 
 		// obsluga guzika dodawania przedmiotu do pudelka

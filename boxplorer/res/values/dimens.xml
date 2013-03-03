@@ -15,7 +15,7 @@
     <dimen name="item_name_height">17dp</dimen>
     
     <dimen name="list_left_margin">25dp</dimen>
-    <dimen name="actions_margin">15dp</dimen>
+    <dimen name="actions_margin">7dp</dimen>
     
     <dimen name="wizard_title_height">25dp</dimen>
     <dimen name="wizard_title_margin">20dp</dimen>

@@ -15,6 +15,7 @@
     <!-- Application theme. -->
     <style name="AppTheme" parent="AppBaseTheme">
 		<item name="android:actionBarStyle">@style/MyActionbar</item>
+		<item name="android:actionBarSize">60dp</item>
     </style>
     
     <style name="MyActionbar" parent="@android:style/Widget.Holo.Light.ActionBar">

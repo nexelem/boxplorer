@@ -24,16 +24,16 @@
 
     <LinearLayout
         android:id="@+id/expand_height"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="75dp"
         android:layout_gravity="center"
         android:orientation="horizontal"
         android:padding="8dp" >
 
         <LinearLayout
-            android:layout_width="173dp"
+            android:layout_width="170dp"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
+            android:layout_gravity="left|center_vertical"
             android:layout_marginTop="-3dp"
             android:orientation="vertical" >
 
@@ -58,35 +58,47 @@
                 android:textSize="@dimen/box_location_height" />
         </LinearLayout>
 
-        <ImageView
-            android:id="@+id/group_edit_item"
+        <RelativeLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_weight="0.25"
-            android:src="@drawable/edit"
-            android:contentDescription="@string/edit_item" />
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical" >
 
-        <ImageView
-            android:id="@+id/group_remove_item"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="@dimen/actions_margin"
-            android:layout_weight="0.25"
-            android:src="@drawable/remove"
-            android:contentDescription="@string/remove_item" />
+            <ImageView
+                android:id="@+id/group_edit_item"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@+id/group_remove_item"
+                android:contentDescription="@string/edit_item"
+                android:paddingLeft="@dimen/actions_margin"
+                android:paddingRight="@dimen/actions_margin"
+                android:src="@drawable/edit"
+                android:visibility="gone" />
 
-        <ImageView
-            android:id="@+id/group_add_item"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="@dimen/actions_margin"
-            android:layout_weight="0.25"
-            android:scaleType="center"
-            android:src="@drawable/add"
-            android:contentDescription="@string/add_item" />
+            <ImageView
+                android:id="@+id/group_remove_item"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:layout_alignParentTop="true"
+                android:layout_toLeftOf="@+id/group_add_item"
+                android:contentDescription="@string/remove_item"
+                android:paddingLeft="@dimen/actions_margin"
+                android:paddingRight="@dimen/actions_margin"
+                android:src="@drawable/remove"
+                android:visibility="gone" />
+
+             <ImageView
+                android:id="@+id/group_add_item"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:contentDescription="@string/add_item"
+                android:paddingLeft="@dimen/actions_margin"
+                android:paddingRight="@dimen/actions_margin"
+                android:src="@drawable/add" />
+            
+        </RelativeLayout>
 
     </LinearLayout>
 

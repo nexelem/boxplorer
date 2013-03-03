@@ -10,6 +10,10 @@
 	<string name="search_qr_code">QR code</string>
 	<string name="search_nfc">NFC Tag</string>
     
+	<string name="box_remove_question">Do you want to remove box?</string>
+	<string name="box_remove">remove box</string>
+	<string name="item_remove_question">Do you want to remove item?</string>
+	<string name="item_remove">remove item</string>
 	<string name="item_name_empty">Insert item name</string>
 	<string name="box_name_empty">Insert box name</string>
     <string name="box_add">add box</string>

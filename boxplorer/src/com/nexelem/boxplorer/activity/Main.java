@@ -17,6 +17,8 @@ import android.nfc.NfcAdapter;
 import android.nfc.Tag;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -29,6 +31,7 @@ import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.SearchView;
 import android.widget.SearchView.OnQueryTextListener;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.nexelem.boxplorer.Fonts;
@@ -49,13 +52,14 @@ import com.nexelem.boxplorer.wizard.BoxDialog;
  * 
  * @author bartek wilczynski, darek zon
  */
-public class Main extends Activity implements OnQueryTextListener {
+public class Main extends Activity implements TextWatcher {
 
 	/**
 	 * 
 	 */
 	private ListAdapter adapter;
 	private ExpandableListView list;
+	private ImageView clear;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -114,9 +118,18 @@ public class Main extends Activity implements OnQueryTextListener {
 		this.handleTagReceive(this.getIntent());
 
 		// Customizing search view
-		SearchView searcher = (SearchView) this.findViewById(R.id.searcher);
-		searcher.setOnQueryTextListener(this);
-		searcher.setIconified(false);
+		final TextView searcher = (TextView) findViewById(R.id.searcher);
+		searcher.addTextChangedListener(this);
+		searcher.setTypeface(Fonts.LIGHT_FONT);
+		clear = (ImageView) findViewById(R.id.searcher_clear);
+		clear.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				searcher.setText("");
+				searcher.clearFocus();
+			}
+		});
 	}
 
 	/**
@@ -216,28 +229,6 @@ public class Main extends Activity implements OnQueryTextListener {
 		return boxes;
 	}
 
-	@Override
-	public boolean onQueryTextChange(String newText) {
-		if (newText.length() < 3) {
-			this.adapter.setBoxes(this.adapter.getFullList());
-			this.adapter.notifyDataSetChanged();
-			this.collapseAll();
-		} else if (Arrays.asList(SearchType.QR.getSearchTag(), SearchType.NFC.getSearchTag()).contains(newText)) {
-			return true;
-		} else if (newText.length() >= 3) {
-			try {
-				this.adapter.searchFor(newText);
-				this.expandAll();
-				Toast.makeText(this, "Szukam: " + newText, Toast.LENGTH_SHORT).show();
-			} catch (BusinessException e) {
-				Toast.makeText(this, "ERROR: " + newText, Toast.LENGTH_SHORT).show();
-				Log.e("APP", "Wystapil blad podczas poszukiwania przedmiotu", e);
-			}
-
-		}
-		return true;
-	}
-
 	private void collapseAll() {
 		for (int i = 0; i < this.adapter.getGroupCount(); i++) {
 			this.list.collapseGroup(i);
@@ -248,11 +239,6 @@ public class Main extends Activity implements OnQueryTextListener {
 		for (int i = 0; i < this.adapter.getGroupCount(); i++) {
 			this.list.expandGroup(i, true);
 		}
-	}
-
-	@Override
-	public boolean onQueryTextSubmit(String query) {
-		return false;
 	}
 
 	/**
@@ -278,9 +264,9 @@ public class Main extends Activity implements OnQueryTextListener {
 			return;
 		}
 		List<String> contents = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
-		SearchView searcher = (SearchView) this.findViewById(R.id.searcher);
+		TextView searcher = (TextView) this.findViewById(R.id.searcher);
 		if ((searcher != null) && (contents != null)) {
-			searcher.setQuery(contents.get(0), true);
+			searcher.setText(contents.get(0));
 		}
 		this.expandAll();
 	}
@@ -295,9 +281,9 @@ public class Main extends Activity implements OnQueryTextListener {
 			Log.i("QR", "QR READED AS: " + contents);
 			try {
 				this.adapter.searchForBox(contents);
-				SearchView searcher = (SearchView) this.findViewById(R.id.searcher);
+				TextView searcher = (TextView) this.findViewById(R.id.searcher);
 				if (searcher != null) {
-					searcher.setQuery(":qr", false);
+					searcher.setText(":qr");
 				}
 				this.expandAll();
 			} catch (BusinessException e) {
@@ -331,11 +317,40 @@ public class Main extends Activity implements OnQueryTextListener {
 			e.printStackTrace();
 			return;
 		}
-		SearchView searcher = (SearchView) this.findViewById(R.id.searcher);
+		TextView searcher = (TextView) this.findViewById(R.id.searcher);
 		if (searcher != null) {
-			searcher.setQuery(":nfc", false);
+			searcher.setText(":nfc");
 		}
 		this.expandAll();
+	}
+
+	@Override
+	public void afterTextChanged(Editable s) {		
+	}
+
+	@Override
+	public void beforeTextChanged(CharSequence s, int start, int count, int after) {		
+	}
+
+	@Override
+	public void onTextChanged(CharSequence s, int start, int before, int count) {
+		String newText = s.toString();
+		this.clear.setVisibility(newText.length() > 0 ? View.VISIBLE : View.GONE);
+		if (newText.length() < 3) {
+			this.adapter.setBoxes(this.adapter.getFullList());
+			this.adapter.notifyDataSetChanged();
+			this.collapseAll();
+		} else if (newText.length() >= 3) {
+			try {
+				this.adapter.searchFor(newText);
+				this.expandAll();
+				//Toast.makeText(this, "Szukam: " + newText, Toast.LENGTH_SHORT).show();
+			} catch (BusinessException e) {
+				Toast.makeText(this, "ERROR: " + newText, Toast.LENGTH_SHORT).show();
+				Log.e("APP", "Wystapil blad podczas poszukiwania przedmiotu", e);
+			}
+
+		}
 	}
 
 }

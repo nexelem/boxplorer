@@ -2,47 +2,112 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@android:color/white"
     android:orientation="vertical" >
 
-    <EditText
-        android:id="@+id/item_name"
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/wizard_title"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/default_form_margin_bottom"
-        android:ems="10"
-        android:hint="@string/item_name"
-        android:inputType="text" >
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="@dimen/wizard_title_margin"
+        android:layout_marginTop="15dp"
+        android:text="default text"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@color/main_color"
+        android:textSize="@dimen/wizard_title_height" />
 
-        <requestFocus />
-    </EditText>
-
-    <Spinner
-        android:id="@+id/item_boxlist"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/default_form_margin_bottom"
-        android:scrollbarStyle="insideOverlay"
-        android:scrollbars="horizontal"
-        android:spinnerMode="dialog" />
+    <View
+        android:id="@+id/view1"
+        android:layout_width="wrap_content"
+        android:layout_height="2dp"
+        android:background="@color/main_color" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        style="?android:attr/buttonBarStyle" >
+        android:orientation="vertical"
+        android:padding="@dimen/wizard_title_margin" >
 
-        <Button
-            android:id="@+id/item_cancel"
-            android:layout_width="154dp"
+        <TextView
+            android:id="@+id/item_name_label"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/cancel"
-            style="?android:attr/buttonBarButtonStyle" />
+            android:padding="5dp"
+            android:text="@string/item_name"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@color/header" />
 
-        <Button
-            android:id="@+id/item_save"
+        <EditText
+            android:id="@+id/item_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/add"
-            style="?android:attr/buttonBarButtonStyle" />
+            android:layout_marginBottom="@dimen/default_form_margin_bottom"
+            android:background="@drawable/text_background"
+            android:ems="10"
+            android:inputType="text"
+            android:padding="10dp" >
+
+            <requestFocus />
+        </EditText>
+
+        <TextView
+            android:id="@+id/item_location_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:text="@string/item_location"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@color/header" />
+
+        <Spinner
+            android:id="@+id/item_boxlist"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/default_form_margin_bottom"
+            android:background="@drawable/text_background"
+            android:scrollbarStyle="insideOverlay"
+            android:scrollbars="horizontal"
+            android:spinnerMode="dialog" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/wizard_title_margin"
+        android:layout_marginLeft="@dimen/wizard_title_margin"
+        android:layout_marginRight="@dimen/wizard_title_margin"
+        android:layout_marginTop="@dimen/wizard_title_margin" >
+
+        <Button
+            android:id="@+id/button_back"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginRight="10dp"
+            android:layout_weight="0.5"
+            android:background="@drawable/back_button"
+            android:drawableLeft="@drawable/arrow_left"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:text="@string/cancel"
+            android:textColor="@android:color/white"
+            android:textSize="20sp" />
+
+        <Button
+            android:id="@+id/button_next"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginLeft="10dp"
+            android:layout_weight="0.5"
+            android:background="@drawable/next_button"
+            android:drawablePadding="5dp"
+            android:drawableRight="@drawable/arrow_right"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:text="@string/finish"
+            android:textColor="@android:color/white"
+            android:textSize="20sp" />
     </LinearLayout>
 
 </LinearLayout>
