@@ -336,6 +336,9 @@ public class Main extends Activity implements TextWatcher {
 	public void onTextChanged(CharSequence s, int start, int before, int count) {
 		String newText = s.toString();
 		this.clear.setVisibility(newText.length() > 0 ? View.VISIBLE : View.GONE);
+		if(newText.equals(":nfc") || newText.equals(":qr"))
+			return;
+		
 		if (newText.length() < 3) {
 			this.adapter.setBoxes(this.adapter.getFullList());
 			this.adapter.notifyDataSetChanged();
@@ -344,7 +347,7 @@ public class Main extends Activity implements TextWatcher {
 			try {
 				this.adapter.searchFor(newText);
 				this.expandAll();
-				//Toast.makeText(this, "Szukam: " + newText, Toast.LENGTH_SHORT).show();
+				Toast.makeText(this, "Szukam: " + newText, Toast.LENGTH_SHORT).show();
 			} catch (BusinessException e) {
 				Toast.makeText(this, "ERROR: " + newText, Toast.LENGTH_SHORT).show();
 				Log.e("APP", "Wystapil blad podczas poszukiwania przedmiotu", e);
