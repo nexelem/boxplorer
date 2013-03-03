@@ -10,19 +10,24 @@
 	<string name="search_qr_code">QR code</string>
 	<string name="search_nfc">NFC Tag</string>
     
-    <string name="item_dialog_title">Add item</string>
-	
+	<string name="item_name_empty">Insert item name</string>
+	<string name="box_name_empty">Insert box name</string>
+    <string name="box_add">add box</string>
+    <string name="box_edit">edit box</string>
+    <string name="finish">finish</string>
+    <string name="next">next</string>
+    <string name="cancel">cancel</string>
     <string name="add">Add</string>
-    <string name="cancel">Cancel</string>
+    <string name="item_location">Localization</string>
     <string name="item_name">Item name</string>
-    <string name="edit_item">Edit item</string>
-    <string name="add_item">Add item</string>
+    <string name="edit_item">edit item</string>
+    <string name="add_item">add item</string>
     <string name="remove_item">Remove item</string>
     <string name="box_name">Box name</string>
     <string name="box_location">Box location</string>
     <string name="itme_location">Item location</string>
-    <string name="generate_qr_code">Generate QR code</string>
-    <string name="write_nfc_tag">Write NFC tag</string>
+    <string name="generate_qr_code">QR code</string>
+    <string name="write_nfc_tag">NFC tag</string>
     <string name="send_qr_code">Send QR code</string>
     <string name="application_logo">Application logo</string>
     <string name="nfc_logo">NFC logo</string>
@@ -40,6 +45,7 @@
     <string name="msg_default_time">Time</string>
     <string name="msg_default_meta">Meta</string>
     <string name="contents_text">Content</string>
+    <string name="qr_description">Print and put your QR code at easliy accesible place at the box.</string>
     <!-- nfc: end -->
     <string name="tap_nfc_write">Please tap NFC Tag to proceed</string>
     <string name="nfc_tag_refused_to_format">Tag refused to format</string>
@@ -48,4 +54,5 @@
     <string name="nfc_tag_is_read_only">Tag is read-only</string>
     <string name="nfc_message_is_too_big">Message is too big for tag</string>
     <string name="nfc_general_exception">General error</string>
+	<string name="nfc_description">In order to save your box information on NFC tag put the phone closer.</string>
 </resources>

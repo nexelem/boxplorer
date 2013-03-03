@@ -10,19 +10,24 @@
 	<string name="search_qr_code">Kod QR</string>
 	<string name="search_nfc">Tag NFC</string>
     
-	<string name="item_dialog_title">Dodaj przedmiot</string>
-	
+	<string name="item_name_empty">Wprowadź nazwę przedmiotu</string>
+	<string name="box_name_empty">Wprowadź nazwę pudła</string>
+	<string name="box_add">dodaj pudło</string>
+    <string name="box_edit">edytuj pudło</string>
+    <string name="finish">koniec</string>
+    <string name="next">dalej</string>
+    <string name="cancel">anuluj</string>
     <string name="add">Dodaj</string>
-    <string name="cancel">Anuluj</string>
     <string name="item_name">Nazwa przedmiotu</string>
-    <string name="edit_item">Edytuj przedmiot</string>
-    <string name="add_item">Dodaj przedmiot</string>
+	<string name="item_location">Lokalizacja</string>
+    <string name="edit_item">edytuj przedmiot</string>
+    <string name="add_item">dodaj przedmiot</string>
     <string name="remove_item">Usuń przedmiot</string>
     <string name="box_name">Nazwa pudła</string>
     <string name="box_location">Lokalizacja pudła</string>
     <string name="itme_location">Lokalizacja przedmiotu</string>
-    <string name="generate_qr_code">Generuj kod QR</string>
-    <string name="write_nfc_tag">Zapis tag NFC</string>
+    <string name="generate_qr_code">Kod QR</string>
+    <string name="write_nfc_tag">Tag NFC</string>
     <string name="send_qr_code">Wyślij kod QR</string>
 	<string name="application_logo">Logo aplikacji</string>
     <string name="nfc_logo">Logo NFC</string>
@@ -39,6 +44,7 @@
     <string name="msg_default_time">Czas</string>
     <string name="msg_default_meta">Meta</string>
     <string name="contents_text">Zawartość</string>
+	<string name="qr_description">Wydrukuj i naklej kod QR w łatwo dostępnym miejscu na pudełku.</string>
     <!-- nfc: end -->
     <string name="tap_nfc_write">Proszę przyłożyć tag NFC aby kontynuować</string>
     <string name="nfc_tag_refused_to_format">Nie udało się sformatować tagu</string>
@@ -47,4 +53,5 @@
     <string name="nfc_tag_is_read_only">Tag jest tylko do odczytu</string>
     <string name="nfc_message_is_too_big">Tag ma za mało miejsca</string>
     <string name="nfc_general_exception">Błąd</string>
+    <string name="nfc_description">Aby zapisać informację o pudełku na tagu nfc zbliż do niego telefon.</string>
 </resources>

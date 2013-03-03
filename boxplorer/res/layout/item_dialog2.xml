@@ -17,48 +17,60 @@
         android:textColor="@color/main_color"
         android:textSize="@dimen/wizard_title_height" />
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="right" >
-
-        <View
-            android:id="@+id/wizard_step1"
-            android:layout_width="30dp"
-            android:layout_height="6dp"
-            android:layout_marginRight="10dp"
-            android:background="@color/main_color" />
-
-        <View
-            android:id="@+id/wizard_step2"
-            android:layout_width="30dp"
-            android:layout_height="6dp"
-            android:layout_marginRight="10dp"
-            android:background="@color/dark_gray" />
-
-        <View
-            android:id="@+id/wizard_step3"
-            android:layout_width="30dp"
-            android:layout_height="6dp"
-            android:layout_marginRight="10dp"
-            android:background="@color/dark_gray" />
-
-    </LinearLayout>
-
     <View
         android:id="@+id/view1"
         android:layout_width="wrap_content"
         android:layout_height="2dp"
         android:background="@color/main_color" />
 
-    <ViewFlipper
-        android:id="@+id/flipper"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/wizard_title_margin"
-        android:layout_marginRight="@dimen/wizard_title_margin" >
+        android:orientation="vertical"
+        android:padding="@dimen/wizard_title_margin" >
 
-    </ViewFlipper>
+        <TextView
+            android:id="@+id/item_name_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:text="@string/item_name"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@color/header" />
+
+        <EditText
+            android:id="@+id/item_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/default_form_margin_bottom"
+            android:background="@drawable/text_background"
+            android:ems="10"
+            android:inputType="text"
+            android:padding="10dp" >
+
+            <requestFocus />
+        </EditText>
+
+        <TextView
+            android:id="@+id/item_location_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:text="@string/item_location"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@color/header" />
+
+        <Spinner
+            android:id="@+id/item_boxlist"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/default_form_margin_bottom"
+            android:background="@drawable/text_background"
+            android:scrollbarStyle="insideOverlay"
+            android:scrollbars="horizontal"
+            android:spinnerMode="dialog" />
+
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -78,7 +90,7 @@
             android:drawableLeft="@drawable/arrow_left"
             android:paddingLeft="20dp"
             android:paddingRight="20dp"
-            android:text="cancel"
+            android:text="@string/cancel"
             android:textColor="@android:color/white"
             android:textSize="20sp" />
 
@@ -93,10 +105,9 @@
             android:drawableRight="@drawable/arrow_right"
             android:paddingLeft="20dp"
             android:paddingRight="20dp"
-            android:text="create"
+            android:text="@string/finish"
             android:textColor="@android:color/white"
             android:textSize="20sp" />
-
     </LinearLayout>
 
 </LinearLayout>

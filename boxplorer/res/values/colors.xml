@@ -32,8 +32,15 @@
     <!-- Piotrek's layout colors -->
     <color name="main_color">#0bb6c6</color>
     <color name="font_dark_color">#00415e</color>
+    <color name="dark_gray">#bec0c0</color>
+    <color name="light_gray">#f2f2f2</color>
 	<color name="box_localization">#838383</color>
     <color name="item_background">#f4f5f5</color>
     <color name="item_rectangle">#dde0e0</color>
-
+    
+    <color name="back_button_pressed">#909090</color>
+    <color name="next_button_pressed">#0f9ead</color>
+    
+    <color name="header">#446a89</color>
+    
 </resources>

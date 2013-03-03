@@ -1,23 +1,24 @@
 package com.nexelem.boxplorer.wizard;
 
-import android.app.AlertDialog;
-import android.app.Dialog;
 import android.app.DialogFragment;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
 
+import com.nexelem.boxplorer.Fonts;
 import com.nexelem.boxplorer.R;
 import com.nexelem.boxplorer.activity.NfcWriter;
 import com.nexelem.boxplorer.db.BusinessException;
@@ -34,6 +35,7 @@ public class BoxDialog extends DialogFragment {
 	private int step;
 	private ViewFlipper flipper;
 	private boolean update = false;
+	private View [] steps = new View [3];
 
 	public BoxDialog() {
 	}
@@ -53,31 +55,55 @@ public class BoxDialog extends DialogFragment {
 	}
 
 	@Override
-	public Dialog onCreateDialog(Bundle savedInstanceState) {
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+	    getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
 
-		LayoutInflater inflater = (LayoutInflater) this.getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		View view = inflater.inflate(R.layout.wizard, null);
-
-		this.flipper = (ViewFlipper) view.findViewById(R.id.flipper);
-
+		View view = inflater.inflate(R.layout.wizard, container, false);
 		View step1 = inflater.inflate(R.layout.wizard_box_1, null);
 		View step2 = inflater.inflate(R.layout.wizard_box_2, null);
 		View step3 = inflater.inflate(R.layout.wizard_box_3, null);
-
-		this.flipper.addView(step1, 0);
-		this.flipper.addView(step2, 1);
-		this.flipper.addView(step3, 2);
-
-		this.flipper.setInAnimation(AnimationUtils.loadAnimation(this.getActivity(), android.R.anim.slide_in_left));
-		this.flipper.setOutAnimation(AnimationUtils.loadAnimation(this.getActivity(), android.R.anim.slide_out_right));
+		
+		this.steps[0] = view.findViewById(R.id.wizard_step1);
+		this.steps[1] = view.findViewById(R.id.wizard_step2);
+		this.steps[2] = view.findViewById(R.id.wizard_step3);
 
 		this.step = 0;
+		
+		this.flipper = (ViewFlipper) view.findViewById(R.id.flipper);
+		
+		flipper.addView(step1, 0);
+		flipper.addView(step2, 1);
+		flipper.addView(step3, 2);
+		
+		flipper.setInAnimation(AnimationUtils.loadAnimation(this.getActivity(), android.R.anim.slide_in_left));
+		flipper.setOutAnimation(AnimationUtils.loadAnimation(this.getActivity(), android.R.anim.slide_out_right));
 
+		// Title
+		TextView title = (TextView) view.findViewById(R.id.wizard_title);
+		title.setTypeface(Fonts.REGULAR_FONT);
+		title.setText(this.update ? R.string.box_edit : R.string.box_add);
+		
+		// Buttons
+		final Button next = (Button) view.findViewById(R.id.button_next);
+		final Button back = (Button) view.findViewById(R.id.button_back);
+		
+		next.setText(R.string.finish);
+		back.setText(R.string.cancel);
+		next.setTypeface(Fonts.REGULAR_FONT);
+		back.setTypeface(Fonts.REGULAR_FONT);
+		
 		// Step 1
 		final EditText name = (EditText) step1.findViewById(R.id.box_add_name);
 		final EditText localization = (EditText) step1.findViewById(R.id.box_add_localization);
 		final CheckBox isQr = (CheckBox) step1.findViewById(R.id.box_add_qr);
 		final CheckBox isNfc = (CheckBox) step1.findViewById(R.id.box_add_nfc);
+		
+		TextView boxName = (TextView) view.findViewById(R.id.box_name);
+		TextView boxLocation = (TextView) view.findViewById(R.id.box_location);
+		boxName.setTypeface(Fonts.LIGHT_FONT);
+		boxLocation.setTypeface(Fonts.LIGHT_FONT);
+		isQr.setTypeface(Fonts.LIGHT_FONT);
+		isNfc.setTypeface(Fonts.LIGHT_FONT);
 
 		if (this.box != null) {
 			name.setText(this.box.getName());
@@ -85,8 +111,37 @@ public class BoxDialog extends DialogFragment {
 		} else {
 			this.box = new Box();
 		}
+		
+		isQr.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+			
+			@Override
+			public void onCheckedChanged(CompoundButton arg0, boolean checked) {
+				if(checked) 
+					next.setText(R.string.next);
+				else if(!isNfc.isChecked()){
+					next.setText(R.string.finish);
+				}
+			}
+		});
+		
+		isNfc.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+			
+			@Override
+			public void onCheckedChanged(CompoundButton arg0, boolean checked) {
+				if(checked) 
+					next.setText(R.string.next);
+				else if(!isQr.isChecked()){
+					next.setText(R.string.finish);
+				}
+			}
+		});
+		
 		// Step 2
 		final ImageView image = (ImageView) step2.findViewById(R.id.box_add_generated_qr);
+		TextView qrTitle = (TextView) step2.findViewById(R.id.box_qr_title);
+		TextView qrText = (TextView) step2.findViewById(R.id.box_qr_text);
+		qrTitle.setTypeface(Fonts.LIGHT_FONT);
+		qrText.setTypeface(Fonts.LIGHT_FONT);
 
 		if (savedInstanceState != null) {
 			name.setText(savedInstanceState.getString("name"));
@@ -94,31 +149,16 @@ public class BoxDialog extends DialogFragment {
 			isQr.setChecked(savedInstanceState.getBoolean("isQr"));
 			isNfc.setChecked(savedInstanceState.getBoolean("isNfc"));
 		}
+		
+		// Step 3 
+		TextView nfcTitle = (TextView) step3.findViewById(R.id.box_nfc_title);
+		TextView nfcText = (TextView) step3.findViewById(R.id.box_nfc_text);
+		nfcTitle.setTypeface(Fonts.LIGHT_FONT);
+		nfcText.setTypeface(Fonts.LIGHT_FONT);
+		
+		
 
-		AlertDialog.Builder builder = new AlertDialog.Builder(this.getActivity());
-
-		builder.setTitle("Add box");
-		builder.setPositiveButton("Create", new OnClickListener() {
-
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-			}
-		});
-
-		builder.setNegativeButton("Cancel", new OnClickListener() {
-
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-			}
-		});
-
-		builder.setView(view);
-
-		final AlertDialog dialog = builder.create();
-		dialog.show();
-
-		Button positive = dialog.getButton(DialogInterface.BUTTON_POSITIVE);
-		positive.setOnClickListener(new View.OnClickListener() {
+		next.setOnClickListener(new View.OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
@@ -126,7 +166,7 @@ public class BoxDialog extends DialogFragment {
 				switch (BoxDialog.this.step) {
 				case 0:
 					if (name.getEditableText().length() == 0) {
-						Toast.makeText(BoxDialog.this.getActivity(), "Insert box name", Toast.LENGTH_LONG).show();
+						Toast.makeText(BoxDialog.this.getActivity(), getString(R.string.box_name_empty), Toast.LENGTH_SHORT).show();
 						return;
 					}
 
@@ -150,58 +190,68 @@ public class BoxDialog extends DialogFragment {
 					if (isQr.isChecked()) {
 						BoxDialog.this.setStep(1);
 						image.setImageBitmap(QRCodeUtils.generateQRCode(BoxDialog.this.getActivity(), BoxDialog.this.box.getId().toString()));
+						next.setText(isNfc.isChecked() ? R.string.next : R.string.finish);
 					} else if (isNfc.isChecked()) {
 						BoxDialog.this.setStep(2);
+						next.setText(R.string.finish);
 					} else {
-						dialog.cancel();
+						getDialog().cancel();
 					}
 					break;
 
 				case 1:
 					if (isNfc.isChecked()) {
 						BoxDialog.this.setStep(2);
+						next.setText(R.string.finish);
 					} else {
-						dialog.cancel();
+						getDialog().cancel();
 					}
 					break;
 				case 2:
-					dialog.cancel();
+					getDialog().cancel();
 				}
 			}
 		});
-
-		Button negative = dialog.getButton(DialogInterface.BUTTON_NEGATIVE);
-		negative.setOnClickListener(new View.OnClickListener() {
+		
+		back.setOnClickListener(new View.OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
 				switch (BoxDialog.this.step) {
 				case 0:
-					dialog.cancel();
+					getDialog().cancel();
 					break;
 				case 1:
 					BoxDialog.this.setStep(0);
+					next.setText(R.string.next);
 					break;
 				case 2:
 					if (isQr.isChecked()) {
 						BoxDialog.this.setStep(1);
+						next.setText(R.string.next);
 					} else {
 						BoxDialog.this.setStep(0);
+						next.setText(R.string.next);
 					}
 					break;
 				}
 			}
 		});
-
-		return dialog;
+		
+		return view;
 	}
 
 	private void setStep(int i) {
 		this.flipper.setDisplayedChild(i);
 		this.step = i;
 
-		if (i == 2) {
+		/*if (i == 2) {
 			this.writeNfcTag();
+		}*/
+		
+		for(int j = 0; j < 3; j++){
+			System.out.println(j + " <= "+  i);
+			this.steps[j].setBackgroundResource(j <= i ? R.color.main_color : R.color.dark_gray);
 		}
 	}
 
@@ -209,7 +259,6 @@ public class BoxDialog extends DialogFragment {
 		Intent intent = new Intent(this.getActivity(), NfcWriter.class);
 		intent.putExtra(Intent.EXTRA_UID, this.box.getId().toString());
 		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-
 		this.startActivityForResult(intent, 0);
 	}
 

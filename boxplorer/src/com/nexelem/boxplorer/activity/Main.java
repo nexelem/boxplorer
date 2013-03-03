@@ -107,7 +107,7 @@ public class Main extends Activity implements OnQueryTextListener {
 				// Create and show the dialog.
 				DialogFragment newFragment = new BoxDialog();
 				newFragment.show(ft, "wizard");
-				ft.commit();
+				//ft.commit();
 			}
 		});
 

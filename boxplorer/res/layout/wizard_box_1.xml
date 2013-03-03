@@ -1,34 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/box_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/wizard_title_margin"
+        android:padding="5dp"
+        android:text="@string/box_name"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@color/header" />
 
     <EditText
         android:id="@+id/box_add_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@drawable/text_background"
         android:ems="10"
-        android:hint="@string/box_name" />
+        android:padding="10dp" />
+
+    <TextView
+        android:id="@+id/box_location"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        android:text="@string/box_location"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@color/header" />
 
     <EditText
         android:id="@+id/box_add_localization"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@drawable/text_background"
         android:ems="10"
-        android:hint="@string/box_location" >
+        android:padding="10dp" >
+
     </EditText>
 
-    <CheckBox
-        android:id="@+id/box_add_qr"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/generate_qr_code" />
+        android:layout_marginTop="10dp" >
 
-    <CheckBox
-        android:id="@+id/box_add_nfc"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/write_nfc_tag" />
+        <CheckBox
+            android:id="@+id/box_add_qr"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:text="@string/generate_qr_code"
+            android:textColor="@color/header" />
+
+        <CheckBox
+            android:id="@+id/box_add_nfc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:text="@string/write_nfc_tag"
+            android:textColor="@color/header" />
+
+    </LinearLayout>
 
 </LinearLayout>
