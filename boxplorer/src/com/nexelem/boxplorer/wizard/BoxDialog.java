@@ -48,6 +48,7 @@ public class BoxDialog extends DialogFragment {
 	private ViewFlipper flipper;
 	private boolean update = false;
 	private final View[] steps = new View[3];
+	private View nfcStep;
 
 	public BoxDialog() {
 	}
@@ -74,6 +75,7 @@ public class BoxDialog extends DialogFragment {
 		View step1 = inflater.inflate(R.layout.wizard_box_1, null);
 		View step2 = inflater.inflate(R.layout.wizard_box_2, null);
 		View step3 = inflater.inflate(R.layout.wizard_box_3, null);
+		this.nfcStep = step3;
 
 		this.steps[0] = view.findViewById(R.id.wizard_step1);
 		this.steps[1] = view.findViewById(R.id.wizard_step2);
@@ -274,7 +276,7 @@ public class BoxDialog extends DialogFragment {
 				this.writeNfcTag();
 			}
 		} else {
-			TextView msg = (TextView) this.steps[2].findViewById(R.id.box_nfc_text);
+			TextView msg = (TextView) this.nfcStep.findViewById(R.id.box_nfc_text);
 			if (msg != null) {
 				msg.setText(R.string.tap_nfc_write);
 			}
@@ -296,7 +298,7 @@ public class BoxDialog extends DialogFragment {
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (requestCode == NfcWriter.ACTIVITY_WRITE_NFC) {
 			int returnMsg = data.getIntExtra(Intent.EXTRA_TEXT, 0);
-			TextView msg = (TextView) this.steps[2].findViewById(R.id.box_nfc_text);
+			TextView msg = (TextView) this.nfcStep.findViewById(R.id.box_nfc_text);
 			if (msg != null) {
 				msg.setText(returnMsg);
 			}
