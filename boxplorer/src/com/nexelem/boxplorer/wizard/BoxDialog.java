@@ -211,7 +211,7 @@ public class BoxDialog extends DialogFragment {
 						BoxDialog.this.setStep(1);
 
 						try {
-							image.setImageBitmap(QrUtils.generateQRCode(BoxDialog.this.getActivity(), BoxDialog.this.box.getId().toString()));
+							image.setImageBitmap(QrUtils.generateQRCode(BoxDialog.this.getActivity(), BoxDialog.this.box.getId().toString(), BoxDialog.this.box.getName()));
 						} catch (BusinessException e) {
 							Toast.makeText(BoxDialog.this.getActivity().getApplicationContext(), R.string.qr_generation_failed, Toast.LENGTH_SHORT).show();
 						}
@@ -309,7 +309,7 @@ public class BoxDialog extends DialogFragment {
 	private void shareQrCode() {
 		Bitmap icon;
 		try {
-			icon = QrUtils.generateQRCode(BoxDialog.this.getActivity(), BoxDialog.this.box.getId().toString());
+			icon = QrUtils.generateQRCode(BoxDialog.this.getActivity(), BoxDialog.this.box.getId().toString(), BoxDialog.this.box.getName());
 		} catch (BusinessException e1) {
 			Toast.makeText(this.getActivity(), R.string.qr_generation_failed, Toast.LENGTH_SHORT).show();
 			return;

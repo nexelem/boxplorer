@@ -20,6 +20,7 @@
         android:layout_height="wrap_content"
         android:background="@drawable/text_background"
         android:ems="10"
+        android:maxLength="14"
         android:padding="10dp" />
 
     <TextView

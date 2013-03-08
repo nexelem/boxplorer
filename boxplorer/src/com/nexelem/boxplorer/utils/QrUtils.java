@@ -1,8 +1,12 @@
 package com.nexelem.boxplorer.utils;
 
+import android.R;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.Paint.Align;
 import android.util.Log;
 
 import com.google.zxing.BarcodeFormat;
@@ -22,7 +26,7 @@ public class QrUtils {
 
 	private static final String TAG = QrUtils.class.getName();
 
-	public static Bitmap generateQRCode(Activity activity, String content) throws BusinessException {
+	public static Bitmap generateQRCode(Activity activity, String content, String name) throws BusinessException {
 		try {
 			Intent intent = new Intent(Intents.Encode.ACTION);
 			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
@@ -31,7 +35,16 @@ public class QrUtils {
 			intent.putExtra(Intents.Encode.FORMAT, BarcodeFormat.QR_CODE.toString());
 			QRCodeEncoder qrCodeEncoder = null;
 			qrCodeEncoder = new QRCodeEncoder(activity, intent, 200, false);
-			return qrCodeEncoder.encodeAsBitmap();
+			Bitmap image = qrCodeEncoder.encodeAsBitmap();
+			
+			Canvas canvas = new Canvas(image);
+		    Paint paint = new Paint();
+		    paint.setTextSize(22);
+		    paint.setTextAlign(Align.CENTER);
+		    canvas.drawText(name, 100, 195, paint);
+
+			
+			return image;
 
 		} catch (WriterException e) {
 			Log.e(QrUtils.TAG, "Application was unable to generate Bitmap for QRCode", e);
