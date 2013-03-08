@@ -9,13 +9,22 @@
         android:id="@+id/box_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:paddingBottom="@dimen/small_bottom_padding"
         android:text="@string/box_name"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textColor="@color/font_dark_color"
+        android:textSize="@dimen/box_name_height" />
 
     <TextView
         android:id="@+id/box_location"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/box_location" />
+        android:layout_marginLeft="1dp"
+        android:layout_marginTop="-8dp"
+        android:text="@string/box_location"
+        android:textAllCaps="true"
+        android:textColor="@color/box_localization"
+        android:textSize="@dimen/box_location_height" />
 
 </LinearLayout>

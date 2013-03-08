@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 
+import com.nexelem.boxplorer.Fonts;
 import com.nexelem.boxplorer.R;
 import com.nexelem.boxplorer.model.Box;
 
@@ -66,6 +67,8 @@ public class BoxSpinnerAdapter implements SpinnerAdapter {
 			View view = inflater.inflate(R.layout.box_spinner, null);
 			TextView groupName = (TextView) view.findViewById(R.id.box_name);
 			TextView groupLocation = (TextView) view.findViewById(R.id.box_location);
+			groupName.setTypeface(Fonts.REGULAR_FONT);
+			groupLocation.setTypeface(Fonts.REGULAR_FONT);
 			groupName.setText(box.getName());
 			groupLocation.setText(box.getLocation());
 			return view;
