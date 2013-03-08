@@ -319,7 +319,7 @@ public class BoxDialog extends DialogFragment {
 		ByteArrayOutputStream bytes = new ByteArrayOutputStream();
 		icon.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
 		File path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-		File f = new File(path, "boxplorer-qrcode.jpg");
+		File f = new File(path, "boxplorer-"+System.currentTimeMillis()+".jpg");
 		try {
 			FileOutputStream fo = new FileOutputStream(f);
 			fo.write(bytes.toByteArray());
