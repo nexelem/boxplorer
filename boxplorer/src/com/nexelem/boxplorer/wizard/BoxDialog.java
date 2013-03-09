@@ -7,6 +7,7 @@ import java.io.IOException;
 
 import android.annotation.SuppressLint;
 import android.app.DialogFragment;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -18,6 +19,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.animation.AnimationUtils;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -289,6 +291,9 @@ public class BoxDialog extends DialogFragment {
 	}
 
 	private void writeNfcTag() {
+		InputMethodManager imm = (InputMethodManager) this.getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+		imm.hideSoftInputFromWindow(this.nfcStep.getWindowToken(), InputMethodManager.HIDE_IMPLICIT_ONLY);
+
 		Intent intent = new Intent(this.getActivity(), NfcWriter.class);
 		intent.putExtra(Intent.EXTRA_UID, this.box.getId().toString());
 		this.startActivityForResult(intent, NfcWriter.ACTIVITY_WRITE_NFC);
@@ -319,7 +324,7 @@ public class BoxDialog extends DialogFragment {
 		ByteArrayOutputStream bytes = new ByteArrayOutputStream();
 		icon.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
 		File path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-		File f = new File(path, "boxplorer-"+System.currentTimeMillis()+".jpg");
+		File f = new File(path, "boxplorer-" + System.currentTimeMillis() + ".jpg");
 		try {
 			FileOutputStream fo = new FileOutputStream(f);
 			fo.write(bytes.toByteArray());

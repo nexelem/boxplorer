@@ -20,6 +20,7 @@
         android:layout_height="wrap_content"
         android:background="@drawable/text_background"
         android:ems="10"
+        android:inputType="textCapSentences|textAutoCorrect"
         android:maxLength="14"
         android:padding="10dp" />
 
@@ -38,6 +39,7 @@
         android:layout_height="wrap_content"
         android:background="@drawable/text_background"
         android:ems="10"
+        android:inputType="textCapSentences|textAutoCorrect"
         android:padding="10dp" >
 
     </EditText>
