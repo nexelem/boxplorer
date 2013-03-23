@@ -8,6 +8,7 @@ import java.io.IOException;
 import android.annotation.SuppressLint;
 import android.app.DialogFragment;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -51,6 +52,7 @@ public class BoxDialog extends DialogFragment {
 	private boolean update = false;
 	private final View[] steps = new View[3];
 	private View nfcStep;
+	private Intent nfcWriterIntent;
 
 	public BoxDialog() {
 	}
@@ -67,6 +69,14 @@ public class BoxDialog extends DialogFragment {
 		outState.putString("localization", this.box.getLocation());
 		outState.putBoolean("isQr", this.isQr);
 		outState.putBoolean("isNfc", this.isNfc);
+	}
+
+	@Override
+	public void onDismiss(DialogInterface dialog) {
+		if (this.nfcWriterIntent != null) {
+			this.getActivity().stopService(this.nfcWriterIntent);
+		}
+		super.onDismiss(dialog);
 	}
 
 	@Override
@@ -294,9 +304,12 @@ public class BoxDialog extends DialogFragment {
 		InputMethodManager imm = (InputMethodManager) this.getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
 		imm.hideSoftInputFromWindow(this.nfcStep.getWindowToken(), InputMethodManager.HIDE_IMPLICIT_ONLY);
 
-		Intent intent = new Intent(this.getActivity(), NfcWriter.class);
-		intent.putExtra(Intent.EXTRA_UID, this.box.getId().toString());
-		this.startActivityForResult(intent, NfcWriter.ACTIVITY_WRITE_NFC);
+		if (this.nfcWriterIntent == null) {
+			this.nfcWriterIntent = new Intent(this.getActivity(), NfcWriter.class);
+		}
+
+		this.nfcWriterIntent.putExtra(Intent.EXTRA_UID, this.box.getId().toString());
+		this.startActivityForResult(this.nfcWriterIntent, NfcWriter.ACTIVITY_WRITE_NFC);
 	}
 
 	@Override

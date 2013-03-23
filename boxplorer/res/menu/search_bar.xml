@@ -3,8 +3,7 @@
    
     <item android:title="@string/input_methods"
         android:icon="@drawable/search_methods"
-          android:showAsAction="always"
-     >
+          android:showAsAction="always">
      	<menu>
 		   	<item android:id="@+id/voice"
 		          android:title="@string/search_voice"

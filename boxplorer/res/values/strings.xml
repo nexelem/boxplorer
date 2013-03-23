@@ -10,6 +10,7 @@
 	<string name="search_qr_code">QR code</string>
 	<string name="search_nfc">NFC Tag</string>
     
+	<string name="title">Title</string>
 	<string name="box_remove_question">Do you want to remove box?</string>
 	<string name="box_remove">remove box</string>
 	<string name="item_remove_question">Do you want to remove item?</string>
@@ -20,7 +21,7 @@
     <string name="box_edit">edit box</string>
     <string name="finish">finish</string>
     <string name="next">next</string>
-    <string name="cancel">cancel</string>
+    <string name="cancel">Cancel</string>
     <string name="add">Add</string>
     <string name="item_location">Localization</string>
     <string name="item_name">Item name</string>
@@ -37,7 +38,7 @@
     <string name="nfc_logo">NFC logo</string>
     <string name="box_expand_indicator">Box expand indicator</string>
     <string name="box_not_found">Box not found</string>
-    
+    <string name="searcher_clear">Clear</string>
     
     <!-- qrcode: start -->
     <string name="button_ok">OK</string>

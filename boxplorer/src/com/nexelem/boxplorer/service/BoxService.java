@@ -20,7 +20,7 @@ import com.nexelem.boxplorer.model.Box;
  * 
  */
 public class BoxService {
-
+	private static final String TAG = BoxService.class.getName();
 	private BoxDao dao = null;
 	private ItemDao itemDao = null;
 
@@ -29,7 +29,7 @@ public class BoxService {
 			this.dao = new BoxDao(helper);
 			this.itemDao = new ItemDao(helper);
 		} catch (SQLException e) {
-			Log.e("BL:BOX", "Unable to create DAO object", e);
+			Log.e(TAG, "Unable to create DAO object", e);
 			throw new BusinessException(e, "Unable to create DAO object");
 		}
 	}
@@ -47,7 +47,7 @@ public class BoxService {
 		try {
 			this.dao.create(box);
 		} catch (SQLException e) {
-			Log.e("BL:BOX", "Unable to save Box to database", e);
+			Log.e(TAG, "Unable to save Box to database", e);
 			throw new BusinessException(e, "Unable to create Box by name");
 		}
 	}
@@ -59,7 +59,7 @@ public class BoxService {
 		try {
 			this.dao.update(box);
 		} catch (SQLException e) {
-			Log.e("BL:BOX", "Unable to update Box to database", e);
+			Log.e(TAG, "Unable to update Box to database", e);
 		}
 	}
 
@@ -68,10 +68,10 @@ public class BoxService {
 		try {
 			uId = UUID.fromString(id);
 		} catch (IllegalArgumentException iae) {
-			Log.e("BL:BOX", "Unable to find Box. Passed ID is invalid", iae);
+			Log.e(TAG, "Unable to find Box. Passed ID is invalid", iae);
 			throw new BusinessException(iae);
 		} catch (NullPointerException npe) {
-			Log.e("BL:BOX", "Unable to find Box. Passed ID is null", npe);
+			Log.e(TAG, "Unable to find Box. Passed ID is null", npe);
 			throw new BusinessException(npe);
 		}
 		return this.get(uId);
@@ -81,7 +81,7 @@ public class BoxService {
 		try {
 			return this.dao.get(id);
 		} catch (SQLException e) {
-			Log.e("BL:BOX", "Unable to update Box to database", e);
+			Log.e(TAG, "Unable to update Box to database", e);
 			throw new BusinessException(e, "Unable to get Box object");
 		}
 	}
@@ -91,7 +91,7 @@ public class BoxService {
 			this.itemDao.deleteByBoxId(id);
 			this.dao.delete(id);
 		} catch (SQLException e) {
-			Log.e("BL:BOX", "Unable to delete BOX" + id, e);
+			Log.e(TAG, "Unable to delete BOX" + id, e);
 			throw new BusinessException(e, "Unable to delete Box");
 		}
 	}
@@ -100,7 +100,7 @@ public class BoxService {
 		try {
 			return this.dao.list();
 		} catch (SQLException e) {
-			Log.e("BL:BOX", "Unable to list BOXes");
+			Log.e(TAG, "Unable to list BOXes");
 			throw new BusinessException(e, "Unable to list Boxes");
 		}
 	}

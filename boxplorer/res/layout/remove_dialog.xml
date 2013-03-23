@@ -12,7 +12,7 @@
         android:layout_marginBottom="10dp"
         android:layout_marginLeft="@dimen/wizard_title_margin"
         android:layout_marginTop="15dp"
-        android:text="default text"
+        android:text="@string/title"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="@color/main_color"
         android:textSize="@dimen/wizard_title_height" />
@@ -45,7 +45,8 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/wizard_title_margin"
         android:layout_marginLeft="@dimen/wizard_title_margin"
-        android:layout_marginRight="@dimen/wizard_title_margin" >
+        android:layout_marginRight="@dimen/wizard_title_margin"
+        style="?android:attr/buttonBarStyle" >
 
         <Button
             android:id="@+id/button_ok"
@@ -59,7 +60,8 @@
             android:paddingRight="20dp"
             android:text="@android:string/yes"
             android:textColor="@android:color/white"
-            android:textSize="20sp" />
+            android:textSize="20sp"
+            style="?android:attr/buttonBarButtonStyle" />
 
         <Button
             android:id="@+id/button_cancel"
@@ -74,7 +76,8 @@
             android:paddingRight="20dp"
             android:text="@android:string/no"
             android:textColor="@android:color/white"
-            android:textSize="20sp" />
+            android:textSize="20sp"
+            style="?android:attr/buttonBarStyle" />
 
     </LinearLayout>
 

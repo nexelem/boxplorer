@@ -2,7 +2,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/main_color"
     android:orientation="horizontal" >
 
     <ImageView
@@ -23,7 +22,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_weight="1"
             android:background="@drawable/searcher_bg"
             android:drawableLeft="@drawable/searcher_bg_icon"
             android:drawablePadding="10dp"
@@ -31,7 +29,8 @@
             android:paddingLeft="15dp"
             android:singleLine="true"
             android:textColor="@android:color/white"
-            android:textSize="20sp" >
+            android:textSize="20sp"
+            android:inputType="text" >
 
         </EditText>
 
@@ -42,7 +41,8 @@
             android:layout_gravity="right|center_vertical"
             android:layout_marginRight="15dp"
             android:src="@drawable/clear"
-            android:visibility="gone" />
+            android:visibility="gone"
+            android:contentDescription="@string/searcher_clear" />
 
     </FrameLayout>
 

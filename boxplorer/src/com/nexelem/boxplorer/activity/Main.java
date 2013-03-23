@@ -51,9 +51,8 @@ import com.nexelem.boxplorer.wizard.BoxDialog;
  */
 public class Main extends Activity implements TextWatcher {
 
-	/**
-	 * 
-	 */
+	private static final String TAG = Main.class.getName();
+
 	private ListAdapter adapter;
 	private ExpandableListView list;
 	private ImageView clear;
@@ -75,7 +74,7 @@ public class Main extends Activity implements TextWatcher {
 			ObjectKeeper.getInstance().setBoxService(new BoxService(helper));
 			ObjectKeeper.getInstance().setItemService(new ItemService(helper));
 		} catch (BusinessException e) {
-			Log.e("APP", "Unable to get required DB Services", e);
+			Log.e(TAG, "Unable to get required DB Services", e);
 			throw new RuntimeException();
 		}
 
@@ -153,7 +152,7 @@ public class Main extends Activity implements TextWatcher {
 	}
 
 	private void readNfcTag() {
-		(new DialogFragment() {
+		DialogFragment df = (new DialogFragment() {
 			@Override
 			public void onCreate(Bundle savedInstanceState) {
 				super.onCreate(savedInstanceState);
@@ -161,10 +160,13 @@ public class Main extends Activity implements TextWatcher {
 
 			@Override
 			public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+				this.getDialog().setTitle(R.string.nfc_logo);
 				View v = inflater.inflate(R.layout.wizard_box_3, container, false);
 				return v;
 			}
-		}).show(this.getFragmentManager(), "findByNfc");
+		});
+
+		df.show(this.getFragmentManager(), "findByNfc");
 
 	}
 
@@ -223,7 +225,7 @@ public class Main extends Activity implements TextWatcher {
 				boxes = ObjectKeeper.getInstance().getBoxService().list();
 			} catch (BusinessException e) {
 				Toast.makeText(this, "Application error: unable to get boxes list", Toast.LENGTH_SHORT).show();
-				e.printStackTrace();
+				Log.e(TAG, "Unable to get boxes", e);
 			}
 		}
 
@@ -373,7 +375,7 @@ public class Main extends Activity implements TextWatcher {
 				Toast.makeText(this, "Szukam: " + newText, Toast.LENGTH_SHORT).show();
 			} catch (BusinessException e) {
 				Toast.makeText(this, "ERROR: " + newText, Toast.LENGTH_SHORT).show();
-				Log.e("APP", "Wystapil blad podczas poszukiwania przedmiotu", e);
+				Log.e(TAG, "Wystapil blad podczas poszukiwania przedmiotu", e);
 			}
 
 		}

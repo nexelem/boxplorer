@@ -51,6 +51,8 @@ import com.nexelem.boxplorer.wizard.RemoveDialog;
  */
 public class ListAdapter extends BaseExpandableListAdapter implements OnChildClickListener {
 
+	private static final String TAG = ListAdapter.class.getName();
+
 	/**
 	 * Lista przefiltrowanych pudelek (kiedy filtr nie jest nalozony
 	 * boxes==fullList)
@@ -80,7 +82,7 @@ public class ListAdapter extends BaseExpandableListAdapter implements OnChildCli
 			this.boxes = ObjectKeeper.getInstance().getBoxService().list();
 			ObjectKeeper.getInstance().setBoxList(this.boxes);
 		} catch (BusinessException e) {
-			Log.e("APP", "Unable to update ListAdapter data", e);
+			Log.e(TAG, "Unable to update ListAdapter data", e);
 		}
 	}
 
@@ -248,7 +250,7 @@ public class ListAdapter extends BaseExpandableListAdapter implements OnChildCli
 				try {
 					fm = ((Activity) ListAdapter.this.context).getFragmentManager();
 				} catch (ClassCastException e) {
-					Log.d("Fragment", "Can't get the fragment manager with this");
+					Log.d(TAG, "Can't get the fragment manager with this");
 				}
 
 				FragmentTransaction ft = fm.beginTransaction();
@@ -295,7 +297,7 @@ public class ListAdapter extends BaseExpandableListAdapter implements OnChildCli
 								ListAdapter.this.updateListAdapterData();
 								ListAdapter.this.notifyDataSetChanged();
 							} catch (BusinessException e) {
-								Log.e("APP", "There where an issue during item deletion", e);
+								Log.e(TAG, "There where an issue during item deletion", e);
 								Toast.makeText(ListAdapter.this.context, "WystÄ…piÅ‚ bÅ‚Ä…d podczas usuwania przedmiotu", Toast.LENGTH_SHORT).show();
 							}
 						}
@@ -335,7 +337,7 @@ public class ListAdapter extends BaseExpandableListAdapter implements OnChildCli
 						ListAdapter.this.updateListAdapterData();
 						ListAdapter.this.notifyDataSetChanged();
 					} catch (BusinessException e) {
-						Log.e("APP", "There where an issue during box deletion", e);
+						Log.e(TAG, "There where an issue during box deletion", e);
 						Toast.makeText(ListAdapter.this.context, "Wystąpił błąd podczas usuwania pudełka", Toast.LENGTH_SHORT).show();
 					}
 				}
@@ -470,7 +472,7 @@ public class ListAdapter extends BaseExpandableListAdapter implements OnChildCli
 				try {
 					fm = ((Activity) ListAdapter.this.context).getFragmentManager();
 				} catch (ClassCastException e) {
-					Log.d("Fragment", "Can't get the fragment manager with this", e);
+					Log.d(TAG, "Can't get the fragment manager with this", e);
 					return;
 				}
 
@@ -613,7 +615,6 @@ public class ListAdapter extends BaseExpandableListAdapter implements OnChildCli
 	 * @throws BusinessException
 	 */
 	public boolean searchForBox(String boxId) throws BusinessException {
-		Log.i("APP", "Searching for Box id: " + boxId);
 		Box box;
 		box = ObjectKeeper.getInstance().getBoxService().get(boxId);
 		if (box != null) {

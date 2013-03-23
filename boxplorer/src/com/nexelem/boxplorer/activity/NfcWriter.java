@@ -28,6 +28,8 @@ import com.nexelem.boxplorer.R;
  */
 public class NfcWriter extends Activity {
 
+	private static final String TAG = NfcWriter.class.getName();
+
 	public static final int ACTIVITY_WRITE_NFC = 6444;
 	public static final String NFC_MIME_TYPE = "application/com.nexelem.boxplorer";
 
@@ -156,7 +158,7 @@ public class NfcWriter extends Activity {
 					}
 				}
 			} catch (Exception e) {
-				Log.e("URLTagger", "Exception when writing tag", e);
+				Log.e(TAG, "Exception when writing tag", e);
 				this.returnText = R.string.nfc_general_exception;
 			}
 
