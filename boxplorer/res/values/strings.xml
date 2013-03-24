@@ -54,6 +54,8 @@
     <string name="qr_generation_failed">Unable to generate QR Code</string>
 
     <!-- nfc: end -->
+    <string name="tap_nfc_searching">NFC searching</string>
+    <string name="tap_nfc_search_info">Put your phone to box with NFC tag.</string>
     <string name="tap_nfc_write">Please tap NFC Tag to proceed</string>
     <string name="nfc_tag_refused_to_format">Tag refused to format</string>
     <string name="nfc_tag_refused_to_connect">Tag refused to connect</string>

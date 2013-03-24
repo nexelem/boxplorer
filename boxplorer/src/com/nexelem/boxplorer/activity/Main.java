@@ -19,13 +19,11 @@ import android.speech.RecognizerIntent;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -43,6 +41,7 @@ import com.nexelem.boxplorer.service.ItemService;
 import com.nexelem.boxplorer.utils.NfcUtils;
 import com.nexelem.boxplorer.utils.ObjectKeeper;
 import com.nexelem.boxplorer.wizard.BoxDialog;
+import com.nexelem.boxplorer.wizard.ScanNfcDialog;
 
 /**
  * Klasa wejsciowa do aplikacji
@@ -153,19 +152,7 @@ public class Main extends Activity implements TextWatcher {
 	}
 
 	private void readNfcTag() {
-		(new DialogFragment() {
-			@Override
-			public void onCreate(Bundle savedInstanceState) {
-				super.onCreate(savedInstanceState);
-			}
-
-			@Override
-			public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-				View v = inflater.inflate(R.layout.wizard_box_3, container, false);
-				return v;
-			}
-		}).show(this.getFragmentManager(), "findByNfc");
-
+		(new ScanNfcDialog()).show(this.getFragmentManager(), "findByNfc");
 	}
 
 	private void readVoice() {

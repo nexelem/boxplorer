@@ -53,6 +53,8 @@
     <string name="qr_generation_failed">Nie udało się utworzyć kodu QR</string>
 
     <!-- nfc: end -->
+    <string name="tap_nfc_searching">wyszukiwanie NFC</string>
+    <string name="tap_nfc_search_info">Zbliż telefon do pudełka z tagiem NFC.</string>
     <string name="tap_nfc_write">Proszę przyłożyć tag NFC aby kontynuować</string>
     <string name="nfc_tag_refused_to_format">Nie udało się sformatować tagu</string>
     <string name="nfc_tag_refused_to_connect">Nie udało się połączyć z tagiem</string>
