@@ -45,7 +45,7 @@
             android:layout_marginBottom="@dimen/default_form_margin_bottom"
             android:background="@drawable/text_background"
             android:ems="10"
-            android:inputType="text"
+            android:inputType="textCapSentences|textAutoCorrect"
             android:padding="10dp" >
 
             <requestFocus />
@@ -78,7 +78,8 @@
         android:layout_marginBottom="@dimen/wizard_title_margin"
         android:layout_marginLeft="@dimen/wizard_title_margin"
         android:layout_marginRight="@dimen/wizard_title_margin"
-        android:layout_marginTop="@dimen/wizard_title_margin" >
+        android:layout_marginTop="@dimen/wizard_title_margin"
+        style="?android:attr/buttonBarStyle" >
 
         <Button
             android:id="@+id/button_back"
@@ -92,7 +93,8 @@
             android:paddingRight="20dp"
             android:text="@string/cancel"
             android:textColor="@android:color/white"
-            android:textSize="20sp" />
+            android:textSize="20sp"
+            style="?android:attr/buttonBarButtonStyle" />
 
         <Button
             android:id="@+id/button_next"
@@ -107,7 +109,8 @@
             android:paddingRight="20dp"
             android:text="@string/finish"
             android:textColor="@android:color/white"
-            android:textSize="20sp" />
+            android:textSize="20sp"
+            style="?android:attr/buttonBarButtonStyle" />
     </LinearLayout>
 
 </LinearLayout>

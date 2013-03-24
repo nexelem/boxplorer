@@ -10,6 +10,7 @@
 	<string name="search_qr_code">Kod QR</string>
 	<string name="search_nfc">Tag NFC</string>
    
+	<string name="title">Tytuł</string>
 	<string name="box_remove_question">Jesteś pewien, że chcesz usunąć dane pudło?</string>
 	<string name="box_remove">usuwania pudła</string>
 	<string name="item_remove_question">Jesteś pewien, że chcesz usunąć dany przedmiot?</string>
@@ -37,6 +38,7 @@
     <string name="nfc_logo">Logo NFC</string>
     <string name="box_expand_indicator">Wskaźnik rozsunięcia pudełka</string>
     <string name="box_not_found">Nie znaleziono pudła</string>
+    <string name="searcher_clear">Wyczyść</string>
     
     <!-- qrcode: start -->
     <string name="msg_camera_framework_bug">Przykro nam, ale kamera w aparacie nie działa poprawnie. Być może potrzebne będzie ponowne uruchomienie aparatu.</string>

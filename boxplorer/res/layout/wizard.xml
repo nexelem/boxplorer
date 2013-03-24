@@ -78,9 +78,10 @@
             android:drawableLeft="@drawable/arrow_left"
             android:paddingLeft="20dp"
             android:paddingRight="20dp"
-            android:text="cancel"
+            android:text="@string/cancel"
             android:textColor="@android:color/white"
-            android:textSize="20sp" />
+            android:textSize="20sp"
+            style="?android:attr/buttonBarStyle" />
 
         <Button
             android:id="@+id/button_next"
@@ -93,9 +94,10 @@
             android:drawableRight="@drawable/arrow_right"
             android:paddingLeft="20dp"
             android:paddingRight="20dp"
-            android:text="create"
+            android:text="@string/next"
             android:textColor="@android:color/white"
-            android:textSize="20sp" />
+            android:textSize="20sp"
+            style="?android:attr/buttonBarStyle" />
 
     </LinearLayout>
 

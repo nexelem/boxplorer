@@ -1,14 +1,12 @@
 package com.nexelem.boxplorer.wizard;
 
-import android.app.AlertDialog;
 import android.app.DialogFragment;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.Window;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -37,15 +35,15 @@ public class ItemDialog extends DialogFragment {
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-	    getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+		this.getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
 
 		View v = inflater.inflate(R.layout.item_dialog, container, false);
-		
+
 		// Title
 		TextView title = (TextView) v.findViewById(R.id.wizard_title);
 		title.setText(this.item != null ? R.string.edit_item : R.string.add_item);
 		title.setTypeface(Fonts.REGULAR_FONT);
-		
+
 		// Labels
 		TextView name = (TextView) v.findViewById(R.id.item_name_label);
 		TextView localization = (TextView) v.findViewById(R.id.item_location_label);
@@ -56,12 +54,12 @@ public class ItemDialog extends DialogFragment {
 		if (this.item != null) {
 			itemName.setText(this.item.getName());
 		}
-		
+
 		final Spinner boxes = (Spinner) v.findViewById(R.id.item_boxlist);
 		final boolean updateItem = this.item == null ? false : true;
 		boxes.setAdapter(new BoxSpinnerAdapter(ObjectKeeper.getInstance().getBoxList()));
 		boxes.setSelection(this.box);
-		
+
 		Button cancelButton = (Button) v.findViewById(R.id.button_back);
 		cancelButton.setTypeface(Fonts.REGULAR_FONT);
 		cancelButton.setOnClickListener(new OnClickListener() {
@@ -78,7 +76,7 @@ public class ItemDialog extends DialogFragment {
 			public void onClick(View v) {
 				String dialogItemName = itemName.getText().toString();
 				if (dialogItemName.length() == 0) {
-					Toast.makeText(getActivity(), getString(R.string.item_name_empty), Toast.LENGTH_SHORT).show();
+					Toast.makeText(ItemDialog.this.getActivity(), ItemDialog.this.getString(R.string.item_name_empty), Toast.LENGTH_SHORT).show();
 					return;
 				}
 				Item itemToSave = new Item(dialogItemName, (Box) boxes.getSelectedItem());

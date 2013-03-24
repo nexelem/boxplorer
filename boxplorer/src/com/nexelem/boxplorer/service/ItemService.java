@@ -3,8 +3,8 @@ package com.nexelem.boxplorer.service;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.UUID;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
+import android.util.Log;
 
 import com.nexelem.boxplorer.dao.BoxDao;
 import com.nexelem.boxplorer.dao.ItemDao;
@@ -15,7 +15,7 @@ import com.nexelem.boxplorer.model.Item;
 
 public class ItemService {
 
-	Logger log = Logger.getLogger(BoxService.class.getName());
+	private static final String TAG = ItemService.class.getName();
 
 	private ItemDao dao = null;
 
@@ -24,7 +24,7 @@ public class ItemService {
 			this.dao = new ItemDao(helper);
 			new BoxDao(helper);
 		} catch (SQLException e) {
-			this.log.log(Level.SEVERE, "Unable to create DAO object", e);
+			Log.e(TAG, "Unable to create DAO object", e);
 			throw new BusinessException(e, "Unable to create DAO object");
 		}
 	}
@@ -33,7 +33,7 @@ public class ItemService {
 		try {
 			this.dao.create(item);
 		} catch (SQLException e) {
-			this.log.log(Level.WARNING, "Unable to save Item in Box", e);
+			Log.e(TAG, "Unable to save Item in Box", e);
 			throw new BusinessException(e, "Unable to save Item in Box");
 		}
 	}
@@ -42,7 +42,7 @@ public class ItemService {
 		try {
 			this.dao.update(item);
 		} catch (SQLException e) {
-			this.log.log(Level.WARNING, "Unable to update Item in database", e);
+			Log.e(TAG, "Unable to update Item in database", e);
 			throw new BusinessException(e, "Unable to update Item");
 		}
 	}
@@ -51,7 +51,7 @@ public class ItemService {
 		try {
 			return this.dao.get(id);
 		} catch (SQLException e) {
-			this.log.log(Level.WARNING, "Unable to get Item object", e);
+			Log.e(TAG, "Unable to get Item object", e);
 			throw new BusinessException(e, "Unable to get Item object $s", id);
 		}
 	}
@@ -60,9 +60,8 @@ public class ItemService {
 		try {
 			this.dao.delete(id);
 		} catch (SQLException e) {
-			this.log.log(Level.WARNING, "Unable to delete Item object", e);
-			throw new BusinessException(e, "Unable to delete Item object $s",
-					id);
+			Log.e(TAG, "Unable to delete Item object", e);
+			throw new BusinessException(e, "Unable to delete Item object $s", id);
 		}
 	}
 
@@ -70,19 +69,17 @@ public class ItemService {
 		try {
 			return this.dao.list();
 		} catch (SQLException e) {
-			this.log.log(Level.WARNING, "Unable to list Items", e);
+			Log.e(TAG, "Unable to list Items", e);
 			throw new BusinessException(e, "Unable to list Items");
 		}
 	}
 
-	public List<Box> getByLikelyItemName(List<Box> boxes, String name)
-			throws BusinessException {
+	public List<Box> getByLikelyItemName(List<Box> boxes, String name) throws BusinessException {
 		try {
 			return this.dao.getByLikelyItemName(boxes, name);
 		} catch (SQLException e) {
-			this.log.log(Level.WARNING, "Unable to find Items", e);
-			throw new BusinessException(e, "Unable to find Items with name $s",
-					name);
+			Log.e(TAG, "Unable to find Items", e);
+			throw new BusinessException(e, "Unable to find Items with name $s", name);
 		}
 	}
 

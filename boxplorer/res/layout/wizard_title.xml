@@ -9,7 +9,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/wizard_title_margin"
-        android:text="default text"
+        android:text="@string/title"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="@color/main_color"
         android:textSize="@dimen/wizard_title_height" />

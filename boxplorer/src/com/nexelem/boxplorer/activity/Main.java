@@ -50,9 +50,8 @@ import com.nexelem.boxplorer.wizard.ScanNfcDialog;
  */
 public class Main extends Activity implements TextWatcher {
 
-	/**
-	 * 
-	 */
+	private static final String TAG = Main.class.getName();
+
 	private ListAdapter adapter;
 	private ExpandableListView list;
 	private ImageView clear;
@@ -74,7 +73,7 @@ public class Main extends Activity implements TextWatcher {
 			ObjectKeeper.getInstance().setBoxService(new BoxService(helper));
 			ObjectKeeper.getInstance().setItemService(new ItemService(helper));
 		} catch (BusinessException e) {
-			Log.e("APP", "Unable to get required DB Services", e);
+			Log.e(TAG, "Unable to get required DB Services", e);
 			throw new RuntimeException();
 		}
 
@@ -210,7 +209,7 @@ public class Main extends Activity implements TextWatcher {
 				boxes = ObjectKeeper.getInstance().getBoxService().list();
 			} catch (BusinessException e) {
 				Toast.makeText(this, "Application error: unable to get boxes list", Toast.LENGTH_SHORT).show();
-				e.printStackTrace();
+				Log.e(TAG, "Unable to get boxes", e);
 			}
 		}
 
@@ -360,7 +359,7 @@ public class Main extends Activity implements TextWatcher {
 				Toast.makeText(this, "Szukam: " + newText, Toast.LENGTH_SHORT).show();
 			} catch (BusinessException e) {
 				Toast.makeText(this, "ERROR: " + newText, Toast.LENGTH_SHORT).show();
-				Log.e("APP", "Wystapil blad podczas poszukiwania przedmiotu", e);
+				Log.e(TAG, "Wystapil blad podczas poszukiwania przedmiotu", e);
 			}
 
 		}

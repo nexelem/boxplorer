@@ -1,6 +1,5 @@
 package com.nexelem.boxplorer.utils;
 
-import android.R;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -36,14 +35,13 @@ public class QrUtils {
 			QRCodeEncoder qrCodeEncoder = null;
 			qrCodeEncoder = new QRCodeEncoder(activity, intent, 200, false);
 			Bitmap image = qrCodeEncoder.encodeAsBitmap();
-			
-			Canvas canvas = new Canvas(image);
-		    Paint paint = new Paint();
-		    paint.setTextSize(22);
-		    paint.setTextAlign(Align.CENTER);
-		    canvas.drawText(name, 100, 195, paint);
 
-			
+			Canvas canvas = new Canvas(image);
+			Paint paint = new Paint();
+			paint.setTextSize(22);
+			paint.setTextAlign(Align.CENTER);
+			canvas.drawText(name, 100, 195, paint);
+
 			return image;
 
 		} catch (WriterException e) {
