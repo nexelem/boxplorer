@@ -114,8 +114,6 @@ public class Main extends Activity implements TextWatcher {
 			}
 		});
 
-		this.handleTagReceive(this.getIntent());
-
 		// Customizing search view
 		final TextView searcher = (TextView) this.findViewById(R.id.searcher);
 		searcher.addTextChangedListener(this);
@@ -129,6 +127,8 @@ public class Main extends Activity implements TextWatcher {
 				searcher.clearFocus();
 			}
 		});
+
+		this.handleTagReceive(this.getIntent());
 	}
 
 	/**
