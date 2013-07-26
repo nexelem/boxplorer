@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-   
+
     <item android:title="@string/input_methods"
         android:icon="@drawable/search_methods"
           android:showAsAction="always">
@@ -20,6 +20,10 @@
 		          android:showAsAction="ifRoom"
 		          android:icon="@drawable/nfc"
 		         />
+            <item android:id="@+id/export"
+                  android:title="@string/export"
+                  android:showAsAction="ifRoom"
+                 />
 	      </menu>
 	 </item>
 </menu>

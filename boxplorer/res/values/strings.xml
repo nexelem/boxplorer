@@ -67,4 +67,5 @@
 	<string name="nfc_description">In order to save your box information on NFC tag put the phone closer.</string>
     <string name="nfc_tag_saved">Tag has been saved</string>
     <string name="nfc_unable_to_read">Unable to read NFC tag properly</string>
+    <string name="export">Export</string>
 </resources>

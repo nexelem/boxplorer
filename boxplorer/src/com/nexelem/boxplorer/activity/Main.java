@@ -1,5 +1,6 @@
 package com.nexelem.boxplorer.activity;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,6 +13,7 @@ import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.net.Uri;
 import android.nfc.NfcAdapter;
 import android.nfc.Tag;
 import android.os.Bundle;
@@ -35,6 +37,7 @@ import com.nexelem.boxplorer.adapter.ListAdapter;
 import com.nexelem.boxplorer.db.BusinessException;
 import com.nexelem.boxplorer.db.DBHelper;
 import com.nexelem.boxplorer.enums.SearchType;
+import com.nexelem.boxplorer.exporter.DBExporter;
 import com.nexelem.boxplorer.model.Box;
 import com.nexelem.boxplorer.service.BoxService;
 import com.nexelem.boxplorer.service.ItemService;
@@ -146,6 +149,9 @@ public class Main extends Activity implements TextWatcher {
 		case R.id.voice:
 			this.readVoice();
 			break;
+        case R.id.export:
+            this.export();
+            break;
 		}
 		return true;
 	}
@@ -160,6 +166,22 @@ public class Main extends Activity implements TextWatcher {
 		intent.putExtra(RecognizerIntent.EXTRA_PROMPT, "Speech recognition");
 		this.startActivityForResult(intent, SearchType.VOICE.ordinal());
 	}
+
+
+    private void export() {
+        File f = new DBExporter(getExternalCacheDir()).export(ObjectKeeper.getInstance().getBoxList());
+        sendFile(f);
+    }
+
+    private void sendFile(File file) {
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType("application/octet-stream");
+        Uri uri = Uri.fromFile(file);
+        intent.putExtra(Intent.EXTRA_STREAM, uri);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
+        intent.putExtra(Intent.EXTRA_SUBJECT, file.getName());
+        this.startActivity(Intent.createChooser(intent, "Share message"));
+    }
 
 	private void readQrCode() {
 		Intent intent = new Intent("nex.com.google.zxing.client.android.SCAN");
