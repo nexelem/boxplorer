@@ -5,6 +5,9 @@ import java.util.List;
 import java.util.UUID;
 
 import com.j256.ormlite.dao.Dao;
+import com.j256.ormlite.stmt.DeleteBuilder;
+import com.j256.ormlite.stmt.UpdateBuilder;
+import com.j256.ormlite.support.ConnectionSource;
 import com.nexelem.boxplorer.db.DBHelper;
 import com.nexelem.boxplorer.model.Box;
 
@@ -45,5 +48,13 @@ public class BoxDao {
 	public Box get(UUID id) throws SQLException {
 		return this.helper.queryForId(id);
 	}
+
+    public ConnectionSource getConnectionSource() {
+        return this.helper.getConnectionSource();
+    }
+
+    public void deleteAll() throws SQLException {
+        helper.deleteBuilder().delete();
+    }
 
 }

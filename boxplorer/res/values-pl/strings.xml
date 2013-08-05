@@ -68,4 +68,11 @@
     <string name="nfc_tag_saved">Tag został zapisany</string>
     <string name="nfc_unable_to_read">Nie udało się poprawnie odczytać tagu NFC</string>
 
+    <!-- import export -->
+    <string name="export">Export</string>
+    <string name="import_db">Import</string>
+    <string name="import_title">Import</string>
+    <string name="import_question">Czy na pewno chcesz zaimportować pudełka? Aktualne pudełka zostaną usunięte.</string>
+    <string name="import_successful">Pudełka zaimportowane pomyślnie</string>
+    <string name="import_fail">Nie można zaimportować pudełek. Plik nie istnieje lub ma niewłaściwy format.</string>
 </resources>

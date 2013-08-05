@@ -1,6 +1,7 @@
 package com.nexelem.boxplorer.activity;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,12 +39,14 @@ import com.nexelem.boxplorer.db.BusinessException;
 import com.nexelem.boxplorer.db.DBHelper;
 import com.nexelem.boxplorer.enums.SearchType;
 import com.nexelem.boxplorer.exporter.DBExporter;
+import com.nexelem.boxplorer.exporter.DBImporter;
 import com.nexelem.boxplorer.model.Box;
 import com.nexelem.boxplorer.service.BoxService;
 import com.nexelem.boxplorer.service.ItemService;
 import com.nexelem.boxplorer.utils.NfcUtils;
 import com.nexelem.boxplorer.utils.ObjectKeeper;
 import com.nexelem.boxplorer.wizard.BoxDialog;
+import com.nexelem.boxplorer.wizard.RemoveDialog;
 import com.nexelem.boxplorer.wizard.ScanNfcDialog;
 
 /**
@@ -152,6 +155,9 @@ public class Main extends Activity implements TextWatcher {
         case R.id.export:
             this.export();
             break;
+         case R.id.importDB:
+            this.importDB();
+            break;
 		}
 		return true;
 	}
@@ -166,6 +172,38 @@ public class Main extends Activity implements TextWatcher {
 		intent.putExtra(RecognizerIntent.EXTRA_PROMPT, "Speech recognition");
 		this.startActivityForResult(intent, SearchType.VOICE.ordinal());
 	}
+
+    private void importDB() {
+        final RemoveDialog d = new RemoveDialog();
+        d.setMessage(R.string.import_question);
+        d.setTitle(R.string.import_title);
+        d.setOnAcceptListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                try {
+                    new DBImporter(getExternalCacheDir()).importDB(ObjectKeeper.getInstance());
+                    Main.this.adapter.updateListAdapterData();
+                    Main.this.adapter.notifyDataSetChanged();
+                    Main.this.collapseAll();
+                    Toast.makeText(Main.this, R.string.import_successful, Toast.LENGTH_SHORT).show();
+                } catch (BusinessException e) {
+                    Toast.makeText(Main.this, R.string.import_fail, Toast.LENGTH_LONG).show();
+                    Log.d(TAG, "ImportDB: Data file does not exist or is invalid", e);
+                }
+                d.dismiss();
+            }
+        });
+        d.setOnRejectListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                d.dismiss();
+            }
+        });
+        FragmentManager fm = this.getFragmentManager();
+        d.show(fm, "confirm-import-dialog");
+    }
 
 
     private void export() {

@@ -67,5 +67,12 @@
 	<string name="nfc_description">In order to save your box information on NFC tag put the phone closer.</string>
     <string name="nfc_tag_saved">Tag has been saved</string>
     <string name="nfc_unable_to_read">Unable to read NFC tag properly</string>
+
+    <!-- import export -->
     <string name="export">Export</string>
+    <string name="import_db">Import</string>
+    <string name="import_title">Import</string>
+    <string name="import_question">Do you want to import boxes? Current boxes will be removed.</string>
+    <string name="import_successful">Boxes imported successfully</string>
+    <string name="import_fail">Cannot import boxes. File does not exist or is invalid.</string>
 </resources>

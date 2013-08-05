@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.util.Log;
 
+import com.nexelem.boxplorer.db.BusinessException;
 import com.nexelem.boxplorer.model.Box;
 import com.nexelem.boxplorer.model.Item;
 
@@ -60,7 +61,6 @@ public class DBExporter {
 
     private JSONObject exportBox(Box box) throws JSONException {
         JSONObject json = new JSONObject();
-        json.put(ExportConstants.BOX_PARAM_ID, box.getId());
         json.put(ExportConstants.BOX_PARAM_NAME, box.getName());
         json.put(ExportConstants.BOX_PARAM_LOCATION, box.getLocation());
         json.put(ExportConstants.BOX_PARAM_ITEMS, exportItems(box.getItemsList()));
@@ -78,7 +78,6 @@ public class DBExporter {
 
     private JSONObject exportItem(Item item) throws JSONException {
         JSONObject json = new JSONObject();
-        json.put(ExportConstants.ITEM_PARAM_ID, item.getId());
         json.put(ExportConstants.ITEM_PARAM_NAME, item.getName());
         return json;
     }

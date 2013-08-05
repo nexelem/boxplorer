@@ -24,6 +24,10 @@
                   android:title="@string/export"
                   android:showAsAction="ifRoom"
                  />
+            <item android:id="@+id/importDB"
+                  android:title="@string/import_db"
+                  android:showAsAction="ifRoom"
+                    />
 	      </menu>
 	 </item>
 </menu>

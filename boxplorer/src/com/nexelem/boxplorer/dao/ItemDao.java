@@ -76,4 +76,9 @@ public class ItemDao {
 		builder.where().eq("box_id", id);
 		builder.delete();
 	}
+
+
+    public void deleteAll() throws SQLException {
+        helper.deleteBuilder().delete();
+    }
 }
