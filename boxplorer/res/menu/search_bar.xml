@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <item android:title="@string/input_methods"
         android:icon="@drawable/search_methods"
@@ -20,16 +20,23 @@
 		          android:showAsAction="ifRoom"
 		          android:icon="@drawable/nfc"
 		         />
-            <item android:id="@+id/export"
-                  android:title="@string/export"
-                  android:showAsAction="ifRoom"
-                  android:icon="@drawable/db_export"
-                 />
-            <item android:id="@+id/importDB"
-                  android:title="@string/import_db"
-                  android:showAsAction="ifRoom"
-                  android:icon="@drawable/db_import"
-                    />
 	      </menu>
 	 </item>
+
+    <item
+        android:id="@+id/mainMenu"
+        android:icon="@drawable/ic_menu_moreoverflow_normal_holo_dark"
+        android:showAsAction="always">
+        <menu>
+
+             <item android:id="@+id/export"
+                        android:title="@string/export"
+                        android:icon="@drawable/db_export"
+                        />
+             <item android:id="@+id/importDB"
+                        android:title="@string/import_db"
+                        android:icon="@drawable/db_import"
+                        />
+      </menu>
+    </item>
 </menu>

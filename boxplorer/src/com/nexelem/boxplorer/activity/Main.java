@@ -18,6 +18,7 @@ import android.net.Uri;
 import android.nfc.NfcAdapter;
 import android.nfc.Tag;
 import android.os.Bundle;
+import android.os.Environment;
 import android.speech.RecognizerIntent;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -182,7 +183,7 @@ public class Main extends Activity implements TextWatcher {
             @Override
             public void onClick(View v) {
                 try {
-                    new DBImporter(getExternalCacheDir()).importDB(ObjectKeeper.getInstance());
+                    new DBImporter(Environment.getExternalStorageDirectory()).importDB(ObjectKeeper.getInstance());
                     Main.this.adapter.updateListAdapterData();
                     Main.this.adapter.notifyDataSetChanged();
                     Main.this.collapseAll();

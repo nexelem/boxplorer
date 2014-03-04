@@ -1,5 +1,7 @@
 bin
 gen
+out
+boxplorer/proguard_logs
 .metadata/.log
 .metadata/.plugins/org.eclipse.core.resources/.root/.indexes/properties.index
 .metadata/.plugins/org.eclipse.core.resources/.root/10.tree
