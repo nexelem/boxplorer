@@ -21,7 +21,7 @@
         android:background="@drawable/text_background"
         android:ems="10"
         android:inputType="textCapSentences|textAutoCorrect"
-        android:maxLength="14"
+        android:maxLength="20"
         android:padding="10dp" />
 
     <TextView

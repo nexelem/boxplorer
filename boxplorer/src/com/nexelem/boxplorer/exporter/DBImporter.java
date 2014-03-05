@@ -15,6 +15,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Klasa odpowiedzialna za import danych z pliku do bazy
@@ -62,6 +63,7 @@ public class DBImporter {
         Box box = new Box();
         box.setLocation(jsonBox.getString(ExportConstants.BOX_PARAM_LOCATION));
         box.setName(jsonBox.getString(ExportConstants.BOX_PARAM_NAME));
+        box.setId(UUID.fromString(jsonBox.getString(ExportConstants.BOX_PARAM_ID)));
         JSONArray jsonItems = jsonBox.getJSONArray(ExportConstants.BOX_PARAM_ITEMS);
         List<Item> items = new ArrayList<Item>();
         for(int i = 0; i< jsonItems.length(); i++) {

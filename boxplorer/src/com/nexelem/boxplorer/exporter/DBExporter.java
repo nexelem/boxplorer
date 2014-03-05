@@ -61,6 +61,7 @@ public class DBExporter {
 
     private JSONObject exportBox(Box box) throws JSONException {
         JSONObject json = new JSONObject();
+        json.put(ExportConstants.BOX_PARAM_ID,box.getId().toString());
         json.put(ExportConstants.BOX_PARAM_NAME, box.getName());
         json.put(ExportConstants.BOX_PARAM_LOCATION, box.getLocation());
         json.put(ExportConstants.BOX_PARAM_ITEMS, exportItems(box.getItemsList()));

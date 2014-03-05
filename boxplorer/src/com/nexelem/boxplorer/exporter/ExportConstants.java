@@ -13,6 +13,6 @@ public class ExportConstants {
     public static final String BOX_PARAM_NAME = "name";
     public static final String BOX_PARAM_LOCATION = "location";
     public static final String BOX_PARAM_ITEMS = "items";
-
+    public static final String BOX_PARAM_ID = "id";
     public static final String ITEM_PARAM_NAME = "name";
 }
